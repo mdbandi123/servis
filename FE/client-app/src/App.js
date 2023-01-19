@@ -1,12 +1,12 @@
-import React from 'react'
+import React from 'react';
+import SignIn from './pages/signin/SignIn';
+import SignUp from './pages/signup/SignUp';
  
 function App(){
   return(
     <div>
-      <h1>sample</h1>
-      <h2>sample2</h2>
-      <h2>sample3</h2>
-      <h2>sample4</h2>
+      <SignIn />
+      {/* <SignUp /> */}
     </div>
   )
 }
