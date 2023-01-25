@@ -1,12 +1,14 @@
 import React from 'react';
-import SignIn from './pages/signin/SignIn';
 import SignUp from './pages/signup/SignUp';
- 
+import SignIn from './pages/signin/SignIn';
+
+
 function App(){
   return(
     <div>
-      <SignIn />
-      {/* <SignUp /> */}
+      <SignIn/> 
+      {/*<SignUp />*/}
+      {/* <Sidebar/> */}
     </div>
   )
 }

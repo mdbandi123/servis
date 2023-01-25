@@ -11,11 +11,12 @@ const secondaryTxt = createTheme();
 const lightTxt = createTheme();
 
 secondaryTxt.typography.h1 = {
-    color: '#432353'
+    color: '#432353',
+    fontSize: 70
 };
 
 secondaryTxt.typography.body1 = {
-    color: '#432353'
+    color: '#432353',
 };
 
 lightTxt.typography.h1 = {
@@ -42,6 +43,11 @@ function SignUp() {
     }
     const containInfoBtn = {
         backgroundColor: '#4a6ae3',
+        borderRadius: 4,
+        pl: 4,
+        pr: 4,
+        pb: 1,
+        pt: 1
     }
     const inlineTxt = {
         display: 'inline'
