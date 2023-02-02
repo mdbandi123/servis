@@ -1,108 +1,129 @@
 import React from 'react';
 
-import Box from '@mui/material/Box';
-import TextField from '@mui/material/TextField';
 import Grid2 from '@mui/material/Unstable_Grid2/Grid2';
-import Typography from '@mui/material/Typography';
-import { Button } from '@mui/material';
-import { createTheme, ThemeProvider } from '@mui/material/styles';
+import { Box, Stack } from '@mui/material/';
+import { IconButton } from '@mui/material/';
+import { FormControl, InputAdornment, InputLabel, FilledInput, TextField } from '@mui/material/';
+import { Visibility, VisibilityOff } from '@mui/icons-material/';
 
-const secondaryTxt = createTheme();
-const lightTxt = createTheme();
+import GlobalBlueContainedButton from '../../global/buttons/BlueContainedButton';
+import GlobalPurpleHeader from '../../global/typographies/PurpleHeader';
+import GlobalBlackBody from '../../global/typographies/BlackBody';
 
-secondaryTxt.typography.h1 = {
-    color: '#432353',
-    fontSize: 70
-};
+function SignIn() {
+    const [showPassword, setShowPassword] = React.useState(false);
+    const handleClickShowPassword = () => setShowPassword((show) => !show);
 
-secondaryTxt.typography.body1 = {
-    color: '#432353',
-};
+    const [showConfirmPassword, setShowConfirmPassword] = React.useState(false);
+    const handleClickShowConfirmPassword = () => setShowConfirmPassword((show) => !show);
 
-lightTxt.typography.h1 = {
-    color: '#FFFFFF'
-};
+    const handleMouseDownPassword = (event) => {
+        event.preventDefault();
+    };
 
-lightTxt.typography.body1 = {
-    color: '#FFFFFF'
-};
-
-function SignUp() {
-    const centerContainer = {
+    const fullScreenDisplay = {
+        position: 'fixed',
+        width: '100vw',
+        height: '100vh',
+        display: 'flex',
+        backgroundColor: '#506AD8D9'
+    }
+    const centerAlignment = {
         textAlign: 'center',
         justifyContent: 'center',
         alignItems: 'center',
         display: 'flex',
-        height: '100vh',
+        height: '100vh'
     }
-    const signInContainer = {
-        backgroundColor: '#EFEFEF',
+    const registrationFormContainer = {
+        backgroundColor: '#FFFFFF',
+        textAlign: 'center',
+        justifyContent: 'center',
+        alignItems: 'center',
+        display: 'flex',
+        height: { xs: '80vh', sm: '80vh', md: '100vh', lg: '100vh', lx: '100vh' }
     }
-    const textField = {
-        m: 1
-    }
-    const containInfoBtn = {
-        backgroundColor: '#4a6ae3',
-        borderRadius: 4,
-        pl: 4,
-        pr: 4,
-        pb: 1,
-        pt: 1
-    }
-    const inlineTxt = {
-        display: 'inline'
-    }
-    const inlineTxtB = {
-        display: 'inline',
-        fontWeight: 'bold'
+    const centerTypography = {
+        textAlign: 'center', 
+        justifyContent: 'center', 
+        alignItems: 'center', 
+        display: 'flex'
     }
 
     return (
         <React.Fragment>
-            <Grid2 container spacing={0} sx={[ centerContainer]}>
-                <Grid2 item sx={[signInContainer, centerContainer]} lx={8} lg={8} md={8} sm={8} xs={8}>
-                    <Box component="form" >
-                        <Box>
-                            <ThemeProvider theme={secondaryTxt}>
-                                <Typography variant="h1">Create Account</Typography>
-                            </ThemeProvider>
-                        </Box>
-                        <Box>
+            <Grid2 sx={[fullScreenDisplay, centerAlignment]} container>
+                <Grid2 sx={[registrationFormContainer]} xs={12} sm={12} md={8} lg={8} lx={8} item>
+                    <Stack component="form" spacing={3}>
+                        <Stack>
+                            <GlobalPurpleHeader text="Create your Account" />
+                        </Stack>
+                        <Stack spacing={2}>
+                            <Grid2 spacing={2} container>
+                                <Grid2 xs={12} sm={12} md={6} lg={6} lx={6} item>
+                                    <Box>
+                                        <TextField id="outlined-textarea" color="primary" type="text" label="First Name" placeholder="Enter your First Name" variant="filled" fullWidth />
+                                    </Box>
+                                </Grid2>
+                                <Grid2 xs={12} sm={12} md={6} lg={6} lx={6} item>
+                                    <Box>
+                                        <TextField id="outlined-textarea" color="primary" type="text" label="Last Name" placeholder="Enter your Last Name" variant="filled" fullWidth />
+                                    </Box>
+                                </Grid2>
+                            </Grid2>
                             <Box>
-                                <TextField sx={textField} id="outlined-textarea" color="secondary" type="text" label="First Name" placeholder="Enter your First Name" variant="filled" fullWidth />
+                                <TextField id="outlined-textarea" color="primary" type="text" label="Business Name" placeholder="Enter your Business Name" variant="filled" fullWidth />
                             </Box>
                             <Box>
-                                <TextField sx={textField} id="outlined-textarea" color="secondary" type="text" label="Last Name" placeholder="Enter your Last Name" variant="filled" fullWidth />
+                                <TextField id="outlined-textarea" color="primary" type="email" label="Email" placeholder="Enter your Email" variant="filled" fullWidth />
                             </Box>
                             <Box>
-                                <TextField sx={textField} id="outlined-textarea" color="secondary" type="text" label="Business" placeholder="Enter your Business Name" variant="filled" fullWidth />
+                                <FormControl variant="filled" fullWidth>
+                                    <InputLabel htmlFor="filled-adornment-password">Password</InputLabel>
+                                    <FilledInput color="primary" placeholder="Enter your password" id="filled-adornment-password" type={showPassword ? 'text' : 'password'}
+                                        endAdornment={
+                                            <InputAdornment position="end">
+                                                <IconButton aria-label="toggle password visibility" onClick={handleClickShowPassword} onMouseDown={handleMouseDownPassword} edge="end">
+                                                    {showPassword ? <VisibilityOff /> : <Visibility />}
+                                                </IconButton>
+                                            </InputAdornment>
+                                        } />
+                                </FormControl>
                             </Box>
                             <Box>
-                                <TextField sx={textField} id="outlined-textarea" color="secondary" type="email" label="Email" placeholder="Enter your Email" variant="filled" fullWidth />
+                                <FormControl variant="filled" fullWidth>
+                                    <InputLabel htmlFor="filled-adornment-password">Confirm Password</InputLabel>
+                                    <FilledInput color="primary" placeholder="Confirm your password" id="filled-adornment-password" type={showConfirmPassword ? 'text' : 'password'}
+                                        endAdornment={
+                                            <InputAdornment position="end">
+                                                <IconButton aria-label="toggle password visibility" onClick={handleClickShowConfirmPassword} onMouseDown={handleMouseDownPassword} edge="end">
+                                                    {showConfirmPassword ? <VisibilityOff /> : <Visibility />}
+                                                </IconButton>
+                                            </InputAdornment>
+                                        } />
+                                </FormControl>
                             </Box>
                             <Box>
-                                <TextField sx={textField} id="outlined-textarea" color="secondary" type="password" label="Password" placeholder="Enter your Password" variant="filled" fullWidth />
+                                <GlobalBlueContainedButton text="Sign In" />
                             </Box>
-                            <Box>
-                                <TextField sx={textField} id="outlined-textarea" color="secondary" type="password" label="Confirm Password" placeholder="Repeat your Password" variant="filled" fullWidth />
-                            </Box>
-                        </Box>
-                        <Box>
-                            <Box>
-                                <Button sx={containInfoBtn} variant="contained" disableRipple>Sign Up</Button>
-                            </Box>
-                        </Box>
-                        <Box>
-                            <ThemeProvider theme={secondaryTxt}>
-                                <Typography variant="body1" sx={inlineTxt}>Have already an account? </Typography>
-                                <Typography variant="body1" sx={inlineTxtB}>Login Here</Typography>
-                            </ThemeProvider>
-                        </Box>
-                    </Box>
+                            <Grid2 sx={centerTypography} spacing={1} container>
+                                <Grid2 item>
+                                    <Box>
+                                        <GlobalBlackBody text="Have already an Account?" />
+                                    </Box>
+                                </Grid2>
+                                <Grid2 item>
+                                    <Box>
+                                        <GlobalBlackBody text="Login Here" />
+                                    </Box>
+                                </Grid2>
+                            </Grid2>
+                        </Stack>
+                    </Stack>
                 </Grid2>
             </Grid2>
         </React.Fragment>
     );
 }
 
-export default SignUp;
+export default SignIn;

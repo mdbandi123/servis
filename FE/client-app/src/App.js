@@ -1,16 +1,14 @@
 import React from 'react';
-import SignUp from './pages/signup/SignUp';
-import SignIn from './pages/signin/SignIn';
+import './App.css';
+import RouteMenu from './RouteMenu';
 
 
-function App(){
-  return(
+function App() {
+  return (
     <div>
-      <SignIn/> 
-      {/*<SignUp />*/}
-      {/* <Sidebar/> */}
+      <RouteMenu />
     </div>
-  )
+  );
 }
 
-export default App
+export default App;
