@@ -1,11 +1,11 @@
 import React from "react";
 import Box from '@mui/material/Box';
-import GlobalPurpleTitle from "../../global/typographies/PurpleTitle";
+import GlobalPurpleHeader4 from "../../global/typographies/headers/PurpleHeader4";
 
 function Generate() {
     return (
         <Box>
-            <GlobalPurpleTitle text="Generate" />
+            <GlobalPurpleHeader4 text="Generate" />
         </Box>
     );
 }

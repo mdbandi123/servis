@@ -1,10 +1,12 @@
 import * as React from 'react';
+import GlobalWhiteHeader5 from './global/typographies/headers/WhiteHeader5';
+
 import { Link, useLocation, Outlet } from 'react-router-dom';
 
 import { styled, useTheme } from '@mui/material/styles';
 import { blue, grey } from '@mui/material/colors';
 import { List, ListItem, ListItemButton, ListItemIcon, ListItemText, Collapse } from '@mui/material/';
-import { CssBaseline, Typography, IconButton } from '@mui/material/';
+import { CssBaseline, IconButton } from '@mui/material/';
 import { Box, Toolbar, Divider } from '@mui/material/';
 import MuiDrawer from '@mui/material/Drawer';
 import MuiAppBar from '@mui/material/AppBar';
@@ -25,8 +27,6 @@ import QrCodeIcon from '@mui/icons-material/QrCode';
 import SettingsIcon from '@mui/icons-material/Settings';
 import LogoutIcon from '@mui/icons-material/Logout';
 
-import GlobalWhiteBody from './global/typographies/WhiteBody';
-
 const drawerWidth = 240;
 
 const openedMixin = (theme) => ({
@@ -42,6 +42,7 @@ const openedMixin = (theme) => ({
 
 const closedMixin = (theme) => ({
     backgroundColor: blue[700],
+    color: grey[50],
     transition: theme.transitions.create('width', {
         easing: theme.transitions.easing.sharp,
         duration: theme.transitions.duration.leavingScreen,
@@ -172,7 +173,7 @@ function Navbar() {
         },
     }
     const closeItemText = {
-        opacity: open ? 1 : 0 
+        opacity: open ? 1 : 0,
     }
     const mainComponentContainer = {
         flexGrow: 1,
@@ -200,7 +201,7 @@ function Navbar() {
                     <IconButton sx={menuIcon} color="inherit" aria-label="open drawer" onClick={handleDrawerOpen} edge="start">
                         <MenuIcon />
                     </IconButton>
-                    <GlobalWhiteBody text="Admin Interface"/>
+                    <GlobalWhiteHeader5 text="Admin Interface"/>
                 </Toolbar>
             </AppBar>
             <Drawer variant="permanent" open={open}>

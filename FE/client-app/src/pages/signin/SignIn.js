@@ -6,12 +6,12 @@ import { IconButton } from '@mui/material/';
 import { FormControl, InputAdornment, InputLabel, FilledInput, TextField } from '@mui/material/';
 import { Visibility, VisibilityOff } from '@mui/icons-material/';
 
-import GlobalBlueContainedButton from '../../global/buttons/BlueContainedButton';
-import GlobalWhiteContainedButton from '../../global/buttons/WhiteContainedButton';
-import GlobalPurpleHeader from '../../global/typographies/PurpleHeader';
-import GlobalWhiteHeader from '../../global/typographies/WhiteHeader';
-import GlobalWhiteBody from '../../global/typographies/WhiteBody';
-import GlobalBlackBody from '../../global/typographies/BlackBody';
+import GlobalBlueContainedButton from '../../global/buttons/contains/BlueContainedButton';
+import GlobalWhiteContainedButton from '../../global/buttons/contains/WhiteContainedButton';
+import GlobalBlackHeader5 from '../../global/typographies/headers/BlackHeader5';
+import GlobalPurpleHeader2 from '../../global/typographies/headers/PurpleHeader2';
+import GlobalWhiteHeader2 from '../../global/typographies/headers/WhiteHeader2';
+import GlobalWhiteHeader6 from '../../global/typographies/headers/WhiteHeader6';
 
 function SignIn() {
 
@@ -37,7 +37,8 @@ function SignIn() {
         height: '100vh',
     }
     const signInContainer = {
-        height: { xs: '50vh', sm: '50vh', md: '100vh', lg: '100vh', lx: '100vh' }
+        height: { xs: '50vh', sm: '50vh', md: '100vh', lg: '100vh', lx: '100vh' },
+        backgroundColor: '#FFFFFF',
     }
     const signUpContainer = {
         backgroundColor: '#506AD8D9',
@@ -50,8 +51,8 @@ function SignIn() {
                 <Grid2 item sx={[signInContainer, centerAlignment]} xs={12} sm={12} md={8} lg={8} lx={8}>
                     <Stack component="form" spacing={5}>
                         <Stack>
-                            <GlobalPurpleHeader text="Login your Account" />
-                            <GlobalBlackBody text="to start manage your data" />
+                            <GlobalPurpleHeader2 text="Login your Account" />
+                            <GlobalBlackHeader5 text="to start manage your data" />
                         </Stack>
                         <Stack spacing={3}>
                             <Box>
@@ -79,8 +80,8 @@ function SignIn() {
                 <Grid2 item sx={[signUpContainer, centerAlignment]} xs={12} sm={12} md={4} lg={4} lx={4}>
                     <Stack component="form" spacing={5}>
                         <Stack>
-                            <GlobalWhiteHeader text="No Account?" />
-                            <GlobalWhiteBody text="Sign up and explore managing data" />
+                            <GlobalWhiteHeader2 text="No Account?" />
+                            <GlobalWhiteHeader6 text="Sign up to create account" />
                         </Stack>
                         <Stack>
                             <Box>
