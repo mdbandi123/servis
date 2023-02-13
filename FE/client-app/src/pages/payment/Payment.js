@@ -1,12 +1,11 @@
 import React from "react";
+import { PaymentData } from "./datas/PaymentData";
 
 import Box from '@mui/material/Box';
 import Grid2 from '@mui/material/Unstable_Grid2/Grid2';
 import Card from '@mui/material/Card';
 import CardContent from '@mui/material/CardContent';
-import { CardActionArea } from '@mui/material';
 import AccountCircleIcon from '@mui/icons-material/AccountCircle';
-import { pink, red, green, blue } from "@mui/material/colors";
 
 import GlobalPurpleHeader4 from "../../global/typographies/headers/PurpleHeader4";
 import GlobalBlackHeader5 from "../../global/typographies/headers/BlackHeader5";
@@ -14,40 +13,7 @@ import GlobalBlackBody1 from "../../global/typographies/bodies/BlackBody1";
 import GlobalGreyBody2 from "../../global/typographies/bodies/GreyBody2";
 import GlobalGreyBody3 from "../../global/typographies/bodies/GreyBody3";
 
-const DummyCustomersPayments = [
-    {
-        userTableId: `#`+Math.floor(Math.random() * 100000),
-        userTableName: 'Table #1',
-        userTableOrder: 12,
-        totalAmount: `$`+32,
-        dateOrder: new Date(2022, 5, 20),
-        userTableColor: red[900],
-    },
-    {
-        userTableId: `#` + Math.floor(Math.random() * 100000),
-        userTableName: 'Table #2',
-        userTableOrder: 23,
-        totalAmount: `$` + 45.50,
-        dateOrder: new Date(2022, 6, 25),
-        userTableColor: pink[900],
-    },
-    {
-        userTableId: `#` + Math.floor(Math.random() * 100000),
-        userTableName: 'Table #3',
-        userTableOrder: 45,
-        totalAmount: `$` + 33,
-        dateOrder: new Date(2022, 9, 8),
-        userTableColor: green[900],
-    },
-    {
-        userTableId: `#` + Math.floor(Math.random() * 100000),
-        userTableName: 'Table #4',
-        userTableOrder: 6,
-        totalAmount: `$` + 32.10,
-        dateOrder: new Date(2022, 9, 29),
-        userTableColor: blue[900],
-    },
-];
+import ViewPaymentModal from "../../global/modals/ViewPaymentModal";
 
 function Payment() {
     const pageTitleContainer = {
@@ -67,10 +33,10 @@ function Payment() {
                 <GlobalPurpleHeader4 text="Payment" />
             </Box>
             <Grid2 container spacing={3}>
-                {DummyCustomersPayments.map((paymentList) => (
+                {PaymentData.map((paymentList) => (
                     <Grid2 item xs={12} sm={6} md={6} lg={4} lx={4}>
                         <Card sx={{ borderBottom: `4px solid ` + paymentList.userTableColor }}>
-                            <CardActionArea>
+                            <ViewPaymentModal title={paymentList.userTableName} userId={paymentList.userTableId} orderDate={[paymentList.dateOrder.getMonth() + '/' + paymentList.dateOrder.getDate() + '/' + paymentList.dateOrder.getFullYear()]} orderTime={[paymentList.dateOrder.getHours() + ':' + paymentList.dateOrder.getMinutes() + ':' + paymentList.dateOrder.getSeconds()]} sx={{ color: paymentList.userTableColor, fontSize: '2em' }} >
                                 <CardContent>
                                     <Grid2 container sx={userTableProfile}>
                                         <Grid2 item xs={12} sm={12} md={3} lg={3} lx={3}>
@@ -96,7 +62,7 @@ function Payment() {
                                         </Grid2>
                                     </Grid2>
                                 </CardContent>
-                            </CardActionArea>
+                            </ViewPaymentModal>
                         </Card>
                     </Grid2>
                 ))}
