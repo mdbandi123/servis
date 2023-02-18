@@ -18,7 +18,7 @@ import GlobalBlueTextButton from '../../global/buttons/text/BlueTextButton';
 import GlobalBlueContainedButton from '../../global/buttons/contains/BlueContainedButton';
 
 const Transition = React.forwardRef(function Transition(props, ref) {
-    return <Slide direction="up" ref={ref} {...props} />;
+    return <Slide direction='up' ref={ref} {...props} />;
 });
 
 function CreateItemModal(props) {
@@ -30,61 +30,59 @@ function CreateItemModal(props) {
 
     const cancelItemCreateHandler = () => {
         setOpenCreateItemModal(false);
-        console.log('Cancel')
     };
 
     const confirmItemCreateHandler = () => {
         setOpenCreateItemModal(false);
-        console.log('Item Successfully Created')
     };
 
     const closeIconButton = {
         position: 'absolute',
         top: 0,
         right: 0
-    }
+    };
 
     const dialogAlignment = {
         alignItems: 'center',
         display: 'flex'
-    }
+    };
 
     const uploadSection = {
         textAlign: 'center',
         justifyContent: 'center',
         alignItems: 'center',
         display: 'flex'
-    }
+    };
 
     const uploadImageIcon = {
         fontSize: '15em',
         color: grey[500]
-    }
+    };
 
     return (
         <React.Fragment>
-            <GlobalBlueContainedButton text="Create" onClick={ItemCreateHandler} />
-            <Dialog keepMounted maxWidth="sm" fullWidth open={openCreateItemModal} TransitionComponent={Transition} onClose={cancelItemCreateHandler} aria-describedby="alert-dialog-slide-description">
-                <DialogTitle sx={dialogAlignment}>
+            <GlobalBlueContainedButton text='Create' onClick={ ItemCreateHandler } />
+            <Dialog keepMounted maxWidth='sm' fullWidth open={ openCreateItemModal } TransitionComponent={ Transition } onClose={ cancelItemCreateHandler } aria-describedby='alert-dialog-slide-description'>
+                <DialogTitle sx={ dialogAlignment }>
                     <GlobalBlackHeader5 text='Create New Item' />
                 </DialogTitle>
-                <Box sx={closeIconButton}>
-                    <IconButton >
-                        <CloseIcon onClick={cancelItemCreateHandler} />
+                <Box sx={ closeIconButton }>
+                    <IconButton>
+                        <CloseIcon onClick={ cancelItemCreateHandler } />
                     </IconButton>
                 </Box>
-                <DialogContent >
-                    <DialogContentText id="alert-dialog-slide-description">
+                <DialogContent>
+                    <DialogContentText id='alert-dialog-slide-description'>
                         <Grid2 container spacing={2}>
-                            <Grid2 item sx={uploadSection} xs={12} sm={12} md={6} lg={6} lx={6} >
+                            <Grid2 item sx={ uploadSection } xs={12} sm={12} md={6} lg={6} lx={6} >
                                 <Stack spacing={2}>
                                     <Box>
-                                        <InsertPhotoIcon sx={uploadImageIcon} />
+                                        <InsertPhotoIcon sx={ uploadImageIcon } />
                                         <GlobalGreyBody1 text='Upload Item Image' />
                                     </Box>
                                     <Box>
-                                        <Button variant="contained" component="label" startIcon={<FileUploadIcon />}>
-                                            Upload <input hidden accept="image/*" multiple type="file" />
+                                        <Button variant='contained' component='label' startIcon={ <FileUploadIcon /> }>
+                                            Upload <input hidden accept='image/*' multiple type='file' />
                                         </Button>
                                     </Box>
                                 </Stack>
@@ -92,16 +90,16 @@ function CreateItemModal(props) {
                             <Grid2 item xs={12} sm={12} md={6} lg={6} lx={6}>
                                 <Stack spacing={1}>
                                     <Box>
-                                        <TextField id="outlined-textarea" color="primary" type="text" label="Name" placeholder="Enter Food Name" variant="filled" fullWidth />
+                                        <TextField id='outlined-textarea' color='primary' type='text' label='Name' placeholder='Enter Food Name' variant='filled' fullWidth />
                                     </Box>
                                     <Box>
-                                        <TextField id="outlined-textarea" color="primary" type="number" label="Price" placeholder="Enter Food Price" variant="filled" fullWidth />
+                                        <TextField id='outlined-textarea' color='primary' type='number' label='Price' placeholder='Enter Food Price' variant='filled' fullWidth />
                                     </Box>
                                     <Box>
-                                        <TextField id="filled-select-currency" color="primary" label="Category" helperText="Select Category" variant="filled" fullWidth select>
+                                        <TextField id='filled-select-currency' color='primary' label='Category' helperText='Select Category' variant='filled' fullWidth select>
                                             {CategoryData.map((selectCateg) => (
-                                                <MenuItem key={selectCateg.categItemName} value={selectCateg.categItemName}>
-                                                    {selectCateg.categItemName}
+                                                <MenuItem key={ selectCateg.categItemName } value={ selectCateg.categItemName }>
+                                                    { selectCateg.categItemName }
                                                 </MenuItem>
                                             ))}
                                         </TextField>
@@ -112,12 +110,12 @@ function CreateItemModal(props) {
                     </DialogContentText>
                 </DialogContent>
                 <DialogActions>
-                    <GlobalRedTextButton text='Cancel' onClick={cancelItemCreateHandler} />
-                    <GlobalBlueTextButton text='Create' onClick={confirmItemCreateHandler} />
+                    <GlobalRedTextButton text='Cancel' onClick={ cancelItemCreateHandler } />
+                    <GlobalBlueTextButton text='Create' onClick={ confirmItemCreateHandler } />
                 </DialogActions>
             </Dialog>
         </React.Fragment>
     );
-}
+};
 
 export default CreateItemModal;

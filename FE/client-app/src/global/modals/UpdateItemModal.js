@@ -15,7 +15,7 @@ import GlobalRedTextButton from '../buttons/text/RedTextButton';
 import GlobalBlueTextButton from '../buttons/text/BlueTextButton';
 
 const Transition = React.forwardRef(function Transition(props, ref) {
-    return <Slide direction="up" ref={ref} {...props} />;
+    return <Slide direction='up' ref={ref} {...props} />;
 });
 
 function UpdateItemModal(props) {
@@ -27,57 +27,55 @@ function UpdateItemModal(props) {
 
     const cancelItemUpdateHandler = () => {
         setOpenUpdateItemModal(false);
-        console.log('Cancel')
     };
 
     const confirmItemUpdateHandler = () => {
         setOpenUpdateItemModal(false);
-        console.log('Item Successfully Updated')
     };
 
     const closeIconButton = {
         position: 'absolute',
         top: 0,
         right: 0
-    }
+    };
 
     const dialogAlignment = {
         alignItems: 'center',
         display: 'flex'
-    }
+    };
 
     const uploadSection = {
         textAlign: 'center',
         justifyContent: 'center',
         alignItems: 'center',
         display: 'flex'
-    }
+    };
 
     return (
         <React.Fragment>
-            <GlobalBlueTextButton text="Update" onClick={ItemUpdateHandler} />
-            <Dialog keepMounted maxWidth="sm" fullWidth open={openUpdateItemModal} TransitionComponent={Transition} onClose={cancelItemUpdateHandler} aria-describedby="alert-dialog-slide-description">
-                <DialogTitle sx={dialogAlignment}>
-                    <GlobalBlackHeader5 text={props.title} />
+            <GlobalBlueTextButton text='Update' onClick={ ItemUpdateHandler } />
+            <Dialog keepMounted maxWidth='sm' fullWidth open={ openUpdateItemModal } TransitionComponent={ Transition } onClose={ cancelItemUpdateHandler } aria-describedby='alert-dialog-slide-description'>
+                <DialogTitle sx={ dialogAlignment }>
+                    <GlobalBlackHeader5 text={ props.title } />
                 </DialogTitle>
-                <Box sx={closeIconButton}>
-                    <IconButton >
-                        <CloseIcon onClick={cancelItemUpdateHandler} />
+                <Box sx={ closeIconButton }>
+                    <IconButton>
+                        <CloseIcon onClick={ cancelItemUpdateHandler } />
                     </IconButton>
                 </Box>
-                <DialogContent >
-                    <DialogContentText id="alert-dialog-slide-description">
+                <DialogContent>
+                    <DialogContentText id='alert-dialog-slide-description'>
                         <Grid2 container spacing={2}>
-                            <Grid2 item sx={uploadSection} xs={12} sm={12} md={6} lg={6} lx={6} >
+                            <Grid2 item sx={ uploadSection } xs={12} sm={12} md={6} lg={6} lx={6} >
                                 <Stack spacing={2}>
                                     <Box>
                                         <Card>
-                                            <CardMedia component="img" alt={props.alt} height="280" image={props.image} />
+                                            <CardMedia component='img' alt={ props.alt } height='280' image={ props.image } />
                                         </Card>
                                     </Box>
                                     <Box>
-                                        <Button variant="contained" component="label" startIcon={<FileUploadIcon />}>
-                                            Upload <input hidden accept="image/*" multiple type="file" />
+                                        <Button variant='contained' component='label' startIcon={ <FileUploadIcon /> }>
+                                            Upload <input hidden accept='image/*' multiple type='file' />
                                         </Button>
                                     </Box>
                                 </Stack>
@@ -85,16 +83,16 @@ function UpdateItemModal(props) {
                             <Grid2 item xs={12} sm={12} md={6} lg={6} lx={6}>
                                 <Stack spacing={1}>
                                     <Box>
-                                        <TextField id="outlined-textarea" defaultValue={props.valueName} color="primary" type="text" label="Name" placeholder="Enter Food Name" variant="filled" fullWidth />
+                                        <TextField id='outlined-textarea' defaultValue={ props.valueName } color='primary' type='text' label='Name' placeholder='Enter Food Name' variant='filled' fullWidth />
                                     </Box>
                                     <Box>
-                                        <TextField id="outlined-textarea" defaultValue={props.valuePrice} color="primary" type="number" label="Price" placeholder="Enter Food Price" variant="filled" fullWidth />
+                                        <TextField id='outlined-textarea' defaultValue={ props.valuePrice } color='primary' type='number' label='Price' placeholder='Enter Food Price' variant='filled' fullWidth />
                                     </Box>
                                     <Box>
-                                        <TextField id="filled-select-currency" defaultValue={props.valueCateg} color="primary" label="Category" helperText="Select Category" variant="filled" fullWidth select>
+                                        <TextField id='filled-select-currency' defaultValue={ props.valueCateg } color='primary' label='Category' helperText='Select Category' variant='filled' fullWidth select>
                                             {CategoryData.map((selectCateg) => (
-                                                <MenuItem key={selectCateg.categItemName} value={selectCateg.categItemName}  >
-                                                    {selectCateg.categItemName}
+                                                <MenuItem key={ selectCateg.categItemName } value={ selectCateg.categItemName }>
+                                                    { selectCateg.categItemName }
                                                 </MenuItem>
                                             ))}
                                         </TextField>
@@ -105,12 +103,12 @@ function UpdateItemModal(props) {
                     </DialogContentText>
                 </DialogContent>
                 <DialogActions>
-                    <GlobalRedTextButton text='Cancel' onClick={cancelItemUpdateHandler} />
-                    <GlobalBlueTextButton text='Update' onClick={confirmItemUpdateHandler} />
+                    <GlobalRedTextButton text='Cancel' onClick={ cancelItemUpdateHandler } />
+                    <GlobalBlueTextButton text='Update' onClick={ confirmItemUpdateHandler } />
                 </DialogActions>
             </Dialog>
         </React.Fragment>
     );
-}
+};
 
 export default UpdateItemModal;

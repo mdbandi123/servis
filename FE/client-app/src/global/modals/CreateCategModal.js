@@ -17,7 +17,7 @@ import GlobalBlueTextButton from '../buttons/text/BlueTextButton';
 import GlobalBlueContainedButton from '../buttons/contains/BlueContainedButton';
 
 const Transition = React.forwardRef(function Transition(props, ref) {
-    return <Slide direction="up" ref={ref} {...props} />;
+    return <Slide direction='up' ref={ref} {...props} />;
 });
 
 function CreateCategModal(props) {
@@ -29,61 +29,59 @@ function CreateCategModal(props) {
 
     const cancelCategCreateHandler = () => {
         setOpenCreateCategModal(false);
-        console.log('Cancel')
     };
 
     const confirmCategCreateHandler = () => {
         setOpenCreateCategModal(false);
-        console.log('Category Successfully Created')
     };
 
     const closeIconButton = {
         position: 'absolute',
         top: 0,
         right: 0
-    }
+    };
 
     const dialogAlignment = {
         alignItems: 'center',
         display: 'flex'
-    }
+    };
 
     const uploadSection = {
         textAlign: 'center',
         justifyContent: 'center',
         alignItems: 'center',
         display: 'flex'
-    }
+    };
 
     const uploadImageIcon = {
         fontSize: '15em',
         color: grey[500]
-    }
+    };
 
     return (
         <React.Fragment>
-            <GlobalBlueContainedButton text="Create" onClick={CategCreateHandler} />
-            <Dialog keepMounted maxWidth="sm" fullWidth open={openCreateCategModal} TransitionComponent={Transition} onClose={cancelCategCreateHandler} aria-describedby="alert-dialog-slide-description">
-                <DialogTitle sx={dialogAlignment}>
+            <GlobalBlueContainedButton text='Create' onClick={ CategCreateHandler } />
+            <Dialog keepMounted maxWidth='sm' fullWidth open={ openCreateCategModal } TransitionComponent={ Transition } onClose={ cancelCategCreateHandler } aria-describedby='alert-dialog-slide-description'>
+                <DialogTitle sx={ dialogAlignment }>
                     <GlobalBlackHeader5 text='Create New Category' />
                 </DialogTitle>
-                <Box sx={closeIconButton}>
+                <Box sx={ closeIconButton }>
                     <IconButton >
-                        <CloseIcon onClick={cancelCategCreateHandler} />
+                        <CloseIcon onClick={ cancelCategCreateHandler } />
                     </IconButton>
                 </Box>
                 <DialogContent >
-                    <DialogContentText id="alert-dialog-slide-description">
+                    <DialogContentText id='alert-dialog-slide-description'>
                         <Grid2 container spacing={2}>
-                            <Grid2 item sx={uploadSection} xs={12} sm={12} md={12} lg={12} lx={12} >
+                            <Grid2 item sx={ uploadSection } xs={12} sm={12} md={12} lg={12} lx={12} >
                                 <Stack spacing={2}>
                                     <Box>
-                                        <InsertPhotoIcon sx={uploadImageIcon} />
+                                        <InsertPhotoIcon sx={ uploadImageIcon } />
                                         <GlobalGreyBody1 text='Upload Category Image' />
                                     </Box>
                                     <Box>
-                                        <Button variant="contained" component="label" startIcon={<FileUploadIcon />}>
-                                            Upload <input hidden accept="image/*" multiple type="file" />
+                                        <Button variant='contained' component='label' startIcon={ <FileUploadIcon /> }>
+                                            Upload <input hidden accept='image/*' multiple type='file' />
                                         </Button>
                                     </Box>
                                 </Stack>
@@ -91,7 +89,7 @@ function CreateCategModal(props) {
                             <Grid2 item xs={12} sm={12} md={12} lg={12} lx={12}>
                                 <Stack spacing={1}>
                                     <Box>
-                                        <TextField id="outlined-textarea" color="primary" type="text" label="Name" placeholder="Enter Category Name" variant="filled" fullWidth />
+                                        <TextField id='outlined-textarea' color='primary' type='text' label='Name' placeholder='Enter Category Name' variant='filled' fullWidth />
                                     </Box>
                                 </Stack>
                             </Grid2>
@@ -99,12 +97,12 @@ function CreateCategModal(props) {
                     </DialogContentText>
                 </DialogContent>
                 <DialogActions>
-                    <GlobalRedTextButton text='Cancel' onClick={cancelCategCreateHandler} />
-                    <GlobalBlueTextButton text='Create' onClick={confirmCategCreateHandler} />
+                    <GlobalRedTextButton text='Cancel' onClick={ cancelCategCreateHandler } />
+                    <GlobalBlueTextButton text='Create' onClick={ confirmCategCreateHandler } />
                 </DialogActions>
             </Dialog>
         </React.Fragment>
     );
-}
+};
 
 export default CreateCategModal;

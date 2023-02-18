@@ -18,5 +18,5 @@ export const CategoryData = [
     {
         categItemName: 'Desserts',
         categItemImage: `https://media.istockphoto.com/id/497959594/photo/fresh-cakes.jpg?s=1024x1024&w=is&k=20&c=Sl2mBThYR5QCQHxRjVofFF0ftLCmd7lcV5UMHnQg86c=`,
-    },
+    }
 ];

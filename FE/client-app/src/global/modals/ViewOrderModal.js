@@ -4,7 +4,6 @@ import Grid2 from '@mui/material/Unstable_Grid2/Grid2';
 import { IconButton } from '@mui/material/';
 import { Box, Slide, Stack, CardActionArea, Paper } from '@mui/material';
 import { Dialog, DialogActions, DialogContent, DialogContentText, DialogTitle } from '@mui/material/';
-import { Table, TableBody, TableCell, TableContainer, TableHead, TableRow } from '@mui/material/';
 
 import CloseIcon from '@mui/icons-material/Close';
 import CalendarMonthIcon from '@mui/icons-material/CalendarMonth';
@@ -20,31 +19,21 @@ const Transition = React.forwardRef(function Transition(props, ref) {
     return <Slide direction='up' ref={ref} {...props} />;
 });
 
-function ViewPaymentModal(props) {
-    const [openViewPaymentModal, setOpenViewPaymentModal] = React.useState(false);
+function ViewOrderModal(props) {
+    const [openViewOrderModal, setOpenViewOrderModal] = React.useState(false);
 
-    const viewPaymentHandler = () => {
-        setOpenViewPaymentModal(true);
+    const viewOrderHandler = () => {
+        setOpenViewOrderModal(true);
     };
 
     const cancelViewModalHandler = () => {
-        setOpenViewPaymentModal(false);
+        setOpenViewOrderModal(false);
     };
 
     const closeIconButton = {
         position: 'absolute',
         top: 0,
         right: 0
-    };
-
-    const paymentTable = {
-        minWidth: 650
-    };
-
-    const paymentTableRow = {
-        '&:last-child td, &:last-child th': {
-            border: 0
-        }
     };
 
     const dialogAlignment = {
@@ -56,27 +45,10 @@ function ViewPaymentModal(props) {
         color: purple[900],
     };
 
-    const tableHeadText = {
-        color: 'white'
-    };
-
-    const tableHeadContainer = {
-        backgroundColor: blue[700] 
-    };
-
-    const tableBodyContainer = {
-        backgroundColor: grey[200],
-    };
-
-    const totalPaymentTableRow = {
-        color: blue[900],
-        fontWeight: 600
-    };
-
     return (
         <React.Fragment>
-            <CardActionArea onClick={ viewPaymentHandler }>{props.children}</CardActionArea>
-            <Dialog keepMounted fullWidth maxWidth='lg' open={ openViewPaymentModal } TransitionComponent={ Transition } onClose={ cancelViewModalHandler } aria-describedby='alert-dialog-slide-description'>
+            <CardActionArea onClick={ viewOrderHandler }>{props.children}</CardActionArea>
+            <Dialog keepMounted fullWidth maxWidth='lg' open={ openViewOrderModal } TransitionComponent={ Transition } onClose={ cancelViewModalHandler } aria-describedby='alert-dialog-slide-description'>
                 <DialogTitle sx={ dialogAlignment }>
                     <AccountCircleIcon sx={ props.sx } />
                     <GlobalBlackHeader5 text={ props.title + ' (' + props.userId + ')' } />
@@ -111,33 +83,6 @@ function ViewPaymentModal(props) {
                             </Grid2>
                         </Grid2>
                     </DialogContentText>
-                    <TableContainer component={ Paper }>
-                        <Table sx={ paymentTable } size='small' aria-label='a dense table'>
-                            <TableHead sx={ tableHeadContainer }>
-                                <TableRow>
-                                    <TableCell sx={ tableHeadText } align='left'>Name</TableCell>
-                                    <TableCell sx={ tableHeadText } align='left'>Code</TableCell>
-                                    <TableCell sx={ tableHeadText } align='left'>Category</TableCell>
-                                    <TableCell sx={ tableHeadText } align='left'>Quantity</TableCell>
-                                    <TableCell sx={ tableHeadText } align='left'>Unit Cost</TableCell>
-                                    <TableCell sx={ tableHeadText } align='left'>Amount</TableCell>
-                                </TableRow>
-                            </TableHead>
-                            <TableBody sx={ tableBodyContainer }>
-                                    <TableRow sx={ paymentTableRow } >
-                                        <TableCell align='left'>Food Name</TableCell>
-                                        <TableCell align='left'>Meal</TableCell>
-                                        <TableCell align='left'>#3232</TableCell>
-                                        <TableCell align='left'>2</TableCell>
-                                        <TableCell align='left'>250</TableCell>
-                                        <TableCell align='left'>500</TableCell>
-                                    </TableRow>
-                                    <TableRow sx={ paymentTableRow } >
-                                        <TableCell sx={ totalPaymentTableRow } align='left' colSpan={6}>Total: 500</TableCell>
-                                    </TableRow>
-                            </TableBody>
-                        </Table>
-                    </TableContainer>
                 </DialogContent>
                 <DialogActions>
                     <GlobalBlueTextButton text='Close' onClick={ cancelViewModalHandler } />
@@ -147,4 +92,4 @@ function ViewPaymentModal(props) {
     );
 };
 
-export default ViewPaymentModal;
+export default ViewOrderModal;
