@@ -14,7 +14,7 @@ import GlobalBlueTextButton from '../buttons/text/BlueTextButton';
 import GlobalRedTextButton from '../buttons/text/RedTextButton';
 
 const Transition = React.forwardRef(function Transition(props, ref) {
-    return <Slide direction="up" ref={ref} {...props} />;
+    return <Slide direction='up' ref={ref} {...props} />;
 });
 
 function DeleteItemModal(props) {
@@ -26,55 +26,53 @@ function DeleteItemModal(props) {
 
     const cancelItemDeleteHandler = () => {
         setOpenItemModal(false);
-        console.log('Cancel')
     };
 
     const confirmItemDeleteHandler = () => {
         setOpenItemModal(false);
-        console.log('Item Successfully Remove')
     };
 
     const closeIconButton = {
         position: 'absolute',
         top: 0,
         right: 0
-    }
+    };
 
     const dialogAlignment = {
         alignItems: 'center',
         display: 'flex'
-    }
+    };
 
     const deleteIcon = {
         mr: 1,
         color: red[700]
-    }
+    };
 
     return (
         <React.Fragment>
-            <GlobalRedTextButton text="Remove" onClick={itemDeleteHandler} />
-            <Dialog keepMounted maxWidth="sm" fullWidth open={openItemModal} TransitionComponent={Transition} onClose={cancelItemDeleteHandler} aria-describedby="alert-dialog-slide-description">
-                <DialogTitle sx={dialogAlignment}>
-                    <ReportProblemIcon sx={deleteIcon} />
+            <GlobalRedTextButton text='Remove' onClick={ itemDeleteHandler } />
+            <Dialog keepMounted maxWidth='sm' fullWidth open={ openItemModal } TransitionComponent={ Transition } onClose={ cancelItemDeleteHandler } aria-describedby='alert-dialog-slide-description'>
+                <DialogTitle sx={ dialogAlignment }>
+                    <ReportProblemIcon sx={ deleteIcon } />
                     <GlobalBlackHeader5 text='Delete Confirmation' />
                 </DialogTitle>
-                <Box sx={closeIconButton}>
-                    <IconButton >
-                        <CloseIcon onClick={cancelItemDeleteHandler} />
+                <Box sx={ closeIconButton }>
+                    <IconButton>
+                        <CloseIcon onClick={ cancelItemDeleteHandler } />
                     </IconButton>
                 </Box>
                 <DialogContent>
-                    <DialogContentText id="alert-dialog-slide-description">
-                        <GlobalGreyBody1 text={props.context} />
+                    <DialogContentText id='alert-dialog-slide-description'>
+                        <GlobalGreyBody1 text={ props.context } />
                     </DialogContentText>
                 </DialogContent>
                 <DialogActions>
-                    <GlobalRedTextButton text='Cancel' onClick={cancelItemDeleteHandler} />
-                    <GlobalBlueTextButton text='Confirm' onClick={confirmItemDeleteHandler} />
+                    <GlobalRedTextButton text='Cancel' onClick={ cancelItemDeleteHandler } />
+                    <GlobalBlueTextButton text='Confirm' onClick={ confirmItemDeleteHandler } />
                 </DialogActions>
             </Dialog>
         </React.Fragment>
     );
-}
+};
 
 export default DeleteItemModal;

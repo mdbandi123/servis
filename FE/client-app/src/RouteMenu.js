@@ -1,5 +1,5 @@
 import React from 'react';
-import { Routes, Route } from "react-router-dom";
+import { Routes, Route } from 'react-router-dom';
 import Navbar from './Navbar';
 import OrderList from './pages/orderlist/OrderList';
 import Payment from './pages/payment/Payment';

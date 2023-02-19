@@ -5,13 +5,13 @@ import { grey } from '@mui/material/colors';
 import Typography from '@mui/material/Typography';
 
 const CustomTypographyOverline = styled(Typography)(({ theme }) => ({
-    color: grey[900],
-}));
+    color: grey[900]
+}))
 
 function GlobalBlackOverline(props) {
     return (
         <CustomTypographyOverline variant='overline'>{props.text}</CustomTypographyOverline>
-    );
+    )
 }
 
 export default GlobalBlackOverline;

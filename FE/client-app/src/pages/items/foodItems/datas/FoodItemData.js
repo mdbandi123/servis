@@ -46,5 +46,5 @@ export const FoodItemData = [
         foodItemCategory: 'Meals',
         foodItemPrice:  45,
         foodItemImage: `https://media.istockphoto.com/id/1272098749/photo/fried-chicken.jpg?s=1024x1024&w=is&k=20&c=KfuvEH9lCUMl0F9IRhZk_x-6epaLiM9cjpZlGjdc_vI=`,
-    },
+    }
 ];

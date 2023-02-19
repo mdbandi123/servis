@@ -5,7 +5,7 @@ import { Switch } from '@mui/material/';
 import { pink, grey } from '@mui/material/colors';
 
 const CustomSwitch = styled((props) => (
-    <Switch focusVisibleClassName=".Mui-focusVisible" disableRipple {...props} />
+    <Switch focusVisibleClassName='.Mui-focusVisible' disableRipple {...props} />
 ))(({ theme }) => ({
     width: 42,
     height: 26,
@@ -20,22 +20,22 @@ const CustomSwitch = styled((props) => (
             '& + .MuiSwitch-track': {
                 backgroundColor: pink[200],
                 opacity: 1,
-                border: 0,
+                border: 0
             },
             '&.Mui-disabled + .MuiSwitch-track': {
-                opacity: 0.5,
-            },
+                opacity: 0.5
+            }
         },
         '&.Mui-focusVisible .MuiSwitch-thumb': {
             color: 'yellow',
-            border: '6px solid green',
+            border: '6px solid green'
         },
         '&.Mui-disabled .MuiSwitch-thumb': {
-            color: grey[600],
+            color: grey[600]
         },
         '&.Mui-disabled + .MuiSwitch-track': {
-            opacity: theme.palette.mode === 'light' ? 0.7 : 0.3,
-        },
+            opacity: theme.palette.mode === 'light' ? 0.7 : 0.3
+        }
     },
     '& .MuiSwitch-thumb': {
         boxSizing: 'border-box',
@@ -47,15 +47,15 @@ const CustomSwitch = styled((props) => (
         backgroundColor: grey[500],
         opacity: 1,
         transition: theme.transitions.create(['background-color'], {
-            duration: 500,
-        }),
-    },
+            duration: 500
+        })
+    }
 }));
 
 function GlobalPinkSwitch(props) {
     return (
-        <CustomSwitch sx={{ m: 1 }} checked={props.checked} onChange={props.onChange} />
+        <CustomSwitch sx={{ m: 1 }} checked={props.checked} onChange={props.onChange} label='Disable'/>
     );
-}
+};
 
 export default GlobalPinkSwitch;

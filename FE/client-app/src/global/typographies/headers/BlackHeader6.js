@@ -11,8 +11,8 @@ const CustomTypographyHeader6 = styled(Typography)(({ theme }) => ({
 
 function GlobalBlackHeader6(props) {
     return (
-        <CustomTypographyHeader6 variant='h6'>{props.text}</CustomTypographyHeader6>
+        <CustomTypographyHeader6 variant='h6' sx={props.sx}>{props.text}</CustomTypographyHeader6>
     );
-}
+};
 
 export default GlobalBlackHeader6;

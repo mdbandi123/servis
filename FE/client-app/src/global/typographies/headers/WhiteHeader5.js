@@ -13,6 +13,6 @@ function GlobalWhiteHeader5(props) {
     return (
         <CustomTypographyHeader5 variant='h5'>{props.text}</CustomTypographyHeader5>
     );
-}
+};
 
 export default GlobalWhiteHeader5;

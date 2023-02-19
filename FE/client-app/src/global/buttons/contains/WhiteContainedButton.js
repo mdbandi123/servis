@@ -9,14 +9,14 @@ const ColorButton = styled(Button)(({ theme }) => ({
     backgroundColor: grey[50],
     '&:hover': {
         backgroundColor: grey[300],
-        transition: '0.5s',
-    },
+        transition: '0.5s'
+    }
 }));
 
 function GlobalWhiteContainedButton(props) {
     return (
-        <ColorButton variant='contained' onClick={props.onClick}>{props.text}</ColorButton>
+        <ColorButton variant='contained' onClick={ props.onClick } >{props.text}</ColorButton>
     );
-}
+};
 
 export default GlobalWhiteContainedButton;
