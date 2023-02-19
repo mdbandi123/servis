@@ -13,6 +13,6 @@ function GlobalPinkHeader6(props) {
     return (
         <CustomTypographyHeader6 variant='h6'>{props.text}</CustomTypographyHeader6>
     );
-}
+};
 
 export default GlobalPinkHeader6;

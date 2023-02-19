@@ -1,4 +1,4 @@
-import { pink, red, green, blue } from "@mui/material/colors";
+import { pink, red, green, blue } from '@mui/material/colors';
 
 export const PaymentData = [
     {
@@ -33,5 +33,5 @@ export const PaymentData = [
         totalAmount: `$` + 32.10,
         dateOrder: new Date(2022, 6, 25, 10, 22, 38),
         userTableColor: blue[900],
-    },
+    }
 ];

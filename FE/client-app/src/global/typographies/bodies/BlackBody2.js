@@ -12,6 +12,6 @@ function GlobalBlackBody2(props) {
     return (
         <CustomTypographyBody2 variant='body2'>{props.text}</CustomTypographyBody2>
     );
-}
+};
 
 export default GlobalBlackBody2;
