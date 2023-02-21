@@ -123,40 +123,62 @@ route.put("/availability", async (req, res) => {
     }
 });
 
-// update the item (body payload: item_id, name, price, unit_price, image, category)
+// update the item (body payload: item_id, name, price, unit_price, image, old_category, new_category, is_available)
 route.put("/item", async (req, res) => {
     try {
         const item_id = req.body.item_id;
         const name = req.body.name;
         const price = req.body.price;
-        // const unit_price = req.body.unit_price;
         const image = req.body.image;
-        const category = req.body.category;
+        const old_category = req.body.old_category;
+        const new_category = req.body.new_category;
         const is_available = req.body.is_available;
 
-        // retrieve the item from the menu collection
-        const menu = await menu_model.findOne({ "menu_item._id": item_id });
-        const item = menu.menu_item.find((i) => i._id.toString() === item_id);
+        // retrieve the item from the old category
+        const old_menu = await menu_model.findOne({ "menu_item._id": item_id });
+        const item = old_menu.menu_item.find((i) => i._id.toString() === item_id);
 
         // change the item details
         item.name = name;
         item.price = price;
-        // item.unit_price = unit_price;
         item.image = image;
-        item.category = category;
         item.is_available = is_available;
 
-        // save changes to the menu
-        await menu.save();
+        // move the item to the new category only if it is not the same as the current category
+        if (old_category !== new_category) {
+            // remove the item from the old category
+            old_menu.menu_item.pull(item);
+
+            // retrieve the new category or create one if it doesn't exist
+            const new_menu = await menu_model.findOne({ category_name: new_category });
+        
+            // add the item to the new category
+            const new_item = new menu_items({
+                name: name,
+                price: price,
+                image: image,
+                is_available: is_available
+            });
+            new_menu.menu_item.push(new_item);
+
+            // save changes to the new category
+            await new_menu.save();
+        }
+
+        // save changes to the old category
+        await old_menu.save();
 
         res.status(200).json({
             success: true,
-            message: "Item details updated",
+            message: "Item updated",
         });
-    } catch (error) {
-        res.status(400).json({ success: false, message: error.message });
-    }
+        } catch (error) {
+            res.status(400).json({ success: false, message: error.message });
+        }
 });
+
+
+
 
 // deletes an item from a category in the menu (body payload: item_id)
 route.delete("/item", async (req, res) => {

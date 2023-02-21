@@ -70,7 +70,8 @@ function UpdateItemModal(props) {
                 name: valueName,
                 price: valuePrice,
                 image: image,
-                category: valueCateg,
+                old_category: props.valueCateg,
+                new_category: valueCateg,
                 is_available: valueStatus,
             }),
         })

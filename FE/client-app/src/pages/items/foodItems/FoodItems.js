@@ -125,7 +125,7 @@ function FoodItems() {
                                         foodItemList.name +
                                         "?"
                                     }
-                                    id={foodItemList._id}
+                                    item_id={foodItemList._id}
                                 />
                             </CardActions>
                         </Card>

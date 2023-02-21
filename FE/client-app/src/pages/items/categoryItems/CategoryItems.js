@@ -89,7 +89,7 @@ function CategoryItems() {
                 <GlobalPurpleHeader4 text="Category Items" />
             </Box>
             <Box mb={3}>
-                <CreateCategModal />
+                <CreateCategModal/>
             </Box>
             <Grid2 container spacing={3}>
                 {CategoryData.map((categItemList) => (
@@ -122,8 +122,8 @@ function CategoryItems() {
                                     context={
                                         "If you delete this category will be permanently gone. Are you sure you want to delete " +
                                         categItemList.category_name +
-                                        "?"
-                                    }
+                                        "?"}
+                                    category_id={categItemList._id}
                                 />
                             </CardActions>
                         </Card>

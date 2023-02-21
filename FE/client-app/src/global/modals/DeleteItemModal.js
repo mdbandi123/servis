@@ -35,22 +35,43 @@ function DeleteItemModal(props) {
     };
 
     const confirmItemDeleteHandler = () => {
-        fetch(`${process.env.REACT_APP_BACKEND_URL}/menu_items/item`, {
-            method: "DELETE",
-            headers: { "Content-Type": "application/json" },
-            body: JSON.stringify({
-                item_id: props.id,
-            }),
-        })
-            .then((res) => {
-                res.json();
+        if (props.item_id) {
+            fetch(`${process.env.REACT_APP_BACKEND_URL}/menu_items/item`, {
+                method: "DELETE",
+                headers: { "Content-Type": "application/json" },
+                body: JSON.stringify({
+                    item_id: props.item_id,
+                }),
             })
-            .then((data) => {
-                console.log(data);
-                console.log("success");
-                setOpenItemModal(false);
+                .then((res) => {
+                    res.json();
+                })
+                .then((data) => {
+                    console.log(data);
+                    console.log("success");
+                    setOpenItemModal(false);
+                })
+                .catch((error) => console.log(error.message));
+        }
+
+        if (props.category_id) {
+            fetch(`${process.env.REACT_APP_BACKEND_URL}/menu/category`, {
+                method: "DELETE",
+                headers: { "Content-Type": "application/json" },
+                body: JSON.stringify({
+                    category_id: props.category_id,
+                }),
             })
-            .catch((error) => console.log(error.message));
+                .then((res) => {
+                    res.json();
+                })
+                .then((data) => {
+                    console.log(data);
+                    console.log("success");
+                    setOpenItemModal(false);
+                })
+                .catch((error) => console.log(error.message));
+        }
     };
 
     const closeIconButton = {

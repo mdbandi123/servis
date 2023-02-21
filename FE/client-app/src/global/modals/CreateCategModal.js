@@ -22,6 +22,8 @@ const Transition = React.forwardRef(function Transition(props, ref) {
 
 function CreateCategModal(props) {
     const [openCreateCategModal, setOpenCreateCategModal] = React.useState(false);
+    const [category_name, setCategoryName] = React.useState('');
+    const [category_image, setCategoryImage] = React.useState('');
 
     const CategCreateHandler = () => {
         setOpenCreateCategModal(true);
@@ -32,6 +34,24 @@ function CreateCategModal(props) {
     };
 
     const confirmCategCreateHandler = () => {
+        fetch(`${process.env.REACT_APP_BACKEND_URL}/menu/category`, {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({
+                category_name: category_name,
+                category_image: category_image
+            })
+        })
+            .then((res) => {
+                res.json();
+            })
+            .then((data) => {
+                console.log(data);
+                console.log('success');
+            })
+            .catch((error) => console.log(error.message));
+
+
         setOpenCreateCategModal(false);
     };
 
@@ -89,7 +109,9 @@ function CreateCategModal(props) {
                             <Grid2 item xs={12} sm={12} md={12} lg={12} lx={12}>
                                 <Stack spacing={1}>
                                     <Box>
-                                        <TextField id='outlined-textarea' color='primary' type='text' label='Name' placeholder='Enter Category Name' variant='filled' fullWidth />
+                                        <TextField id='outlined-textarea' color='primary' type='text' label='Name' placeholder='Enter Category Name' variant='filled' onChange={(e)=>{
+                                            setCategoryName(e.target.value);
+                                        }} fullWidth />
                                     </Box>
                                 </Stack>
                             </Grid2>
