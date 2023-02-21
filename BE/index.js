@@ -1,6 +1,7 @@
 const express = require("express");
 const mongoose = require("mongoose");
 const cors = require("cors");
+require("dotenv").config();
 
 const order_model = require("./models/order").order_model;
 const menu_model = require("./models/menu").menu_model;
@@ -18,10 +19,7 @@ const io = require("socket.io")(server, {
     cors: { origin: "*" },
 });
 
-mongoose.connect(
-    "mongodb+srv://bossmd:bossmd@cluster0.rvllim4.mongodb.net/bossmd?retryWrites=true&w=majority",
-    { useNewUrlParser: true }
-);
+mongoose.connect(process.env.MONGODB_URI, { useNewUrlParser: true });
 
 app.get("/", (req, res) => {
     res.send({ message: "Hey it's Working!" });
