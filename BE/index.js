@@ -10,6 +10,8 @@ const order_route = require("./routes/order");
 const menu_route = require("./routes/menu");
 const order_items_route = require("./routes/order_items");
 const menu_items_route = require("./routes/menu_items");
+const upload_route = require("./routes/upload");
+const images_route = require("./routes/images");
 
 const app = express();
 
@@ -25,6 +27,8 @@ app.get("/", (req, res) => {
     res.send({ message: "Hey it's Working!" });
 });
 
+app.use("/images", images_route);
+app.use("/upload", upload_route);
 app.use("/orders", order_route);
 app.use("/menu", menu_route);
 app.use("/order_items", order_items_route);
@@ -110,7 +114,10 @@ menu_stream.on("change", async () => {
         const list = [];
         record.forEach((menu) => {
             menu.menu_item.forEach((item) => {
-                list.push(item);
+                list.push({
+                    ...item.toObject(),
+                    category_name: menu.category_name,
+                });
             });
         });
 
@@ -119,6 +126,7 @@ menu_stream.on("change", async () => {
         console.log(error);
     }
 });
+
 
 server.listen(3000, () => {
     console.log("Server started on port 3000");

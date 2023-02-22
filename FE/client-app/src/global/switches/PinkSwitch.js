@@ -62,7 +62,7 @@ function GlobalPinkSwitch(props) {
             sx={{ m: 1 }}
             checked={props.checked}
             onChange={props.onChange}
-            label="Disable"
+            
         />
     );
 }

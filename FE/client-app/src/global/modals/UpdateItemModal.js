@@ -30,11 +30,9 @@ function UpdateItemModal(props) {
     const [valueName, setValueName] = React.useState(props.valueName);
     const [valuePrice, setValuePrice] = React.useState(props.valuePrice);
     const [valueCateg, setValueCateg] = React.useState(props.valueCateg);
-    const [image, setImage] = React.useState(props.image);
+    const [image, setImage] = React.useState(null);
     const [valueStatus, setValueStatus] = React.useState(props.availability);
     const [CategoryData, setCategoryData] = React.useState([]);
-
-    console.log(valueCateg);
 
     React.useEffect(() => {
         fetch(`${process.env.REACT_APP_BACKEND_URL}/menu/categories`, {
@@ -45,7 +43,6 @@ function UpdateItemModal(props) {
         })
             .then((response) => response.json())
             .then((data) => {
-                console.log(data);
                 setCategoryData(data.categories);
             })
             .catch((error) => console.error(error));
@@ -60,27 +57,67 @@ function UpdateItemModal(props) {
     };
 
     const confirmItemUpdateHandler = () => {
-        fetch(`${process.env.REACT_APP_BACKEND_URL}/menu_items/item`, {
-            method: "PUT",
-            headers: {
-                "Content-Type": "application/json",
-            },
-            body: JSON.stringify({
-                item_id: props.id,
-                name: valueName,
-                price: valuePrice,
-                image: image,
-                old_category: props.valueCateg,
-                new_category: valueCateg,
-                is_available: valueStatus,
-            }),
-        })
+        if (image) {
+            const formData = new FormData();
+            formData.append("file", image);  
+
+            fetch(`${process.env.REACT_APP_BACKEND_URL}/upload`, {
+            method: "POST",
+            body: formData,
+            })
             .then((response) => response.json())
             .then((data) => {
-                console.log(data);
-                setOpenUpdateItemModal(false);
+                console.log("File uploaded successfully");
+                fetch(`${process.env.REACT_APP_BACKEND_URL}/menu_items/item`, {
+                    method: "PUT",
+                    headers: {
+                        "Content-Type": "application/json",
+                    },
+                    body: JSON.stringify({
+                        item_id: props.id,
+                        name: valueName,
+                        price: valuePrice,
+                        image: data.imageUrl,
+                        old_category: props.valueCateg,
+                        new_category: valueCateg,
+                        is_available: valueStatus,
+                    }),
+                })
+                    .then((response) => response.json())
+                    .then((data) => {
+                        console.log(data);
+                        setOpenUpdateItemModal(false);
+                    })
+                    .catch((error) => console.error(error));
             })
-            .catch((error) => console.error(error));
+            .catch((error) => {
+                console.error("Error uploading file:", error);
+            });
+        } else {
+            fetch(`${process.env.REACT_APP_BACKEND_URL}/menu_items/item`, {
+                method: "PUT",
+                headers: {
+                    "Content-Type": "application/json",
+                },
+                body: JSON.stringify({
+                    item_id: props.id,
+                    name: valueName,
+                    price: valuePrice,
+                    image: props.image,
+                    old_category: props.valueCateg,
+                    new_category: valueCateg,
+                    is_available: valueStatus,
+                }),
+            })
+                .then((response) => response.json())
+                .then((data) => {
+                    console.log(data);
+                    setOpenUpdateItemModal(false);
+                })
+                .catch((error) => console.error(error));
+        }
+
+        setValueStatus(props.availability);
     };
 
     const closeIconButton = {
@@ -144,7 +181,7 @@ function UpdateItemModal(props) {
                                                 component="img"
                                                 alt={props.alt}
                                                 height="280"
-                                                image={props.image}
+                                                image={image ? URL.createObjectURL(image) : `${process.env.REACT_APP_BACKEND_URL}${props.image}`}
                                             />
                                         </Card>
                                     </Box>
@@ -160,6 +197,7 @@ function UpdateItemModal(props) {
                                                 accept="image/*"
                                                 multiple
                                                 type="file"
+                                                onChange={(e) => {setImage(e.target.files[0])}}
                                             />
                                         </Button>
                                     </Box>
@@ -228,8 +266,11 @@ function UpdateItemModal(props) {
                                     <Box>
                                         <FormControlLabel
                                             sx={disableItem}
-                                            control={<GlobalPinkSwitch />}
-                                            label="Disable"
+                                            control={<GlobalPinkSwitch checked={valueStatus}/>}
+                                            onChange={(e) => {
+                                                setValueStatus(e.target.checked);
+                                            }}
+                                            label="Enabled"
                                         />
                                     </Box>
                                 </Stack>

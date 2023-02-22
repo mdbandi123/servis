@@ -1,5 +1,4 @@
 import * as React from 'react';
-import { CategoryData } from '../../pages/items/categoryItems/datas/CategoryData';
 import Grid2 from '@mui/material/Unstable_Grid2/Grid2';
 
 import { Box, Slide } from '@mui/material';
@@ -10,6 +9,7 @@ import { grey } from '@mui/material/colors';
 import CloseIcon from '@mui/icons-material/Close';
 import FileUploadIcon from '@mui/icons-material/FileUpload';
 import InsertPhotoIcon from '@mui/icons-material/InsertPhoto';
+import { CardMedia } from "@mui/material/";
 
 import GlobalGreyBody1 from '../../global/typographies/bodies/GreyBody1';
 import GlobalBlackHeader5 from '../../global/typographies/headers/BlackHeader5';
@@ -23,6 +23,26 @@ const Transition = React.forwardRef(function Transition(props, ref) {
 
 function CreateItemModal(props) {
     const [openCreateItemModal, setOpenCreateItemModal] = React.useState(false);
+    const [itemCategory, setItemCategory] = React.useState('');
+    const [itemImage, setItemImage] = React.useState(null);
+    const [itemName, setItemName] = React.useState('');
+    const [itemPrice, setItemPrice] = React.useState('');
+    const [CategoryData, setCategoryData] = React.useState([]);
+
+    React.useEffect(() => {
+        fetch(`${process.env.REACT_APP_BACKEND_URL}/menu/categories`, {
+            method: "GET",
+            headers: {
+                "Content-Type": "application/json",
+            },
+        })
+            .then((response) => response.json())
+            .then((data) => {
+                
+                setCategoryData(data.categories);
+            })
+            .catch((error) => console.error(error));
+    }, []);
 
     const ItemCreateHandler = () => {
         setOpenCreateItemModal(true);
@@ -32,8 +52,60 @@ function CreateItemModal(props) {
         setOpenCreateItemModal(false);
     };
 
-    const confirmItemCreateHandler = () => {
-        setOpenCreateItemModal(false);
+    const confirmItemCreateHandler = async () => {
+        if (itemImage) {
+            const formData = new FormData();
+            formData.append("file", itemImage);  
+
+            fetch(`${process.env.REACT_APP_BACKEND_URL}/upload`, {
+            method: "POST",
+            body: formData,
+            })
+            .then((response) => response.json())
+            .then((data) => {
+                console.log("File uploaded successfully");
+                fetch(`${process.env.REACT_APP_BACKEND_URL}/menu_items/item`, {
+                    method: "POST",
+                    headers: {
+                        "Content-Type": "application/json",
+                    },
+                    body: JSON.stringify({
+                        name: itemName,
+                        price: itemPrice,
+                        image: data.imageUrl,
+                        category_name: itemCategory,
+                    }),
+                    })
+                    .then((response) => response.json())
+                    .then((data) => {
+                        console.log(data);
+                        setOpenCreateItemModal(false);
+                    })
+                    .catch((error) => console.error(error));
+            })
+            .catch((error) => {
+                console.error("Error uploading file:", error);
+            });
+        } else {
+            fetch(`${process.env.REACT_APP_BACKEND_URL}/menu_items/item`, {
+                method: "POST",
+                headers: {
+                    "Content-Type": "application/json",
+                },
+                body: JSON.stringify({
+                    name: itemName,
+                    price: itemPrice,
+                    image: null,
+                    category_name: itemCategory,
+                }),
+                })
+                .then((response) => response.json())
+                .then((data) => {
+                    console.log(data);
+                    setOpenCreateItemModal(false);
+                })
+                .catch((error) => console.error(error));
+        }
     };
 
     const closeIconButton = {
@@ -77,12 +149,12 @@ function CreateItemModal(props) {
                             <Grid2 item sx={ uploadSection } xs={12} sm={12} md={6} lg={6} lx={6} >
                                 <Stack spacing={2}>
                                     <Box>
-                                        <InsertPhotoIcon sx={ uploadImageIcon } />
+                                        {itemImage ? <CardMedia component='img' height='280' image={URL.createObjectURL(itemImage)} /> : <InsertPhotoIcon sx={ uploadImageIcon } />}
                                         <GlobalGreyBody1 text='Upload Item Image' />
                                     </Box>
                                     <Box>
                                         <Button variant='contained' component='label' startIcon={ <FileUploadIcon /> }>
-                                            Upload <input hidden accept='image/*' multiple type='file' />
+                                            Upload <input hidden accept='image/*' onChange={(e) => setItemImage(e.target.files[0])} multiple type='file' />
                                         </Button>
                                     </Box>
                                 </Stack>
@@ -90,16 +162,16 @@ function CreateItemModal(props) {
                             <Grid2 item xs={12} sm={12} md={6} lg={6} lx={6}>
                                 <Stack spacing={1}>
                                     <Box>
-                                        <TextField id='outlined-textarea' color='primary' type='text' label='Name' placeholder='Enter Food Name' variant='filled' fullWidth />
+                                        <TextField id='outlined-textarea' color='primary' type='text' label='Name' placeholder='Enter Food Name' onChange={(e) => setItemName(e.target.value)} variant='filled' fullWidth />
                                     </Box>
                                     <Box>
-                                        <TextField id='outlined-textarea' color='primary' type='number' label='Price' placeholder='Enter Food Price' variant='filled' fullWidth />
+                                        <TextField id='outlined-textarea' color='primary' type='number' label='Price' placeholder='Enter Food Price' onChange={(e) => setItemPrice(e.target.value)} variant='filled' fullWidth />
                                     </Box>
                                     <Box>
-                                        <TextField id='filled-select-currency' color='primary' label='Category' helperText='Select Category' variant='filled' fullWidth select>
+                                        <TextField id='filled-select-currency' color='primary' label='Category' helperText='Select Category' variant='filled' onChange={(e) => {setItemCategory(e.target.value)}} fullWidth select>
                                             {CategoryData.map((selectCateg) => (
-                                                <MenuItem key={ selectCateg.categItemName } value={ selectCateg.categItemName }>
-                                                    { selectCateg.categItemName }
+                                                <MenuItem key={ selectCateg.category_name } value={ selectCateg.category_name }>
+                                                    { selectCateg.category_name }
                                                 </MenuItem>
                                             ))}
                                         </TextField>

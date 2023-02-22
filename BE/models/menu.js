@@ -18,7 +18,7 @@ const menu_item = new mongoose.Schema({
     is_available: {
         type: Boolean,
         required: true,
-        default: false,
+        default: true,
     },
 });
 

@@ -34,19 +34,17 @@ route.get("/", async (req, res) => {
     }
 });
 
-// create a new item under a category (body payload: category_name, name, price, image, is_available)
+// create a new item under a category (body payload: category_name, name, price, image)
 route.post("/item", async (req, res) => {
     const category_name = req.body.category_name;
     const name = req.body.name;
     const price = req.body.price;
     const image = req.body.image;
-    const is_available = req.body.is_available;
 
     const newMenuItem = new menu_items({
         name: name,
         price: price,
         image: image,
-        is_available: is_available,
     });
 
     try {
@@ -98,31 +96,6 @@ route.get("/item", async (req, res) => {
     }
 });
 
-// update item availability using item_id (body payload: item_id, is_available)
-route.put("/availability", async (req, res) => {
-    try {
-        const item_id = req.body.item_id;
-        const is_available = req.body.is_available;
-
-        // retrieve the item from the menu collection
-        const menu = await menu_model.findOne({ "menu_item._id": item_id });
-        const item = menu.menu_item.find((i) => i._id.toString() === item_id);
-
-        // change the availability of the item
-        item.is_available = is_available;
-
-        // save changes to the menu
-        await menu.save();
-
-        res.status(200).json({
-            success: true,
-            message: "Item availability updated",
-        });
-    } catch (error) {
-        res.status(400).json({ success: false, message: error.message });
-    }
-});
-
 // update the item (body payload: item_id, name, price, unit_price, image, old_category, new_category, is_available)
 route.put("/item", async (req, res) => {
     try {
@@ -134,22 +107,24 @@ route.put("/item", async (req, res) => {
         const new_category = req.body.new_category;
         const is_available = req.body.is_available;
 
+        console.log(req.body);
+        
         // retrieve the item from the old category
         const old_menu = await menu_model.findOne({ "menu_item._id": item_id });
         const item = old_menu.menu_item.find((i) => i._id.toString() === item_id);
-
+        
         // change the item details
         item.name = name;
         item.price = price;
         item.image = image;
         item.is_available = is_available;
-
+        
         // move the item to the new category only if it is not the same as the current category
         if (old_category !== new_category) {
             // remove the item from the old category
             old_menu.menu_item.pull(item);
 
-            // retrieve the new category or create one if it doesn't exist
+            // retrieve the new category
             const new_menu = await menu_model.findOne({ category_name: new_category });
         
             // add the item to the new category
@@ -164,7 +139,7 @@ route.put("/item", async (req, res) => {
             // save changes to the new category
             await new_menu.save();
         }
-
+        
         // save changes to the old category
         await old_menu.save();
 

@@ -1,4 +1,5 @@
 import * as React from "react";
+import { useStore } from "../../../store/store";
 
 import Box from "@mui/material/Box";
 import Grid2 from "@mui/material/Unstable_Grid2/Grid2";
@@ -15,15 +16,16 @@ import CreateItemModal from "../../../global/modals/CreateItemModal";
 import UpdateItemModal from "../../../global/modals/UpdateItemModal";
 
 function FoodItems() {
-    const [FoodItemData, setMenuItems] = React.useState([]);
+    const {menuItems, setMenuItems} = useStore();
 
-    console.log(FoodItemData);
+    console.log(menuItems);
 
     React.useEffect(() => {
         fetch(`${process.env.REACT_APP_BACKEND_URL}/menu_items/`)
             .then((res) => res.json())
             .then((data) => {
                 setMenuItems(data.items);
+                console.log("before", menuItems);
             });
     }, []);
 
@@ -53,7 +55,7 @@ function FoodItems() {
         fontSize: "8em",
     };
 
-    if (FoodItemData.length === 0) {
+    if (menuItems.length === 0) {
         return (
             <React.Fragment>
                 <Box sx={pageTitleContainer}>
@@ -88,14 +90,14 @@ function FoodItems() {
                 <CreateItemModal />
             </Box>
             <Grid2 container spacing={3}>
-                {FoodItemData.map((foodItemList) => (
+                {menuItems.map((foodItemList) => (
                     <Grid2 item xs={12} sm={6} md={4} lg={3} lx={2.4}>
                         <Card sx={foodItemCardContainer} key={foodItemList._id}>
                             <CardMedia
                                 component="img"
                                 alt={foodItemList.name}
                                 height="140"
-                                image={foodItemList.image}
+                                image={`${process.env.REACT_APP_BACKEND_URL}${foodItemList.image}`}
                             />
                             <CardContent>
                                 <GlobalBlackHeader6 text={foodItemList.name} />
