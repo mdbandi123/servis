@@ -7,7 +7,7 @@ import socketIOClient from "socket.io-client";
 function App() {
   const {
     setMenuItems,
-    setCategories,
+    setCategoryItems,
   } = useStore();
 
   React.useEffect(() => {
@@ -22,7 +22,7 @@ function App() {
     // listen for real-time updates from the server categories
     socket.on("categories-update", (data) => {
         console.log("categories update: ", data.items);
-        setCategories(data.items);
+        setCategoryItems(data.items);
     });
 
     // Cleanup the effect

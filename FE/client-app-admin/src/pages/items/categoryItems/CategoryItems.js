@@ -1,4 +1,5 @@
 import * as React from "react";
+import { useStore } from "../../../store/store";
 
 import Box from "@mui/material/Box";
 import Grid2 from "@mui/material/Unstable_Grid2/Grid2";
@@ -14,7 +15,7 @@ import CreateCategModal from "../../../global/modals/CreateCategModal";
 import UpdateCategModal from "../../../global/modals/UpdateCategModal";
 
 function CategoryItems() {
-    const [CategoryData, setCategoryItems] = React.useState([]);
+    const {CategoryData, setCategoryItems} = useStore();
 
     React.useEffect(() => {
         fetch(`${process.env.REACT_APP_BACKEND_URL}/menu/categories`, {
@@ -25,7 +26,6 @@ function CategoryItems() {
         })
             .then((response) => response.json())
             .then((data) => {
-                console.log(data);
                 setCategoryItems(data.categories);
             })
             .catch((error) => console.error(error));
@@ -98,11 +98,12 @@ function CategoryItems() {
                             sx={foodItemCardContainer}
                             key={categItemList._id}
                         >
+                         
                             <CardMedia
                                 component="img"
                                 alt={categItemList.category_name}
                                 height="140"
-                                image={categItemList.category_image}
+                                image={`${process.env.REACT_APP_BACKEND_URL}${categItemList.category_image}`}
                             />
                             <CardContent>
                                 <GlobalBlackHeader6
@@ -117,6 +118,8 @@ function CategoryItems() {
                                     value={categItemList.category_name}
                                     image={categItemList.category_image}
                                     alt={categItemList.category_name}
+                                    category_id={categItemList._id}
+                                    category_name={categItemList.category_name}
                                 />
                                 <DeleteItemModal
                                     context={

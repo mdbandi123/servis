@@ -117,6 +117,7 @@ menu_stream.on("change", async () => {
                 list.push({
                     ...item.toObject(),
                     category_name: menu.category_name,
+                    category_image: menu.category_image,
                 });
             });
         });

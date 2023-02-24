@@ -24,7 +24,7 @@ route.get("/", async (req, res) => {
 route.get("/categories", async (req, res) => {
     try {
         //only find category_name
-        const menu = await menu_model.find({}, { category_name: 1 });
+        const menu = await menu_model.find({});
         res.status(200).json({
             success: true,
             categories: menu,
@@ -54,9 +54,13 @@ route.get("/category", async (req, res) => {
 // create an item in a category (body payload: category_id, name, price, image, is_available)
 route.post("/category", async (req, res) => {
     const category = req.body.category_name;
+    const image = req.body.category_image;
+
+    console.log(req.body);
 
     const newCategory = new menu_model({
         category_name: category,
+        category_image: image,
     });
 
     try {

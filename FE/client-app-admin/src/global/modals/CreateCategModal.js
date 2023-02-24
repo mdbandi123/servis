@@ -9,6 +9,7 @@ import { grey } from '@mui/material/colors';
 import CloseIcon from '@mui/icons-material/Close';
 import FileUploadIcon from '@mui/icons-material/FileUpload';
 import InsertPhotoIcon from '@mui/icons-material/InsertPhoto';
+import { CardMedia } from "@mui/material/";
 
 import GlobalGreyBody1 from '../typographies/bodies/GreyBody1';
 import GlobalBlackHeader5 from '../typographies/headers/BlackHeader5';
@@ -23,7 +24,7 @@ const Transition = React.forwardRef(function Transition(props, ref) {
 function CreateCategModal(props) {
     const [openCreateCategModal, setOpenCreateCategModal] = React.useState(false);
     const [category_name, setCategoryName] = React.useState('');
-    const [category_image, setCategoryImage] = React.useState('');
+    const [category_image, setCategoryImage] = React.useState(null);
 
     const CategCreateHandler = () => {
         setOpenCreateCategModal(true);
@@ -34,25 +35,57 @@ function CreateCategModal(props) {
     };
 
     const confirmCategCreateHandler = () => {
-        fetch(`${process.env.REACT_APP_BACKEND_URL}/menu/category`, {
-            method: 'POST',
-            headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify({
-                category_name: category_name,
-                category_image: category_image
+        if (category_image) {
+            const formData = new FormData();
+            formData.append("file", category_image);  
+
+            fetch(`${process.env.REACT_APP_BACKEND_URL}/upload`, {
+            method: "POST",
+            body: formData,
             })
-        })
-            .then((res) => {
-                res.json();
-            })
+            .then((response) => response.json())
             .then((data) => {
-                console.log(data);
-                console.log('success');
+                console.log("File uploaded successfully");
+                fetch(`${process.env.REACT_APP_BACKEND_URL}/menu/category`, {
+                    method: "POST",
+                    headers: {
+                        "Content-Type": "application/json",
+                    },
+                    body: JSON.stringify({
+                        category_name: category_name,
+                        category_image: data.imageUrl
+                    }),
+                    })
+                    .then((response) => response.json())
+                    .then((data) => {
+                        console.log(data);
+                        setOpenCreateCategModal(false);
+                        setCategoryImage(null);
+                    })
+                    .catch((error) => console.error(error));
             })
-            .catch((error) => console.log(error.message));
-
-
-        setOpenCreateCategModal(false);
+            .catch((error) => {
+                console.error("Error uploading file:", error);
+            });
+        } else {
+            fetch(`${process.env.REACT_APP_BACKEND_URL}/menu/category`, {
+                method: "POST",
+                headers: {
+                    "Content-Type": "application/json",
+                },
+                body: JSON.stringify({
+                    category_name: category_name,
+                    category_image: null
+                }),
+                })
+                .then((response) => response.json())
+                .then((data) => {
+                    console.log(data);
+                    setOpenCreateCategModal(false);
+                    setCategoryImage(null);
+                })
+                .catch((error) => console.error(error));
+        }
     };
 
     const closeIconButton = {
@@ -96,12 +129,12 @@ function CreateCategModal(props) {
                             <Grid2 item sx={ uploadSection } xs={12} sm={12} md={12} lg={12} lx={12} >
                                 <Stack spacing={2}>
                                     <Box>
-                                        <InsertPhotoIcon sx={ uploadImageIcon } />
+                                        {category_image ? <CardMedia component='img' height='280' image={URL.createObjectURL(category_image)} /> : <InsertPhotoIcon sx={ uploadImageIcon } />}
                                         <GlobalGreyBody1 text='Upload Category Image' />
                                     </Box>
                                     <Box>
                                         <Button variant='contained' component='label' startIcon={ <FileUploadIcon /> }>
-                                            Upload <input hidden accept='image/*' multiple type='file' />
+                                            Upload <input hidden accept='image/*' multiple type='file' onChange={(e) => setCategoryImage(e.target.files[0])}/>
                                         </Button>
                                     </Box>
                                 </Stack>

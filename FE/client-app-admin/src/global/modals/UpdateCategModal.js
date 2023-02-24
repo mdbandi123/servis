@@ -21,6 +21,8 @@ const Transition = React.forwardRef(function Transition(props, ref) {
 
 function UpdateCategModal(props) {
     const [openCreateCategModal, setOpenCreateCategModal] = React.useState(false);
+    const [image, setImage] = React.useState(null);
+    const [categoryName, setCategoryName] = React.useState(props.category_name);
 
     const CategCreateHandler = () => {
         setOpenCreateCategModal(true);
@@ -31,7 +33,56 @@ function UpdateCategModal(props) {
     };
 
     const confirmCategCreateHandler = () => {
-        setOpenCreateCategModal(false);
+        if (image) {
+            const formData = new FormData();
+            formData.append("file", image);  
+
+            fetch(`${process.env.REACT_APP_BACKEND_URL}/upload`, {
+            method: "POST",
+            body: formData,
+            })
+            .then((response) => response.json())
+            .then((data) => {
+                fetch(`${process.env.REACT_APP_BACKEND_URL}/menu/category`, {
+                    method: "PUT",
+                    headers: {
+                        "Content-Type": "application/json",
+                    },
+                    body: JSON.stringify({
+                        category_id: props.category_id,
+                        category_name: categoryName,
+                        category_image: data.imageUrl,
+                    }),
+                })
+                    .then((response) => response.json())
+                    .then((data) => {
+                        console.log(data);
+                        setOpenCreateCategModal(false);
+                    })
+                    .catch((error) => console.error(error));
+            })
+            .catch((error) => {
+                console.error("Error uploading file:", error);
+            });
+        } else {
+            fetch(`${process.env.REACT_APP_BACKEND_URL}/menu/category`, {
+                method: "PUT",
+                headers: {
+                    "Content-Type": "application/json",
+                },
+                body: JSON.stringify({
+                    category_id: props.category_id,
+                    category_name: categoryName,
+                    category_image: props.image,
+                }),
+            })
+                .then((response) => response.json())
+                .then((data) => {
+                    console.log(data);
+                    setOpenCreateCategModal(false);
+                })
+                .catch((error) => console.error(error));
+        }
     };
 
     const closeIconButton = {
@@ -75,12 +126,12 @@ function UpdateCategModal(props) {
                                 <Stack spacing={2}>
                                     <Box>
                                         <Card>
-                                            <CardMedia component='img' alt={ props.alt } height='250' image={ props.image } />
+                                            <CardMedia component='img' alt={ props.alt } height='250' image={ image ? URL.createObjectURL(image) : `${process.env.REACT_APP_BACKEND_URL}${props.image}` } />
                                         </Card>
                                     </Box>
                                     <Box>
                                         <Button variant='contained' component='label' startIcon={ <FileUploadIcon /> }>
-                                            Upload <input hidden accept='image/*' multiple type='file' />
+                                            Upload <input hidden accept='image/*' onChange={(e) => setImage(e.target.files[0])} multiple type='file' />
                                         </Button>
                                     </Box>
                                 </Stack>
@@ -88,7 +139,7 @@ function UpdateCategModal(props) {
                             <Grid2 item xs={12} sm={12} md={12} lg={12} lx={12}>
                                 <Stack spacing={1}>
                                     <Box>
-                                        <TextField id='outlined-textarea' defaultValue={ props.value } color='primary' type='text' label='Name' placeholder='Enter Category Name' variant='filled' fullWidth />
+                                        <TextField id='outlined-textarea' defaultValue={ props.value } color='primary' type='text' label='Name' onChange={(e) => setCategoryName(e.target.value)} placeholder='Enter Category Name' variant='filled' fullWidth />
                                     </Box>
                                     <Box>
                                         <FormControlLabel sx={disableItem} control={<GlobalPinkSwitch />} label='Disable' />
