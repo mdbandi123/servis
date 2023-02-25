@@ -95,6 +95,7 @@ route.post("/item", async (req, res) => {
     const order = new ordered_item({
         item_name: item.name,
         item_price: item.price,
+        item_category: menu.category_name,
         quantity: quantity,
         total_price: item.price * quantity,
         time_ordered: new Date(),
@@ -168,7 +169,6 @@ route.delete("/item", async (req, res) => {
         // return the modified order collection
         res.status(200).json({
             message: `Item has been removed from the order.`,
-            items: orderedItems,
         });
     } catch (error) {
         res.status(500).json({

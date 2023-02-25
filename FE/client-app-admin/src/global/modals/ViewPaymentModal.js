@@ -203,18 +203,22 @@ function ViewPaymentModal(props) {
                                     <TableCell sx={ tableHeadText } align='left'>Amount</TableCell>
                                 </TableRow>
                             </TableHead>
-                            <TableBody sx={ tableBodyContainer }>
-                                    <TableRow sx={ paymentTableRow } >
-                                        <TableCell align='left'>Food Name</TableCell>
-                                        <TableCell align='left'>Meal</TableCell>
-                                        <TableCell align='left'>#3232</TableCell>
-                                        <TableCell align='left'>2</TableCell>
-                                        <TableCell align='left'>250</TableCell>
-                                        <TableCell align='left'>500</TableCell>
-                                    </TableRow>
-                                    <TableRow sx={ paymentTableRow } >
-                                        <TableCell sx={ totalPaymentTableRow } align='left' colSpan={6}>Total: 500</TableCell>
-                                    </TableRow>
+                            <TableBody sx={tableBodyContainer}>
+                                {props.ordered_items.map(item => (
+                                <TableRow sx={paymentTableRow}>
+                                    <TableCell align='left'>{item.item_name}</TableCell>
+                                    <TableCell align='left'>{item._id}</TableCell>
+                                    <TableCell align='left'>{item.item_category}</TableCell>
+                                    <TableCell align='left'>{item.quantity}</TableCell>
+                                    <TableCell align='left'>{item.item_price.$numberDecimal}</TableCell>
+                                    <TableCell align='left'>{item.total_price}</TableCell>
+                                </TableRow>
+                                ))}
+                                <TableRow sx={totalPaymentTableRow}>
+                                <TableCell sx={totalPaymentTableRow} align='left' colSpan={6}>
+                                    Total: {props.ordered_items.reduce((acc, item) => acc + item.total_price, 0)}
+                                </TableCell>
+                                </TableRow>
                             </TableBody>
                         </Table>
                     </TableContainer>

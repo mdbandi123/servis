@@ -1,5 +1,5 @@
 import React from 'react';
-import { PaymentData } from './datas/PaymentData';
+// import { PaymentData } from './datas/PaymentData';
 
 import Box from '@mui/material/Box';
 import Grid2 from '@mui/material/Unstable_Grid2/Grid2';
@@ -18,6 +18,24 @@ import ViewPaymentModal from '../../global/modals/ViewPaymentModal';
 import GlobalBlueContainedButton from '../../global/buttons/contains/BlueContainedButton';
 
 function Payment() {
+
+    const [PaymentData, setPaymentData] = React.useState([]);
+
+    React.useEffect(() => {
+        fetch(`${process.env.REACT_APP_BACKEND_URL}/orders`, {
+            method: "GET",
+            headers: {
+                "Content-Type": "application/json",
+            },
+        })
+            .then((response) => response.json())
+            .then((data) => {
+                console.log(data.orders)
+                setPaymentData(data.orders)
+            })
+            .catch((error) => console.error(error));
+    }, []);
+
     const pageTitleContainer = {
         mb: 3,
         textAlign: { xs: 'center', sm: 'center', md: 'left', lg: 'left', lx: 'left' }
@@ -75,39 +93,55 @@ function Payment() {
                 <GlobalPurpleHeader4 text='Payment' />
             </Box>
             <Grid2 container spacing={3}>
-                {PaymentData.map((paymentList) => (
-                    <Grid2 item xs={12} sm={6} md={6} lg={4} lx={4}>
-                        <Card sx={{ borderBottom: `4px solid ` + paymentList.userTableColor }}>
-                            <ViewPaymentModal title={ paymentList.userTableName } userId={ paymentList.userTableId } orderDate={ [paymentList.dateOrder.getMonth() + '/' + paymentList.dateOrder.getDate() + '/' + paymentList.dateOrder.getFullYear()] } orderTime={ [paymentList.dateOrder.getHours() + ':' + paymentList.dateOrder.getMinutes() + ':' + paymentList.dateOrder.getSeconds()] } sx={{ color: paymentList.userTableColor, fontSize: '2em' }} >
-                                <CardContent>
-                                    <Grid2 container sx={ userTableProfile }>
-                                        <Grid2 item xs={12} sm={12} md={3} lg={3} lx={3}>
-                                            <AccountCircleIcon sx={[{ color: paymentList.userTableColor }, userTableIcon]} />
-                                        </Grid2>
-                                        <Grid2 item xs={12} sm={12} md={9} lg={9} lx={9}>
-                                            <GlobalBlackHeader5 text={ paymentList.userTableName } />
-                                            <GlobalGreyBody2 text={ paymentList.userTableId } />
-                                        </Grid2>
-                                    </Grid2>
-                                    <Grid2 container sx={ userTableCardInfo }>
-                                        <Grid2 item xs={12} sm={12} md={4} lg={4} lx={4}>
-                                            <GlobalGreyBody3 text='DATE OF ORDER' />
-                                            <GlobalBlackBody1 text={ [paymentList.dateOrder.getMonth()+'/', paymentList.dateOrder.getDate()+'/', paymentList.dateOrder.getFullYear()] } />
-                                        </Grid2>
-                                        <Grid2 item xs={12} sm={12} md={4} lg={4} lx={4}>
-                                            <GlobalGreyBody3 text='TOTAL ORDERS' />
-                                            <GlobalBlackBody1 text={ paymentList.userTableOrder } />
-                                        </Grid2>
-                                        <Grid2 item xs={12} sm={12} md={4} lg={4} lx={4}>
-                                            <GlobalGreyBody3 text='TOTAL AMOUNT' />
-                                            <GlobalBlackBody1 text={ paymentList.totalAmount } />
-                                        </Grid2>
-                                    </Grid2>
-                                </CardContent>
-                            </ViewPaymentModal>
-                        </Card>
-                    </Grid2>
-                ))}
+            {PaymentData.map((paymentList) => {
+                const date = new Date(paymentList.session_start);
+                const month = date.getMonth() + 1;
+                const day = date.getDate();
+                const year = date.getFullYear();
+                const hour = date.getHours();
+                const minute = date.getMinutes();
+
+                return (
+                <Grid2 item xs={12} sm={6} md={6} lg={4} lx={4}>
+                    <Card sx={{ borderBottom: `4px solid ` + paymentList.userTableColor }}>
+                    <ViewPaymentModal
+                        title={paymentList.table_number}
+                        userId={paymentList.order_id}
+                        orderDate={[month + "/" + day + "/" + year]}
+                        orderTime={[hour + ":" + minute]}
+                        sx={{ color: paymentList.userTableColor, fontSize: "2em" }}
+                        ordered_items={paymentList.ordered_items}
+                    >
+                        <CardContent>
+                        <Grid2 container sx={userTableProfile}>
+                            <Grid2 item xs={12} sm={12} md={3} lg={3} lx={3}>
+                            <AccountCircleIcon sx={[{ color: paymentList.userTableColor }, userTableIcon]} />
+                            </Grid2>
+                            <Grid2 item xs={12} sm={12} md={9} lg={9} lx={9}>
+                            <GlobalBlackHeader5 text={"Table: "+paymentList.table_number} />
+                            <GlobalGreyBody2 text={paymentList.order_id} />
+                            </Grid2>
+                        </Grid2>
+                        <Grid2 container sx={userTableCardInfo}>
+                            <Grid2 item xs={12} sm={12} md={4} lg={4} lx={4}>
+                            <GlobalGreyBody3 text="DATE OF ORDER" />
+                            <GlobalBlackBody1 text={[month + "/" + day + "/" + year]} />
+                            </Grid2>
+                            <Grid2 item xs={12} sm={12} md={4} lg={4} lx={4}>
+                            <GlobalGreyBody3 text="TOTAL ORDERS" />
+                            <GlobalBlackBody1 text={ paymentList.ordered_items.length } />
+                            </Grid2>
+                            <Grid2 item xs={12} sm={12} md={4} lg={4} lx={4}>
+                            <GlobalGreyBody3 text="TOTAL AMOUNT" />
+                            <GlobalBlackBody1 text={ paymentList.ordered_items.reduce((sum, item) => sum + item.total_price, 0)} />
+                            </Grid2>
+                        </Grid2>
+                        </CardContent>
+                    </ViewPaymentModal>
+                    </Card>
+                </Grid2>
+                );
+            })}
             </Grid2>
         </React.Fragment>
     );

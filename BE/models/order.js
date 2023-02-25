@@ -25,6 +25,7 @@ const ordered_item = new mongoose.Schema({
     status: { type: String, default: "pending", required: true },
     time_ordered: { type: Date, required: true },
     table_number: { type: Number, required: false },
+    item_category: { type: String, required: true },
 });
 
 const orders = new mongoose.Schema({
