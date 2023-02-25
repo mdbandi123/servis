@@ -14,7 +14,7 @@ const ColorButton = styled(Button)(({ theme }) => ({
 
 function GlobalBlueContainedButton(props) {
     return (
-        <ColorButton variant='contained' onClick={props.onClick} startIcon={props.startIcon}>{props.text}</ColorButton>
+        <ColorButton variant='contained' onClick={props.onClick} startIcon={props.startIcon} sx={props.sx} disabled={props.disabled}>{props.text}</ColorButton>
     );
 };
 

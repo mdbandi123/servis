@@ -1,6 +1,6 @@
 import React from 'react';
 import { useNavigate } from 'react-router-dom';
-import { StartersData } from './StartersList';
+import { MealsData } from './MealsList';
 
 import Grid2 from '@mui/material/Unstable_Grid2/Grid2';
 import { Box, Stack, Card, CardContent, CardMedia, IconButton } from '@mui/material';
@@ -16,7 +16,7 @@ import GlobalGreyBody2 from '../../../global/typographies/bodies/GreyBody2';
 import GlobalBlueContainedButton from '../../../global/buttons/contains/BlueContainedButton';
 import GlobalBlackHeader5 from '../../../global/typographies/headers/BlackHeader5';
 
-function Starter() {
+function Meals() {
     const navigate = useNavigate();
 
     const pageContainer = {
@@ -57,7 +57,7 @@ function Starter() {
         color: grey[600]
     };
 
-    if (StartersData.length === 0) {
+    if (MealsData.length === 0) {
         return (
             <React.Fragment>
                 <Box sx={pageContainer}>
@@ -65,17 +65,17 @@ function Starter() {
                         <IconButton onClick={() => navigate('/')}>
                             <ArrowBackRoundedIcon />
                         </IconButton>
-                        <GlobalBlackHeader4 text='Starters' />
+                        <GlobalBlackHeader4 text='Meals' />
                     </Stack>
                     <Grid2 container sx={centerAlignment} spacing={1}>
                         <Grid2 item xs={12} sm={12} md={12} lg={12} lx={12}>
                             <ExtensionOffIcon sx={noItemIcon} />
                         </Grid2>
                         <Grid2 item xs={12} sm={12} md={12} lg={12} lx={12}>
-                            <GlobalBlackHeader5 text='No Starters Found' />
+                            <GlobalBlackHeader5 text='No Meals Found' />
                         </Grid2>
                         <Grid2 item xs={12} sm={12} md={12} lg={12} lx={12}>
-                            <GlobalGreyBody2 text={`We couldn't find any Starters. Admin might not have created yet.`} />
+                            <GlobalGreyBody2 text={`We couldn't find any Meals. Admin might not have created yet.`} />
                         </Grid2>
                     </Grid2>
                 </Box>
@@ -90,20 +90,20 @@ function Starter() {
                     <IconButton onClick={() => navigate('/')}>
                         <ArrowBackRoundedIcon />
                     </IconButton>
-                    <GlobalBlackHeader4 text='Starters' />
+                    <GlobalBlackHeader4 text='Meals' />
                 </Stack>
                 <Grid2 container justifyContent='center'>
                     <Grid2 item>
                         <Grid2 container justifyContent='start' spacing={1}>
-                            {StartersData.map((startersList) => (
+                            {MealsData.map((mealsList) => (
                                 <Grid2 item xs={6} sm={6} md={4} lg={3} lx={3}>
                                     <Card sx={cardContainer}>
-                                        <CardMedia component='img' height='140' image={startersList.foodItemImage} alt={startersList.foodItemName} />
+                                        <CardMedia component='img' height='140' image={mealsList.foodItemImage} alt={mealsList.foodItemName} />
                                         <CardContent sx={cardContent}>
                                             <Stack direction='column' spacing={2}>
                                                 <Box>
-                                                    <GlobalBlackHeader6 sx={itemNamePrice} text={startersList.foodItemName} />
-                                                    <GlobalPinkHeader6 sx={itemNamePrice} text={'$' + startersList.foodItemPrice} />
+                                                    <GlobalBlackHeader6 sx={itemNamePrice} text={mealsList.foodItemName} />
+                                                    <GlobalPinkHeader6 sx={itemNamePrice} text={'$' + mealsList.foodItemPrice} />
                                                 </Box>
                                                 <Box >
                                                     <GlobalBlueContainedButton text='Add' sx={{ width: '100%' }} startIcon={<AddRoundedIcon />} />
@@ -121,4 +121,4 @@ function Starter() {
     );
 }
 
-export default Starter;
+export default Meals;

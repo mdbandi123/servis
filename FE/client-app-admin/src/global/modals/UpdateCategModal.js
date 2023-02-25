@@ -1,7 +1,7 @@
 import * as React from 'react';
 import Grid2 from '@mui/material/Unstable_Grid2/Grid2';
 
-import { Box, FormControlLabel, Slide } from '@mui/material';
+import { Box, Slide } from '@mui/material';
 import { IconButton, Button } from '@mui/material/';
 import { Dialog, DialogActions, DialogContent, DialogContentText, DialogTitle } from '@mui/material/';
 import { Stack, TextField } from '@mui/material/';
@@ -13,7 +13,6 @@ import FileUploadIcon from '@mui/icons-material/FileUpload';
 import GlobalBlackHeader5 from '../typographies/headers/BlackHeader5';
 import GlobalRedTextButton from '../buttons/text/RedTextButton';
 import GlobalBlueTextButton from '../buttons/text/BlueTextButton';
-import GlobalPinkSwitch from '../switches/PinkSwitch';
 
 const Transition = React.forwardRef(function Transition(props, ref) {
     return <Slide direction='up' ref={ref} {...props} />;
@@ -140,9 +139,6 @@ function UpdateCategModal(props) {
                                 <Stack spacing={1}>
                                     <Box>
                                         <TextField id='outlined-textarea' defaultValue={ props.value } color='primary' type='text' label='Name' onChange={(e) => setCategoryName(e.target.value)} placeholder='Enter Category Name' variant='filled' fullWidth />
-                                    </Box>
-                                    <Box>
-                                        <FormControlLabel sx={disableItem} control={<GlobalPinkSwitch />} label='Disable' />
                                     </Box>
                                 </Stack>
                             </Grid2>
