@@ -185,10 +185,10 @@ function OrderList(props) {
                                 <PersonOffTwoToneIcon sx={noItemIcon} />
                             </Grid2>
                             <Grid2 item xs={12} sm={12} md={12} lg={12} lx={12}>
-                                <GlobalBlackHeader3 text='No User Found' />
+                                <GlobalBlackHeader3 text='No Running Orders' />
                             </Grid2>
                             <Grid2 item xs={12} sm={12} md={12} lg={12} lx={12}>
-                                <GlobalGreyBody2 text={`We couldn't find any Users. Try to create Users`} />
+                                <GlobalGreyBody2 text={`We were unable to find any Orders. Please wait for customers' orders.`} />
                             </Grid2>
                             <Grid2 item xs={12} sm={12} md={12} lg={12} lx={12}>
                                 <GlobalBlueContainedButton text='Create' />
