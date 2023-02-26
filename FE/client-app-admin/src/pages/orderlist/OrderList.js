@@ -1,5 +1,4 @@
 import * as React from 'react';
-import { orderListNotification } from './datas/OrderListNotificationOrders';
 
 import { styled } from '@mui/material/styles';
 import { Box, Stack } from '@mui/material/';
@@ -67,9 +66,26 @@ const Drawer = styled(MuiDrawer, { shouldForwardProp: (prop) => prop !== 'open' 
 );
 
 function OrderList(props) {
+    const [orderListNotification, setOrderListNotification] = React.useState([]);
+
     const [open, setOpen] = React.useState(true);
 
     const [openNotificationAppBar, setOpenNotificationAppBar] = React.useState(true);
+
+    React.useEffect(() => {
+        fetch(`${process.env.REACT_APP_BACKEND_URL}/orders`, {
+            method: "GET",
+            headers: {
+                "Content-Type": "application/json",
+            },
+        })
+            .then((response) => response.json())
+            .then((data) => {
+                console.log(data.orders)
+                // orderListNotification(data)
+            })
+            .catch((error) => console.error(error));
+    }, []);
 
     const handleClick = () => {
         setOpenNotificationAppBar(!openNotificationAppBar);

@@ -10,7 +10,7 @@ const bodyParser = require("body-parser");
 
 route.use(bodyParser.json());
 
-// retrieves all items on ALL tables
+// retrieves all items on ALL tables including the table number
 route.get("/", async (req, res) => {
     try {
         const order = await order_model.find();
