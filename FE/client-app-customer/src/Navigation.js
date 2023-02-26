@@ -54,7 +54,7 @@ export default function Navigation(props) {
             <ElevationScroll {...props}>
                 <AppBar>
                     <Toolbar>
-                        <Stack direction="row" alignItems='center' spacing={1}>
+                        <Stack direction='row' alignItems='center' spacing={1}>
                             <Box>
                                 <Avatar sx={avatar}>T1</Avatar>
                             </Box>
