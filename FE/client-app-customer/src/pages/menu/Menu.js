@@ -1,5 +1,4 @@
 import React from 'react';
-import { CategoryData } from './Category';
 import Grid2 from '@mui/material/Unstable_Grid2/Grid2';
 import { useNavigate } from 'react-router-dom';
 import { Box } from '@mui/material';
@@ -12,7 +11,25 @@ import GlobalBlackHeader5 from '../../global/typographies/headers/BlackHeader5';
 import GlobalBlackHeader4 from '../../global/typographies/headers/BlackHeader4';
 import GlobalGreyBody2 from '../../global/typographies/bodies/GreyBody2';
 
+import store from '../../store/store';
+
 function Menu() {
+    const {setCategoryItems} = store.getState();
+    const CategoryData= store((state) => state.CategoryData);
+
+    React.useEffect(() => {
+        fetch(`${process.env.REACT_APP_BACKEND_URL}/menu/categories`, {
+            method: "GET",
+            headers: {
+                "Content-Type": "application/json",
+            },
+        })
+            .then((response) => response.json())
+            .then((data) => {
+                setCategoryItems(data.categories);
+            })
+            .catch((error) => console.error(error));
+    }, []);
     const navigate = useNavigate();
 
     const pageContainer = {
@@ -83,9 +100,9 @@ function Menu() {
                                 <Grid2 item xs={6} sm={6} md={4} lg={3} lx={3}>
                                     <Card sx={cardContainer}>
                                         <CardActionArea onClick={() => navigate(categoryList.categPath)}>
-                                            <CardMedia component='img' height='140' image={categoryList.categItemImage} alt={categoryList.categItemName} />
+                                            <CardMedia component='img' height='140' image={`${process.env.REACT_APP_BACKEND_URL}${categoryList.category_image}`} alt={categoryList.category_name} />
                                             <CardContent sx={cardContent}>
-                                                <GlobalBlackHeader6 sx={itemName} text={categoryList.categItemName} />
+                                                <GlobalBlackHeader6 sx={itemName} text={categoryList.category_name} />
                                             </CardContent>
                                         </CardActionArea>
                                     </Card>

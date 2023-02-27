@@ -14,7 +14,10 @@ import PendingActionsIcon from '@mui/icons-material/PendingActions';
 import GlobalWhiteHeader6 from './global/typographies/headers/WhiteHeader6';
 import GlobalPinkBadge from './global/badges/PinkBadge';
 
+import store from './store/store';
+
 function ElevationScroll(props) {
+
     const { children, window } = props;
 
     const trigger = useScrollTrigger({
@@ -37,6 +40,8 @@ export default function Navigation(props) {
     const [value, setValue] = useState(0);
     const navigate = useNavigate();
 
+    const table_number = store((state) => state.table_number); 
+
     const navigation = {
         position: 'fixed',
         bottom: 0,
@@ -56,10 +61,10 @@ export default function Navigation(props) {
                     <Toolbar>
                         <Stack direction='row' alignItems='center' spacing={1}>
                             <Box>
-                                <Avatar sx={avatar}>T1</Avatar>
+                                <Avatar sx={avatar}>{`T${table_number}`}</Avatar>
                             </Box>
                             <Box>
-                                <GlobalWhiteHeader6 text='Table #1' />
+                                <GlobalWhiteHeader6 text={`Table #${table_number}`} />
                             </Box>
                         </Stack>
                     </Toolbar>

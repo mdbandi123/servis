@@ -36,8 +36,8 @@ route.get("/", async (req, res) => {
 });
 
 // retrieves all items in the order/cart of the CURRENT session (body payload: order_id)
-route.post("/items", async (req, res) => {
-    const order_id = req.body.order_id;
+route.get("/items/:order_id", async (req, res) => {
+    const order_id = req.params.order_id;
     try {
         record = await order_model.find({ order_id: order_id });
 

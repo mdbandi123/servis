@@ -21,10 +21,34 @@ route.get("/", async (req, res) => {
     }
 });
 
+// check if the order_id is existing and is_paid is false
+route.get("/:order_id", async (req, res) => {
+    const order_id = req.params.order_id;
+
+    const order_session = await orders.findOne({
+        order_id: order_id,
+        is_paid: false,
+    });
+
+    if (!order_session) {
+        return res.status(404).json({
+            success: false,
+            message: "Order session not found",
+        });
+    }
+
+    res.status(200).json({
+        success: true,
+        session: order_session,
+        message: "Order session found",
+    });
+});
+
+
 // creates a new order session for the table and returns a QR code (body payload: table_number)
-route.post("/create/session", async (req, res) => {
+route.post("/create/:table_number", async (req, res) => {
     const order_id = createOrderId();
-    const table_number = req.body.table_number;
+    const table_number = req.params.table_number;
 
     //make sure that the table_number is not in use and is_paid is false
     const table_in_use = await orders.findOne({
@@ -47,7 +71,7 @@ route.post("/create/session", async (req, res) => {
     try {
         await order_session.save();
         const qr_svg = qr.image(
-            `http://localhost:5173/?order_id=${order_id}?table_number=${table_number}`,
+            `http://localhost:3001/?order_id=${order_id}`,
             {
                 type: "svg",
             }
@@ -61,8 +85,8 @@ route.post("/create/session", async (req, res) => {
 });
 
 // ends the session for the table (body payload: order_id)
-route.put("/session", async (req, res) => {
-    const order_id = req.body.order_id;
+route.put("/session/:order_id", async (req, res) => {
+    const order_id = req.params.order_id;
 
     // check if the order_id is valid and is_paid is true then return session ended alredy
     const order_session = await orders.findOne({

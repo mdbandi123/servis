@@ -25,7 +25,6 @@ function FoodItems() {
             .then((res) => res.json())
             .then((data) => {
                 setMenuItems(data.items);
-                console.log("before", menuItems);
             });
     }, []);
 
