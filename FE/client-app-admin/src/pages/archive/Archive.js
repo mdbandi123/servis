@@ -161,6 +161,17 @@ EnhancedTableToolbar.propTypes = {
 };
 
 export default function EnhancedTable() {
+
+    React.useEffect(() => {
+    fetch(`${process.env.REACT_APP_BACKEND_URL}/order_items/archive`,{
+        method: 'GET',
+    })
+        .then(response => response.json())
+        .then(data => console.log(data))
+        .catch(error => console.log(error))
+    }, []);
+
+
     const [order, setOrder] = React.useState('desc');
     const [orderBy, setOrderBy] = React.useState('timeDate');
     const [selected, setSelected] = React.useState([]);

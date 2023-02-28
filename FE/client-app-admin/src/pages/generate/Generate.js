@@ -13,6 +13,21 @@ import Grid2 from '@mui/material/Unstable_Grid2/Grid2';
 import { Stack } from '@mui/system';
 
 function Generate() {
+
+    React.useEffect(() => {
+        fetch(`${process.env.REACT_APP_BACKEND_URL}/tables/`, {
+            method: 'GET',
+        })
+            .then(response => response.json())
+            .then(data => {
+                console.log(data);
+            }
+        ).catch((error) => {
+            console.log(error);
+        });
+
+    }, []);
+
     const pageTitleContainer = {
         mb: 3,
         textAlign: { xs: 'center', sm: 'center', md: 'left', lg: 'left', lx: 'left' }

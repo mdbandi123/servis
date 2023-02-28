@@ -52,7 +52,7 @@ function App() {
 
   return (
     <div>
-      {order_id && <RouteMenu />}
+      <RouteMenu />
     </div>
   );
 }

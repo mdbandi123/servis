@@ -35,6 +35,44 @@ route.get("/", async (req, res) => {
     }
 });
 
+//retrieve all items on all tables where is_paid is true
+route.get("/archive", async (req, res) => {
+    try {
+        const order = await order_model.find({ is_paid: true });
+        if (!order) {
+            return res
+                .status(404)
+                .json({ success: false, message: "Order not found" });
+        }
+        const items = [];
+        order.forEach((order) => {
+            order.ordered_items.forEach((item) => {
+                item.table_number = order.table_number;
+                items.push(item);
+            });
+        });
+        res.status(200).json({
+            success: true,
+            items: items,
+        });
+    } catch (error) {
+        res.status(400).json({ success: false, message: error.message });
+    }
+});
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 // retrieves all items in the order/cart of the CURRENT session (body payload: order_id)
 route.get("/items/:order_id", async (req, res) => {
     const order_id = req.params.order_id;
@@ -99,6 +137,7 @@ route.post("/item", async (req, res) => {
         quantity: quantity,
         total_price: item.price * quantity,
         time_ordered: new Date(),
+        item_image: item.image,
     });
 
     try {

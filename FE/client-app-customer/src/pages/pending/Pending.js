@@ -15,6 +15,30 @@ import GlobalBlackHeader5 from '../../global/typographies/headers/BlackHeader5';
 import GlobalBlackHeader6 from '../../global/typographies/headers/BlackHeader6';
 
 function Pending() {
+
+    const order_id = "2iXvUIXaAsPatTbUtgok"
+
+    React.useEffect(() => {
+        fetch(`${process.env.REACT_APP_BACKEND_URL}/order_items/items/${order_id}`,
+            {
+                method: 'GET',
+                headers: {
+                    'Content-Type': 'application/json',
+                }
+            })
+            .then((response) => response.json())
+            .then((data) => {
+                if (data.success) {
+                    console.log(data.items);
+                } else {
+                    console.log(data.error);
+                }
+            }
+        ).catch((error) => {
+            console.log(error);
+        });
+    }, []);
+
     const headerPage = {
         pb: 2,
         textAlign: { xs: 'left', sm: 'left', md: 'center', lg: 'center', lx: 'center' }

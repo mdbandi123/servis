@@ -12,6 +12,7 @@ const order_items_route = require("./routes/order_items");
 const menu_items_route = require("./routes/menu_items");
 const upload_route = require("./routes/upload");
 const images_route = require("./routes/images");
+const tables_routes = require("./routes/tables");
 
 const app = express();
 
@@ -33,6 +34,7 @@ app.use("/orders", order_route);
 app.use("/menu", menu_route);
 app.use("/order_items", order_items_route);
 app.use("/menu_items", menu_items_route);
+app.use("/tables", tables_routes);
 
 // Listen for real time updates in orders collection based on order_id/session
 io.on("connection", (socket) => {
