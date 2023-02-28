@@ -8,16 +8,18 @@ const qr = require("qr-image");
 const route = express();
 route.use(bodyParser.json());
 
-// retrieves all orders
+// retrieves all orders where is_paid is false
 route.get("/", async (req, res) => {
     try {
-        const order = await orders.find();
-        res.status(200).json({
-            success: true,
-            orders: order,
-        });
-    } catch (err) {
-        res.send(err);
+        const order = await orders.find({ is_paid: false });
+        if (!order) {
+            return res
+                .status(404)
+                .json({ success: false, message: "Order not found" });
+        }
+        res.status(200).json({ success: true, orders: order });
+    } catch (error) {
+        res.status(500).json({ success: false, message: error.message });
     }
 });
 

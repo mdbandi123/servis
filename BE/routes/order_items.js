@@ -60,19 +60,6 @@ route.get("/archive", async (req, res) => {
     }
 });
 
-
-
-
-
-
-
-
-
-
-
-
-
-
 // retrieves all items in the order/cart of the CURRENT session (body payload: order_id)
 route.get("/items/:order_id", async (req, res) => {
     const order_id = req.params.order_id;
@@ -89,6 +76,7 @@ route.get("/items/:order_id", async (req, res) => {
         record.forEach((order) => {
             order.ordered_items.forEach((item) => {
                 item.table_number = order.table_number;
+                item.order_id = order.order_id;
                 list.push(item);
             });
         });
@@ -137,7 +125,7 @@ route.post("/item", async (req, res) => {
         quantity: quantity,
         total_price: item.price * quantity,
         time_ordered: new Date(),
-        item_image: item.image,
+        item_image: item.image
     });
 
     try {

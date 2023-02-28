@@ -22,32 +22,6 @@ const Transition = React.forwardRef(function Transition(props, ref) {
     return <Slide direction='up' ref={ref} {...props} />;
 });
 
-const userOrders = [
-    { orderId: '1', foodItemName: 'Pork Tonkatsu', foodItemImage: `https://media.istockphoto.com/id/1364936307/photo/pork-tonkatsu.jpg?s=1024x1024&w=is&k=20&c=SSTaoCgZKHms3gm17F0NS9M0w_r9AQaKLKu_kEwzLtA=` },
-    { orderId: '2', foodItemName: 'Fried Chicken', foodItemImage: `https://media.istockphoto.com/id/1364936307/photo/pork-tonkatsu.jpg?s=1024x1024&w=is&k=20&c=SSTaoCgZKHms3gm17F0NS9M0w_r9AQaKLKu_kEwzLtA=` },
-    { orderId: '3', foodItemName: 'Mango Pudding', foodItemImage: `https://media.istockphoto.com/id/1364936307/photo/pork-tonkatsu.jpg?s=1024x1024&w=is&k=20&c=SSTaoCgZKHms3gm17F0NS9M0w_r9AQaKLKu_kEwzLtA=`, },
-    { orderId: '4', foodItemName: 'Pork Tonkatsu', foodItemImage: `https://media.istockphoto.com/id/1364936307/photo/pork-tonkatsu.jpg?s=1024x1024&w=is&k=20&c=SSTaoCgZKHms3gm17F0NS9M0w_r9AQaKLKu_kEwzLtA=`, },
-    { orderId: '5', foodItemName: 'Pork Tonkatsu', foodItemImage: `https://media.istockphoto.com/id/1364936307/photo/pork-tonkatsu.jpg?s=1024x1024&w=is&k=20&c=SSTaoCgZKHms3gm17F0NS9M0w_r9AQaKLKu_kEwzLtA=`, }
-];
-
-const userOrderStatus = {
-    pending: {
-        name: 'Pending',
-        items: userOrders,
-        theme: red[500]
-    },
-    preparing: {
-        name: 'Preparing',
-        items: [],
-        theme: orange[500]
-    },
-    served: {
-        name: 'Served',
-        items: [],
-        theme: green[500]
-    },
-};
-
 const onDragEnd = (result, columns, setColumns) => {
     if (!result.destination) return;
     const { source, destination } = result;
@@ -59,6 +33,42 @@ const onDragEnd = (result, columns, setColumns) => {
         const destItems = [...destColumn.items];
         const [removed] = sourceItems.splice(source.index, 1);
         destItems.splice(destination.index, 0, removed);
+        
+        // Make a request to update the status of the item in the order
+        const item = removed;
+        fetch(`${process.env.REACT_APP_BACKEND_URL}/order_items/status`, {
+            method: "PUT",
+            headers: {
+                "Content-Type": "application/json",
+            },
+            body: JSON.stringify({
+                order_id: item.order_id,
+                item_id: item._id,
+                status: destColumn.name.toLowerCase(),
+            }),
+        })
+            .then((response) => {
+                if (!response.ok) {
+                    throw new Error("Failed to update item status");
+                }
+                return response.json();
+            })
+            .then((data) => {
+                console.log(data);
+            })
+            .catch((error) => {
+                console.error("Error updating item status:", error);
+                // Put the item back to its original column
+                sourceItems.splice(source.index, 0, removed);
+                setColumns({
+                    ...columns,
+                    [source.droppableId]: {
+                        ...sourceColumn,
+                        items: sourceItems
+                    },
+                });
+            });
+    
         setColumns({
             ...columns,
             [source.droppableId]: {
@@ -84,11 +94,69 @@ const onDragEnd = (result, columns, setColumns) => {
         });
     }
 };
+    
+function ViewOrderModal(props) {    
+    const userOrders = [
+        { _id: '1', status: "pending", item_name: 'Pork Tonkatsu', item_image: `https://media.istockphoto.com/id/1364936307/photo/pork-tonkatsu.jpg?s=1024x1024&w=is&k=20&c=SSTaoCgZKHms3gm17F0NS9M0w_r9AQaKLKu_kEwzLtA=` },
+        { _id: '2', status: "preparing", item_name: 'Fried Chicken', item_image: `https://media.istockphoto.com/id/1364936307/photo/pork-tonkatsu.jpg?s=1024x1024&w=is&k=20&c=SSTaoCgZKHms3gm17F0NS9M0w_r9AQaKLKu_kEwzLtA=` },
+        { _id: '3', status: "served", item_name: 'Mango Pudding', item_image: `https://media.istockphoto.com/id/1364936307/photo/pork-tonkatsu.jpg?s=1024x1024&w=is&k=20&c=SSTaoCgZKHms3gm17F0NS9M0w_r9AQaKLKu_kEwzLtA=`, },
+        { _id: '4', status: "pending", item_name: 'Pork Tonkatsu', item_image: `https://media.istockphoto.com/id/1364936307/photo/pork-tonkatsu.jpg?s=1024x1024&w=is&k=20&c=SSTaoCgZKHms3gm17F0NS9M0w_r9AQaKLKu_kEwzLtA=`, },
+        { _id: '5', status: "pending", item_name: 'Pork Tonkatsu', item_image: `https://media.istockphoto.com/id/1364936307/photo/pork-tonkatsu.jpg?s=1024x1024&w=is&k=20&c=SSTaoCgZKHms3gm17F0NS9M0w_r9AQaKLKu_kEwzLtA=`, }
+    ];
 
-function ViewOrderModal(props) {
+    const initialUserOrderStatus = {
+        pending: {
+            name: 'Pending',
+            items: [],
+            theme: red[500]
+        },
+        preparing: {
+            name: 'Preparing',
+            items: [],
+            theme: orange[500]
+        },
+        served: {
+            name: 'Served',
+            items: [],
+            theme: green[500]
+        },
+    };  
+
     const [openViewOrderModal, setOpenViewOrderModal] = React.useState(false);
 
-    const [columns, setColumns] = useState(userOrderStatus);
+    const [columns, setColumns] = useState(initialUserOrderStatus);
+
+    React.useEffect(() => {
+        fetch(`${process.env.REACT_APP_BACKEND_URL}/order_items/items/${props.userId}`, {
+            method: 'GET',
+        }
+        ).then(res => res.json()).then(data => {
+            if (data.items) {
+                const userOrderStatus = {
+                    pending: {
+                        name: 'Pending',
+                        items: data.items.filter(order => order.status === 'pending'),
+                        theme: red[500]
+                    },
+                    preparing: {
+                        name: 'Preparing',
+                        items: data.items.filter(order => order.status === 'preparing'),
+                        theme: orange[500]
+                    },
+                    served: {
+                        name: 'Served',
+                        items: data.items.filter(order => order.status === 'served'),
+                        theme: green[500]
+                    },
+                };  
+        
+                setColumns(userOrderStatus);
+            }
+
+        }).catch(err => console.log(err));
+    
+    }, []);
+
 
     const viewOrderHandler = () => {
         setOpenViewOrderModal(true);
@@ -156,7 +224,7 @@ function ViewOrderModal(props) {
         height: 50
     };
 
-    const foodItemName = {
+    const item_name = {
         fontWeight: 'bold'
     };
 
@@ -219,7 +287,7 @@ function ViewOrderModal(props) {
                                                             <Box {...provided.droppableProps} ref={provided.innerRef} sx={orderStatusContent} >
                                                                 {column.items.map((item, index) => {
                                                                     return (
-                                                                        <Draggable key={item.orderId} draggableId={item.orderId} index={index} >
+                                                                        <Draggable key={item._id} draggableId={item._id} index={index} >
                                                                             {(provided, snapshot) => {
                                                                                 return (
                                                                                     <Paper ref={provided.innerRef} {...provided.draggableProps} {...provided.dragHandleProps}
@@ -228,13 +296,13 @@ function ViewOrderModal(props) {
                                                                                             <Grid2 container alignContent='center' alignItems='center' >
                                                                                                 <Grid2 item xs={4} sm={4} md={4} lg={4} lx={4} alignContent='center'>
                                                                                                     <ListItemAvatar>
-                                                                                                        <Avatar src={item.foodItemImage} sx={foodImageAvatar} />
+                                                                                                        <Avatar src={`${process.env.REACT_APP_BACKEND_URL}/${item.item_image}`} sx={foodImageAvatar} />
                                                                                                     </ListItemAvatar>
                                                                                                 </Grid2>
                                                                                                 <Grid2 item xs={8} sm={8} md={8} lg={8} lx={8}>
                                                                                                     <Grid2 container spacing={2}>
                                                                                                         <Grid2 item xs={12} sm={12} md={12} lg={12} lx={12}>
-                                                                                                            <GlobalBlackBody1 text={item.foodItemName} sx={foodItemName} />
+                                                                                                            <GlobalBlackBody1 text={item.item_name} sx={item_name} />
                                                                                                             <GlobalBlackBody2 text='#123123' />
                                                                                                         </Grid2>
                                                                                                         <Grid2 item xs={12} sm={12} md={12} lg={12} lx={12}>
@@ -318,7 +386,7 @@ function ViewOrderModal(props) {
                                                         <Box {...provided.droppableProps} ref={provided.innerRef} sx={orderStatusContent} >
                                                             {column.items.map((item, index) => {
                                                                 return (
-                                                                    <Draggable key={item.orderId} draggableId={item.orderId} index={index} >
+                                                                    <Draggable key={item._id} draggableId={item._id} index={index} >
                                                                         {(provided, snapshot) => { 
                                                                             return (
                                                                                 <Paper ref={provided.innerRef} {...provided.draggableProps} {...provided.dragHandleProps}
@@ -327,14 +395,14 @@ function ViewOrderModal(props) {
                                                                                         <Grid2 container alignContent='center' alignItems='center' >
                                                                                             <Grid2 item xs={4} sm={4} md={4} lg={4} lx={4} alignContent='center'>
                                                                                                 <ListItemAvatar>
-                                                                                                    <Avatar src={item.foodItemImage} sx={foodImageAvatar} />
+                                                                                                    <Avatar src={`${process.env.REACT_APP_BACKEND_URL}${item.item_image}`} sx={foodImageAvatar} />
                                                                                                 </ListItemAvatar>
                                                                                             </Grid2>
                                                                                             <Grid2 item xs={8} sm={8} md={8} lg={8} lx={8}>
                                                                                                 <Grid2 container spacing={2}>
                                                                                                     <Grid2 item xs={12} sm={12} md={12} lg={12} lx={12}>
-                                                                                                        <GlobalBlackBody1 text={item.foodItemName} sx={foodItemName} />
-                                                                                                        <GlobalBlackBody2 text='#123123' />
+                                                                                                        <GlobalBlackBody1 text={item.item_name} sx={item_name} />
+                                                                                                        <GlobalBlackBody2 text={`#${item._id.substr(0,9)}`} />
                                                                                                     </Grid2>
                                                                                                     <Grid2 item xs={12} sm={12} md={12} lg={12} lx={12}>
                                                                                                         <GlobalGreyBody2 text='06/25/2022 | 03:12:21' sx={orderListDate} />

@@ -82,6 +82,7 @@ orders_stream.on("change", async () => {
         record.forEach((order) => {
             order.ordered_items.forEach((item) => {
                 item.table_number = order.table_number;
+                item.order_id = order.order_id;
                 list.push(item);
             });
         });

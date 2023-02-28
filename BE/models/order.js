@@ -27,6 +27,7 @@ const ordered_item = new mongoose.Schema({
     table_number: { type: Number, required: false },
     item_category: { type: String, required: true },
     item_image: { type: String, required: true },
+    order_id: { type: String, required: false },
 });
 
 const orders = new mongoose.Schema({

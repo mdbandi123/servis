@@ -8,10 +8,18 @@ function App() {
   const {
     setMenuItems,
     setCategoryItems,
+    setOrderedItems
   } = useStore();
 
   React.useEffect(() => {
     const socket = socketIOClient(process.env.REACT_APP_BACKEND_URL);
+
+    // listen for real-time updates from the server orders
+    socket.on("orders-update", (data) => {
+        console.log("orders update: ", data.items);
+        // set the order_id in the store
+        setOrderedItems(data.items);
+    });
 
     //listen for real-time updates from the server menu
     socket.on("menu-update", (data) => {
