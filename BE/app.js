@@ -73,24 +73,20 @@ io.on("connection", (socket) => {
     });
 });
 
-//listen for real time updates in orders collection
+// Listen for real-time updates in the orders collection
 const orders_stream = order_model.watch();
 orders_stream.on("change", async () => {
-    try {
-        record = await order_model.find({});
-        const list = [];
-        record.forEach((order) => {
-            order.ordered_items.forEach((item) => {
-                item.table_number = order.table_number;
-                item.order_id = order.order_id;
-                list.push(item);
-            });
-        });
-        // emit the list to the client
-        io.emit("orders-update", { items: list });
-    } catch (error) {
-        console.log(error);
-    }
+  try {
+    record = await order_model.find({ is_paid: false });
+    const list = [];
+    record.forEach((order) => {
+      list.push(order);
+    });
+    // Emit the list of unpaid orders to the client
+    io.emit("orders-update", { items: list });
+  } catch (error) {
+    console.log(error);
+  }
 });
 
 //listen for real time updates in categories

@@ -274,6 +274,7 @@ function OrderList(props) {
                     <Grid2 container spacing={1} alignItems='baseline' >
                         {orderListNotification.map((notificationItem) => (
                             <Grid2 sx={ orderListCard } item xs={12} sm={6} md={6} lg={4} lx={4}>
+                                {console.log(notificationItem)}
                             <Card sx={[{ borderBottom: `4px solid ` + notificationItem.profileTheme }]} >
                                     <ViewOrderModal ordered_items={notificationItem.ordered_items} title={ notificationItem.table_number } userId={ notificationItem.order_id } sx={{ color: notificationItem.profileTheme, fontSize: '2em' }}>
                                 <CardContent>
@@ -324,32 +325,61 @@ function OrderList(props) {
                     </AppBar>
                     <Divider />
                     {orderListNotification.map((notificationItem) => (
-                        <ListItem disablePadding sx={ notificationListItem } >
+                        notificationItem.ordered_items.filter((item) => item.status !== "served").map((filteredItem) => (
+                        <ListItem disablePadding sx={notificationListItem}>
+                            {console.log}
                             <ViewOrderModal title={ notificationItem.table_number } userId={ notificationItem.order_id } sx={{ color: notificationItem.profileTheme, fontSize: '2em' }}>
-                            <ListItemButton sx={ notificationItemButton } >
-                                <ListItemIcon sx={ notificationItemIcon } >
-                                        <AccountCircleIcon sx={ [notificationUserPhoto, { color: notificationItem.profileTheme }] } />
-                                </ListItemIcon>
-                                <Stack direction='column' justifyContent='flex-start' spacing={-1} >
-                                    <Stack direction='row'>
-                                        <Box>
-                                            <ListItemText sx={ notificationOrderContent } primary={ <GlobalBlackBody1 sx={ notificationUserName } text={ notificationItem.table_number } /> } />
-                                        </Box>
-                                    </Stack>
-                                    <Stack direction='row'>
-                                        <Box>
-                                            <ListItemText sx={ notificationOrderContent } primary={ <GlobalBlackBody2 text={ notificationItem.userOrder } /> } />
-                                        </Box>
-                                    </Stack>
-                                    <Box alignItems='flex-end' >
-                                        <ListItemText sx={ notificationOrderContent } primary={ <GlobalGreyCaption2 text={ [new Date(notificationItem.session_start).getMonth() + '-', new Date(notificationItem.session_start).getDate() + '-', new Date(notificationItem.session_start).getFullYear() + ' | ' + new Date(notificationItem.session_start).getHours() + ':' + new Date(notificationItem.session_start).getMinutes() + ':' + new Date(notificationItem.session_start).getSeconds()] } /> } />
-                                    </Box>
+                            <ListItemButton sx={notificationItemButton}>
+                            <ListItemIcon sx={notificationItemIcon}>
+                                <AccountCircleIcon sx={[notificationUserPhoto, { color: notificationItem.profileTheme }]} />
+                            </ListItemIcon>
+                            <Stack direction="column" justifyContent="flex-start" spacing={-1}>
+                                <Stack direction="row">
+                                <Box>
+                                    <ListItemText
+                                    sx={notificationOrderContent}
+                                    primary={
+                                        <GlobalBlackBody1 sx={notificationUserName} text={notificationItem.table_number} />
+                                    }
+                                    />
+                                </Box>
                                 </Stack>
+                                <Stack direction="row">
+                                <Box>
+                                    <ListItemText
+                                    sx={notificationOrderContent}
+                                    primary={<GlobalBlackBody2 text={filteredItem.item_name} />}
+                                    />
+                                </Box>
+                                </Stack>
+                                <Box alignItems="flex-end">
+                                <ListItemText
+                                    sx={notificationOrderContent}
+                                    primary={
+                                    <GlobalGreyCaption2
+                                        text={[
+                                        new Date(filteredItem.time_ordered).getMonth() + "-",
+                                        new Date(filteredItem.time_ordered).getDate() + "-",
+                                        new Date(filteredItem.time_ordered).getFullYear() +
+                                            " | " +
+                                            new Date(filteredItem.time_ordered).getHours() +
+                                            ":" +
+                                            new Date(filteredItem.time_ordered).getMinutes() +
+                                            ":" +
+                                            new Date(filteredItem.time_ordered).getSeconds(),
+                                        ]}
+                                    />
+                                    }
+                                />
+                                </Box>
+                            </Stack>
                             </ListItemButton>
                             </ViewOrderModal>
                             <Divider />
                         </ListItem>
-                    ))}
+                        ))
+                    ))
+                    }
                 </Drawer>
             </Box>
         </React.Fragment>

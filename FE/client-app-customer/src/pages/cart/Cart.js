@@ -1,5 +1,4 @@
 import React from 'react';
-import { CartList } from './data/CartList';
 
 import Grid2 from '@mui/material/Unstable_Grid2/Grid2';
 import { Card, CardMedia, IconButton, Stack, Box } from '@mui/material';
@@ -17,14 +16,89 @@ import ConfirmOrderModal from '../../global/modals/ConfirmOrderModal';
 import GlobalBlackHeader5 from '../../global/typographies/headers/BlackHeader5';
 import GlobalGreyBody2 from '../../global/typographies/bodies/GreyBody2';
 
-function Cart() {
-    const [counter, setCounter] = React.useState(1);
-    const incrementCounter = () => setCounter(counter + 1);
-    let decrementCounter = () => setCounter(counter - 1);
+import store from '../../store/store';
 
-    if (counter <= 1) {
-        decrementCounter = () => setCounter(1);
-    }
+function Cart() {
+    const {setOrderedItems} = store.getState();
+    const orderedItems = store((state) => state.orderedItems);
+    const CartList = orderedItems
+
+    const order_id = "2iXvUIXaAsPatTbUtgok"
+
+    React.useEffect(() => {
+        fetch(`${process.env.REACT_APP_BACKEND_URL}/order_items/items/${order_id}`,
+            {
+                method: 'GET',
+                headers: {
+                    'Content-Type': 'application/json',
+                }
+            })
+            .then((response) => response.json())
+            .then((data) => {
+                if (data.success) {
+                    console.log(data.items);
+                    setOrderedItems(data.items);
+                } else {
+                    console.log(data.error);
+                }
+            }
+        ).catch((error) => {
+            console.log(error);
+        });
+    }, []);
+
+    const incrementHandler = (item_id, current_quantity) => {
+        fetch(`${process.env.REACT_APP_BACKEND_URL}/order_items/quantity/`,
+            {
+                method: 'PUT',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify({
+                    order_id: order_id,
+                    quantity: current_quantity+1,
+                    item_id: item_id
+                })
+            })
+            .then((response) => response.json())
+            .then((data) => {
+                if (data.success) {
+                    console.log(data.items);
+                } else {
+                    console.log(data.error);
+                }
+            }
+        ).catch((error) => {
+            console.log(error);
+        });
+    };
+
+    const decrementHandler = (item_id, current_quantity) => {
+        fetch(`${process.env.REACT_APP_BACKEND_URL}/order_items/quantity/`,
+            {
+                method: 'PUT',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify({
+                    order_id: order_id,
+                    quantity: current_quantity-1,
+                    item_id: item_id
+                })
+            })
+            .then((response) => response.json())
+            .then((data) => {
+                if (data.success) {
+                    console.log(data.items);
+                } else {
+                    console.log(data.error);
+                }
+            }
+        ).catch((error) => {
+            console.log(error);
+        });
+    };
+
 
     const headerPage = {
         pb: 2,
@@ -137,30 +211,30 @@ function Cart() {
                 <Card>
                     <Grid2 container spacing={2} >
                         <Grid2 item justifySelf='center' alignSelf='center' xs={4} sm={3} md={2} lg={1} lx={1}>
-                            <CardMedia sx={foodImage} component='img' image={cartList.image} alt={cartList.orderName} />
+                            <CardMedia sx={foodImage} component='img' image={`${process.env.REACT_APP_BACKEND_URL}${cartList.item_image}`} alt={cartList.item_name} />
                         </Grid2>
                         <Grid2 item xs={8} sm={9} md={10} lg={11} lx={11} >
                             <Grid2 item>
-                                <GlobalBlackHeader6 text={cartList.orderName} />
-                                <GlobalGreyBody1 text={cartList.category} />
+                                <GlobalBlackHeader6 text={cartList.item_name} />
+                                <GlobalGreyBody1 text={cartList.item_category} />
                             </Grid2>
                             <Grid2 container direction='row' >
                                 <Grid2 item alignSelf='center' xs={5} sm={8} md={9} lg={10} lx={10}>
-                                    <GlobalPinkHeader6 text={'$'+cartList.price} />
+                                    <GlobalPinkHeader6 text={'$'+cartList.item_price.$numberDecimal} />
                                 </Grid2>
                                 <Grid2 item xs={7} sm={4} md={3} lg={2} lx={2}>
                                     <Stack direction='row' justifyContent='center' alignItems='center'>
                                         <Box>
                                             <IconButton>
-                                                <RemoveRoundedIcon sx={quantityBtn}  onClick={decrementCounter}/>
+                                                <RemoveRoundedIcon sx={quantityBtn}  onClick={() => decrementHandler(cartList._id, cartList.quantity)}/>
                                             </IconButton>
                                         </Box>
                                         <Box>
-                                            <GlobalBlackBody1 sx={quantityText} text={counter} />
+                                            <GlobalBlackBody1 sx={quantityText} text={cartList.quantity} />
                                         </Box>
                                         <Box>
                                             <IconButton>
-                                                <AddRoundedIcon sx={quantityBtn} onClick={incrementCounter} />
+                                                <AddRoundedIcon sx={quantityBtn} onClick={() => incrementHandler(cartList._id, cartList.quantity)} />
                                             </IconButton>
                                         </Box>
                                     </Stack>
@@ -173,7 +247,9 @@ function Cart() {
                 <Card sx={ totalContainer } space={1}>
                     <Box>
                         <GlobalBlackHeader6 sx={ totalMessage } text='Total:' />
-                        <GlobalPinkHeader6 sx={ totalAmount } text='$1323' />
+                        <GlobalPinkHeader6 sx={ totalAmount } text={
+                            '$' + CartList.reduce((acc, item) => acc + (item.item_price.$numberDecimal * item.quantity), 0).toFixed(2)
+                        } />
                     </Box>
                 </Card>
                 <Grid2 container sx={ confirmContainer } justifyContent='center'>

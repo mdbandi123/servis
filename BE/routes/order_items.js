@@ -176,6 +176,40 @@ route.put("/status", async (req, res) => {
     }
 });
 
+// update the quantity of an item in the order/cart of the CURRENT session (body payload: order_id, item_id, quantity)
+route.put("/quantity", async (req, res) => {
+    const order_id = req.body.order_id;
+    const item_id = req.body.item_id;
+    const quantity = req.body.quantity;
+
+    try {
+        if (quantity < 1) {
+            return res.status(400).json({
+            message: "Item quantity cannot be less than 1",
+            });
+            }
+            
+        // update the quantity of the item in the order collection
+        await order_model.findOneAndUpdate(
+            { order_id: order_id, "ordered_items._id": item_id },
+            { $set: { "ordered_items.$.quantity": quantity } },
+            { new: true }
+        );
+
+        const modOrderCollection = await order_model.find();
+
+        // return the modified order collection
+        res.status(200).json({
+            message: `Item quantity has been updated.`,
+        });
+    } catch (error) {
+        res.status(500).json({
+            message: "Error updating item quantity",
+            error: error,
+        });
+    }
+});
+
 //remove the item from the order/cart of the CURRENT session (body payload: order_id, item_id)
 route.delete("/item", async (req, res) => {
     const order_id = req.body.order_id;
