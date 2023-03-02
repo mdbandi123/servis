@@ -84,7 +84,7 @@ function OrderList(props) {
         })
             .then((response) => response.json())
             .then((data) => {
-                console.log(data.orders);
+                console.log("data.orders",data.orders);
                 setOrderedItems(data.orders)
             })
             .catch((error) => console.error(error));
@@ -233,7 +233,7 @@ function OrderList(props) {
                     <Divider />
                     {orderListNotification.map((notificationItem) => (
                         <ListItem disablePadding sx={ notificationListItem } >
-                            <ViewOrderModal title={ notificationItem.userName } userId={ notificationItem.userNameId } sx={{ color: notificationItem.profileTheme, fontSize: '2em' }}>
+                            <ViewOrderModal orders={notificationItem} title={ notificationItem.userName } userId={ notificationItem.userNameId } sx={{ color: notificationItem.profileTheme, fontSize: '2em' }}>
                             <ListItemButton sx={ notificationItemButton } >
                                 <ListItemIcon sx={ notificationItemIcon } >
                                         <AccountCircleIcon sx={ [notificationUserPhoto, { color: notificationItem.profileTheme }] } />
@@ -276,7 +276,7 @@ function OrderList(props) {
                             <Grid2 sx={ orderListCard } item xs={12} sm={6} md={6} lg={4} lx={4}>
                                 {console.log(notificationItem)}
                             <Card sx={[{ borderBottom: `4px solid ` + notificationItem.profileTheme }]} >
-                                    <ViewOrderModal ordered_items={notificationItem.ordered_items} title={ notificationItem.table_number } userId={ notificationItem.order_id } sx={{ color: notificationItem.profileTheme, fontSize: '2em' }}>
+                                    <ViewOrderModal orders={notificationItem} title={ notificationItem.table_number } userId={ notificationItem.order_id } sx={{ color: notificationItem.profileTheme, fontSize: '2em' }}>
                                 <CardContent>
                                     <Grid2 container spacing={1}>
                                         <Grid2 item> 
@@ -327,8 +327,7 @@ function OrderList(props) {
                     {orderListNotification.map((notificationItem) => (
                         notificationItem.ordered_items.filter((item) => item.status !== "served").map((filteredItem) => (
                         <ListItem disablePadding sx={notificationListItem}>
-                            {console.log}
-                            <ViewOrderModal title={ notificationItem.table_number } userId={ notificationItem.order_id } sx={{ color: notificationItem.profileTheme, fontSize: '2em' }}>
+                            <ViewOrderModal orders={notificationItem} title={ notificationItem.table_number } userId={ notificationItem.order_id } sx={{ color: notificationItem.profileTheme, fontSize: '2em' }}>
                             <ListItemButton sx={notificationItemButton}>
                             <ListItemIcon sx={notificationItemIcon}>
                                 <AccountCircleIcon sx={[notificationUserPhoto, { color: notificationItem.profileTheme }]} />

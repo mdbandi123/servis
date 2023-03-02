@@ -36,6 +36,7 @@ const onDragEnd = (result, columns, setColumns) => {
         
         // Make a request to update the status of the item in the order
         const item = removed;
+        console.log("item",item);
         fetch(`${process.env.REACT_APP_BACKEND_URL}/order_items/status`, {
             method: "PUT",
             headers: {
@@ -123,39 +124,32 @@ function ViewOrderModal(props) {
     };  
 
     const [openViewOrderModal, setOpenViewOrderModal] = React.useState(false);
-
     const [columns, setColumns] = useState(initialUserOrderStatus);
 
+
     React.useEffect(() => {
-        fetch(`${process.env.REACT_APP_BACKEND_URL}/order_items/items/${props.userId}`, {
-            method: 'GET',
-        }
-        ).then(res => res.json()).then(data => {
-            if (data.items) {
+        console.log("props order",props.orders);
                 const userOrderStatus = {
                     pending: {
                         name: 'Pending',
-                        items: data.items.filter(order => order.status === 'pending'),
+                        items: props.orders.ordered_items.filter(order => order.status === 'pending'),
                         theme: red[500]
                     },
                     preparing: {
                         name: 'Preparing',
-                        items: data.items.filter(order => order.status === 'preparing'),
+                        items: props.orders.ordered_items.filter(order => order.status === 'preparing'),
                         theme: orange[500]
                     },
                     served: {
                         name: 'Served',
-                        items: data.items.filter(order => order.status === 'served'),
+                        items: props.orders.ordered_items.filter(order => order.status === 'served'),
                         theme: green[500]
                     },
                 };  
         
                 setColumns(userOrderStatus);
-            }
-
-        }).catch(err => console.log(err));
-    
-    }, []);
+            
+    }, [props.orders]);
 
 
     const viewOrderHandler = () => {

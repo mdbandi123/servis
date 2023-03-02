@@ -24,7 +24,24 @@ function ConfirmOrderModal(props) {
     };
 
     const proceedConfirmHandler = () => {
-        setOpenConfirmModal(false);
+        fetch(`${process.env.REACT_APP_BACKEND_URL}/order_items/checkout/`,
+            {
+                method: 'PUT',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify({
+                    order_id: props.order_id,
+                })
+            })
+            .then((response) => response.json())
+            .then((data) => {
+                setOpenConfirmModal(false);
+            }
+        ).catch((error) => {
+            alert(error);
+        });
+        
     };
 
     const dialogAlignment = {

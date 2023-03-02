@@ -26,7 +26,7 @@ function Cart() {
     const order_id = "2iXvUIXaAsPatTbUtgok"
 
     React.useEffect(() => {
-        fetch(`${process.env.REACT_APP_BACKEND_URL}/order_items/items/${order_id}`,
+        fetch(`${process.env.REACT_APP_BACKEND_URL}/order_items/cart/${order_id}`,
             {
                 method: 'GET',
                 headers: {
@@ -254,7 +254,7 @@ function Cart() {
                 </Card>
                 <Grid2 container sx={ confirmContainer } justifyContent='center'>
                     <Grid2 sx={confirmBtn} item xs={12} sm={12} md={12} lg={12} lx={12}>
-                        <ConfirmOrderModal sx={confirmBtn} text='Confirm' variant='contained' context={'Are you sure do you want to proceed your orders?'} disabled={false} />
+                        <ConfirmOrderModal order_id={order_id} sx={confirmBtn} text='Confirm' variant='contained' context={'Are you sure do you want to proceed your orders?'} disabled={false} />
                     </Grid2>
                 </Grid2>
             </Box>

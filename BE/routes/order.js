@@ -15,13 +15,23 @@ route.get("/", async (req, res) => {
         if (!order) {
             return res
                 .status(404)
-                .json({ success: false, message: "Order not found" });
+                .json({ success: false, message: "Orders not found" });
         }
-        res.status(200).json({ success: true, orders: order });
+        const updatedOrders = order.map(order => {
+            const updatedOrderedItems = order.ordered_items.map(item => {
+                item.order_id = order.order_id;
+                return item;
+            });
+            order.ordered_items = updatedOrderedItems;
+            return order;
+        });
+        res.status(200).json({ success: true, orders: updatedOrders });
     } catch (error) {
         res.status(500).json({ success: false, message: error.message });
     }
 });
+
+
 
 // check if the order_id is existing and is_paid is false
 route.get("/:order_id", async (req, res) => {

@@ -49,7 +49,7 @@ io.on("connection", (socket) => {
                     record = await order_model.find({ order_id: order_id });
                     const list = [];
                     record.forEach((order) => {
-                        order.ordered_items.forEach((item) => {
+                        order.cart_items.forEach((item) => {
                             item.table_number = order.table_number;
                             list.push(item);
                         });
@@ -80,7 +80,10 @@ orders_stream.on("change", async () => {
     record = await order_model.find({ is_paid: false });
     const list = [];
     record.forEach((order) => {
-      list.push(order);
+        order.ordered_items.forEach((item) => {
+            item.order_id = order.order_id;
+        });
+        list.push(order);
     });
     // Emit the list of unpaid orders to the client
     io.emit("orders-update", { items: list });
@@ -88,6 +91,7 @@ orders_stream.on("change", async () => {
     console.log(error);
   }
 });
+
 
 //listen for real time updates in categories
 const categories_stream = menu_model.watch();
