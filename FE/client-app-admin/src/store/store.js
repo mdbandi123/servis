@@ -9,4 +9,6 @@ export const useStore = create((set) => ({
     setOrderedItems: (orders) => set({ orderedItems: orders }),
     menuItems: [],
     setMenuItems: (menuItems) => set({ menuItems: menuItems }),
+    TableData: [],
+    setTableData: (tableData) => set({TableData: tableData})
 }));

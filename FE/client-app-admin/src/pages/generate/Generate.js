@@ -2,6 +2,7 @@ import React from 'react';
 import Box from '@mui/material/Box';
 
 import { UserList } from './data/UserList';
+import { useStore } from '../../store/store';
 
 import GlobalPurpleHeader4 from '../../global/typographies/headers/PurpleHeader4';
 import GlobalBlackHeader5 from '../../global/typographies/headers/BlackHeader5';
@@ -14,15 +15,17 @@ import { Stack } from '@mui/system';
 
 function Generate() {
 
+    const {TableData, setTableData} = useStore();
     React.useEffect(() => {
         fetch(`${process.env.REACT_APP_BACKEND_URL}/tables/`, {
             method: 'GET',
         })
             .then(response => response.json())
             .then(data => {
-                console.log(data);
+                setTableData(data.tables);
             }
         ).catch((error) => {
+            console.log('error here');
             console.log(error);
         });
 
@@ -60,14 +63,14 @@ function Generate() {
                             </Box>
                             <Box>
                                 <TextField color='primary' label='User' helperText='Select User' variant='filled' fullWidth select>
-                                    {UserList.map((userList) => (
-                                        <MenuItem key={userList.userName} value={userList.userName}>
+                                    {TableData.map((tableList) => (
+                                        <MenuItem key={tableList.table_name} value={tableList.table_name}>
                                             <Stack direction='row' alignItems='center' spacing={1}>
                                                 <Box>
-                                                    <Avatar sx={{ backgroundColor: userList.theme }}>{userList.userName.charAt(0)}{userList.userName.charAt(userList.userName.length - 1)}</Avatar>
+                                                    {/* <Avatar sx={{ backgroundColor: userList.theme }}>{userList.userName.charAt(0)}{userList.userName.charAt(userList.userName.length - 1)}</Avatar> */}
                                                 </Box>
                                                 <Box>
-                                                    {userList.userName}
+                                                    {tableList.table_name}
                                                 </Box>
                                             </Stack>
                                         </MenuItem>
