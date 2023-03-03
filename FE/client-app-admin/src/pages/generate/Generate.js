@@ -25,7 +25,6 @@ function Generate() {
                 setTableData(data.tables);
             }
         ).catch((error) => {
-            console.log('error here');
             console.log(error);
         });
 
@@ -67,7 +66,7 @@ function Generate() {
                                         <MenuItem key={tableList.table_name} value={tableList.table_name}>
                                             <Stack direction='row' alignItems='center' spacing={1}>
                                                 <Box>
-                                                    {/* <Avatar sx={{ backgroundColor: userList.theme }}>{userList.userName.charAt(0)}{userList.userName.charAt(userList.userName.length - 1)}</Avatar> */}
+                                                    <Avatar></Avatar>
                                                 </Box>
                                                 <Box>
                                                     {tableList.table_name}

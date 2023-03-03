@@ -1,4 +1,5 @@
 import * as React from 'react';
+import {useState} from 'react';
 import { PaymentMethodList } from './data/PaymentMethodList';
 
 import Grid2 from '@mui/material/Unstable_Grid2/Grid2';
@@ -32,7 +33,7 @@ const rows = [
 function Payment() {
 
     const order_id = "2iXvUIXaAsPatTbUtgok"
-
+    const [rowItem, setRowItem] = useState([]);
     React.useEffect(() => {
         fetch(`${process.env.REACT_APP_BACKEND_URL}/order_items/items/${order_id}`,
             {
@@ -44,7 +45,7 @@ function Payment() {
             .then((response) => response.json())
             .then((data) => {
                 if (data.success) {
-                    console.log(data.items);
+                    setRowItem(data.items);
                 } else {
                     console.log(data.error);
                 }
@@ -244,12 +245,12 @@ function Payment() {
                             </TableRow>
                         </TableHead>
                         <TableBody>
-                            {rows.map((row) => (
-                                <TableRow key={row.name} sx={tableRow} >
-                                    <TableCell align='left'>{row.name}</TableCell>
-                                    <TableCell align='left'>{'$' + row.price}</TableCell>
+                            {rowItem.map((row) => (
+                                <TableRow key={row.item_name} sx={tableRow} >
+                                    <TableCell align='left'>{row.item_name}</TableCell>
+                                    <TableCell align='left'>{'$' + row.item_price.$numberDecimal}</TableCell>
                                     <TableCell align='left'>{row.quantity}</TableCell>
-                                    <TableCell align='left'>{'$' + row.total}</TableCell>
+                                    <TableCell align='left'>{'$' + row.total_price}</TableCell>
                                 </TableRow>
                             ))}
                             <TableRow >

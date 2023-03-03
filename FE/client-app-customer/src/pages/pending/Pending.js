@@ -1,4 +1,4 @@
-import React from 'react';
+import React, {useState} from 'react';
 import { CartList } from '../cart/data/CartList';
 
 import Grid2 from '@mui/material/Unstable_Grid2/Grid2';
@@ -17,6 +17,7 @@ import GlobalBlackHeader6 from '../../global/typographies/headers/BlackHeader6';
 function Pending() {
 
     const order_id = "2iXvUIXaAsPatTbUtgok"
+    const [pendingItems, setPendingItems] = useState([]);
 
     React.useEffect(() => {
         fetch(`${process.env.REACT_APP_BACKEND_URL}/order_items/items/${order_id}`,
@@ -29,7 +30,7 @@ function Pending() {
             .then((response) => response.json())
             .then((data) => {
                 if (data.success) {
-                    console.log(data.items);
+                    setPendingItems(data.items);
                 } else {
                     console.log(data.error);
                 }
@@ -105,17 +106,17 @@ function Pending() {
                 <Box sx={headerPage}>
                     <GlobalBlackHeader4 text='Pending Orders' />
                 </Box>
-                {CartList.map((cartList) => (
+                {pendingItems.map((cartList) => (
                 <Card>
                     <Grid2 container spacing={2} >
                         <Grid2 item justifySelf='center' alignSelf='center' xs={4} sm={3} md={2} lg={1} lx={1}>
-                            <CardMedia sx={foodImage} component='img' image={cartList.image} alt={cartList.orderName} />
+                            <CardMedia sx={foodImage} component='img' image={`${process.env.REACT_APP_BACKEND_URL}${cartList.item_image}`} alt={cartList.orderName} />
                         </Grid2>
                         <Grid2 item xs={8} sm={9} md={10} lg={11} lx={11} >
                             <Grid2 item>
-                                <GlobalBlackHeader6 text={cartList.orderName} />
-                                <GlobalGreyBody1 text={cartList.category} />
-                                <GlobalPinkBody1 text={'$'+cartList.price} />
+                                <GlobalBlackHeader6 text={cartList.item_name} />
+                                <GlobalGreyBody1 text={cartList.item_category} />
+                                <GlobalPinkBody1 text={'$'+cartList.item_price.$numberDecimal} />
                             </Grid2>
                             <Grid2 container direction='row' >
                                 <Grid2 item alignSelf='center' xs={5} sm={8} md={9} lg={10} lx={10}>
@@ -124,7 +125,7 @@ function Pending() {
                                 <Grid2 item xs={7} sm={4} md={3} lg={2} lx={2}>
                                     <Stack direction='row' justifyContent='flex-end' alignItems='center'>
                                         <Box>
-                                            <GlobalGreyBody2 text={cartList.status} sx={[{ color: cartList.statusColor, border: '1px solid ' + cartList.statusColor }, pendingStatusText ]} />
+                                            <GlobalGreyBody2 text={cartList.status} sx={[{ border: '1px solid '  }, pendingStatusText ]} />
                                         </Box>
                                     </Stack>
                                 </Grid2>
