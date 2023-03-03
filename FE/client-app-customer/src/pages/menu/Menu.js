@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import Grid2 from '@mui/material/Unstable_Grid2/Grid2';
 import { useNavigate } from 'react-router-dom';
 import { Box } from '@mui/material';
@@ -99,7 +99,7 @@ function Menu() {
                             {CategoryData.map((categoryList) => (
                                 <Grid2 item xs={6} sm={6} md={4} lg={3} lx={3}>
                                     <Card sx={cardContainer}>
-                                        <CardActionArea onClick={() => navigate(categoryList.categPath)}>
+                                        <CardActionArea onClick={() => navigate(`/menu/${categoryList.category_name}`)}>
                                             <CardMedia component='img' height='140' image={`${process.env.REACT_APP_BACKEND_URL}${categoryList.category_image}`} alt={categoryList.category_name} />
                                             <CardContent sx={cardContent}>
                                                 <GlobalBlackHeader6 sx={itemName} text={categoryList.category_name} />

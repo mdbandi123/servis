@@ -63,8 +63,9 @@ route.post("/item", async (req, res) => {
 });
 
 // retrieve all items under a category (body payload: category_name)
-route.get("/items", async (req, res) => {
-    const category_name = req.body.category_name;
+route.get("/items/:category_name", async (req, res) => {
+    const category_name = req.params.category_name;
+    
     try {
         const menu = await menu_model.find({ category_name: category_name });
         const items = menu.map((m) => m.menu_item).flat();
