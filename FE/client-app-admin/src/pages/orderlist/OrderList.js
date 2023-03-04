@@ -69,17 +69,18 @@ const Drawer = styled(MuiDrawer, { shouldForwardProp: (prop) => prop !== 'open' 
 
 function OrderList(props) {
     const { setOrderedItems } = useStore.getState();
-    const orderListNotification = useStore.getState().orderedItems;
+    const orderListNotification = useStore.getState().orderedItems || [];
 
     const [open, setOpen] = React.useState(true);
 
     const [openNotificationAppBar, setOpenNotificationAppBar] = React.useState(true);
-
+    
     React.useEffect(() => {
         fetch(`${process.env.REACT_APP_BACKEND_URL}/orders`, {
             method: "GET",
             headers: {
                 "Content-Type": "application/json",
+                "Authorization": props.user.Aa
             },
         })
             .then((response) => response.json())

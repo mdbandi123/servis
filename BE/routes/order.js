@@ -1,4 +1,5 @@
 const express = require("express");
+const auth = require('../middlewares/auth');
 
 const orders = require("../models/order").order_model;
 
@@ -9,7 +10,7 @@ const route = express();
 route.use(bodyParser.json());
 
 // retrieves all orders where is_paid is false
-route.get("/", async (req, res) => {
+route.get("/", auth, async (req, res) => {
     try {
         const order = await orders.find({ is_paid: false });
         if (!order) {

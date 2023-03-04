@@ -133,7 +133,7 @@ function Navbar() {
     ];
 
     const menulist3 = [
-        { title: 'Signout', path: '/' }
+        { title: 'Signout', path: '/logout' }
     ];
 
     const accordionList = [

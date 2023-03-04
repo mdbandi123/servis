@@ -3,8 +3,22 @@ import './App.css';
 import RouteMenu from './RouteMenu';
 import { useStore } from "./store/store";
 import socketIOClient from "socket.io-client";
+import firebase from "firebase/app";
+import "firebase/auth";
+
+const firebaseConfig = {
+  apiKey: "AIzaSyDtLIYGQwaTYpH3VWDLqcy3yxv1pwxMmhA",
+  authDomain: "servis-1603b.firebaseapp.com",
+  projectId: "servis-1603b",
+  storageBucket: "servis-1603b.appspot.com",
+  messagingSenderId: "552335220448",
+  appId: "1:552335220448:web:2a18bc3ec31cdfea623a85"
+};
+
+firebase.initializeApp(firebaseConfig);
 
 function App() {
+
   const {
     setMenuItems,
     setCategoryItems,
