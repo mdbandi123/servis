@@ -22,9 +22,21 @@ function App() {
   const {
     setMenuItems,
     setCategoryItems,
-    setOrderedItems
+    setOrderedItems,
+    setUser
   } = useStore();
 
+  React.useEffect(() => {
+    firebase.auth().onAuthStateChanged((user) => {
+      if (user) {
+        setUser(user);
+      } else {
+        setUser(null);
+      }
+    });
+  
+  },[]);
+  
   React.useEffect(() => {
     const socket = socketIOClient(process.env.REACT_APP_BACKEND_URL);
 

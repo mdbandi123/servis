@@ -1,5 +1,6 @@
 import * as React from 'react';
 import Grid2 from '@mui/material/Unstable_Grid2/Grid2';
+import { useStore } from '../../store/store';
 
 import { Box, Slide } from '@mui/material';
 import { IconButton, Button } from '@mui/material/';
@@ -16,18 +17,21 @@ import GlobalBlackHeader5 from '../../global/typographies/headers/BlackHeader5';
 import GlobalRedTextButton from '../../global/buttons/text/RedTextButton';
 import GlobalBlueTextButton from '../../global/buttons/text/BlueTextButton';
 import GlobalBlueContainedButton from '../../global/buttons/contains/BlueContainedButton';
+import { UserList } from '../../pages/generate/data/UserList';
 
 const Transition = React.forwardRef(function Transition(props, ref) {
     return <Slide direction='up' ref={ref} {...props} />;
 });
 
-function CreateItemModal(props) {
+function CreateItemModal() {
     const [openCreateItemModal, setOpenCreateItemModal] = React.useState(false);
     const [itemCategory, setItemCategory] = React.useState('');
     const [itemImage, setItemImage] = React.useState(null);
     const [itemName, setItemName] = React.useState('');
     const [itemPrice, setItemPrice] = React.useState('');
     const [CategoryData, setCategoryData] = React.useState([]);
+
+    const { user } = useStore();
 
     React.useEffect(() => {
         fetch(`${process.env.REACT_APP_BACKEND_URL}/menu/categories`, {
@@ -38,7 +42,6 @@ function CreateItemModal(props) {
         })
             .then((response) => response.json())
             .then((data) => {
-                
                 setCategoryData(data.categories);
             })
             .catch((error) => console.error(error));
@@ -59,6 +62,9 @@ function CreateItemModal(props) {
 
             fetch(`${process.env.REACT_APP_BACKEND_URL}/upload`, {
             method: "POST",
+            headers: {
+                "Authorization": user.Aa
+            },
             body: formData,
             })
             .then((response) => response.json())
@@ -68,6 +74,7 @@ function CreateItemModal(props) {
                     method: "POST",
                     headers: {
                         "Content-Type": "application/json",
+                        "Authorization": user.Aa
                     },
                     body: JSON.stringify({
                         name: itemName,
@@ -91,6 +98,7 @@ function CreateItemModal(props) {
                 method: "POST",
                 headers: {
                     "Content-Type": "application/json",
+                    "Authorization": user.Aa
                 },
                 body: JSON.stringify({
                     name: itemName,

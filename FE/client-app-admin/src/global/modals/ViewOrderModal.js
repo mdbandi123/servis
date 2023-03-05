@@ -1,4 +1,5 @@
 import React, { useState } from 'react';
+import { useStore } from '../../store/store';
 
 import Grid2 from '@mui/material/Unstable_Grid2/Grid2';
 import { Box, Slide, Stack, Card, CardActionArea, Paper, IconButton } from '@mui/material';
@@ -22,7 +23,8 @@ const Transition = React.forwardRef(function Transition(props, ref) {
     return <Slide direction='up' ref={ref} {...props} />;
 });
 
-const onDragEnd = (result, columns, setColumns) => {
+const onDragEnd = (result, columns, setColumns, user) => {
+
     if (!result.destination) return;
     const { source, destination } = result;
 
@@ -41,6 +43,7 @@ const onDragEnd = (result, columns, setColumns) => {
             method: "PUT",
             headers: {
                 "Content-Type": "application/json",
+                "Authorization": user.Aa,
             },
             body: JSON.stringify({
                 order_id: item.order_id,
@@ -97,6 +100,8 @@ const onDragEnd = (result, columns, setColumns) => {
 };
     
 function ViewOrderModal(props) {    
+    const {user} = useStore();
+
     const userOrders = [
         { _id: '1', status: "pending", item_name: 'Pork Tonkatsu', item_image: `https://media.istockphoto.com/id/1364936307/photo/pork-tonkatsu.jpg?s=1024x1024&w=is&k=20&c=SSTaoCgZKHms3gm17F0NS9M0w_r9AQaKLKu_kEwzLtA=` },
         { _id: '2', status: "preparing", item_name: 'Fried Chicken', item_image: `https://media.istockphoto.com/id/1364936307/photo/pork-tonkatsu.jpg?s=1024x1024&w=is&k=20&c=SSTaoCgZKHms3gm17F0NS9M0w_r9AQaKLKu_kEwzLtA=` },
@@ -259,7 +264,7 @@ function ViewOrderModal(props) {
                     <DialogContent>
                         <DialogContentText id='alert-dialog-slide-description'>
                             <Grid2 container justifyContent='center' >
-                                <DragDropContext onDragEnd={(result) => onDragEnd(result, columns, setColumns)} >
+                                <DragDropContext onDragEnd={(result) => onDragEnd(result, columns, setColumns, user)} >
                                     {Object.entries(columns).map(([columnId, column], index) => {
                                         return (
                                             <Card sx={[userOrderStatusContainer, { backgroundColor: column.theme }]} key={columnId} >
@@ -358,7 +363,7 @@ function ViewOrderModal(props) {
                 <DialogContent>
                     <DialogContentText id='alert-dialog-slide-description'>
                         <Grid2 container justifyContent='center' >
-                            <DragDropContext onDragEnd={(result) => onDragEnd(result, columns, setColumns)} >
+                            <DragDropContext onDragEnd={(result) => onDragEnd(result, columns, setColumns, user)} >
                                 {Object.entries(columns).map(([columnId, column], index) => {
                                     return (
                                         <Card sx={[userOrderStatusContainer, {borderTop: '5px solid ' + column.theme }]} key={columnId} >

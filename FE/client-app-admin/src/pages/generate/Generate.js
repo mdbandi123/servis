@@ -15,10 +15,15 @@ import { Stack } from '@mui/system';
 
 function Generate() {
 
+    const { user } = useStore();
+
     const {TableData, setTableData} = useStore();
     React.useEffect(() => {
         fetch(`${process.env.REACT_APP_BACKEND_URL}/tables/`, {
             method: 'GET',
+            headers: {
+                "Authorization": user.Aa,
+            },
         })
             .then(response => response.json())
             .then(data => {

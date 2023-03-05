@@ -1,5 +1,5 @@
 import React from 'react';
-// import { PaymentData } from './datas/PaymentData';
+import { useStore } from '../../store/store';
 
 import Box from '@mui/material/Box';
 import Grid2 from '@mui/material/Unstable_Grid2/Grid2';
@@ -17,21 +17,24 @@ import GlobalGreyBody3 from '../../global/typographies/bodies/GreyBody3';
 import ViewPaymentModal from '../../global/modals/ViewPaymentModal';
 import GlobalBlueContainedButton from '../../global/buttons/contains/BlueContainedButton';
 
-function Payment() {
-
-    const [PaymentData, setPaymentData] = React.useState([]);
+function Payment(props) {
+    const { setOrderedItems, user } = useStore();
+    const PaymentData = useStore.getState().orderedItems || [];
 
     React.useEffect(() => {
         fetch(`${process.env.REACT_APP_BACKEND_URL}/orders`, {
             method: "GET",
             headers: {
                 "Content-Type": "application/json",
+                "Authorization": user.Aa
             },
         })
             .then((response) => response.json())
             .then((data) => {
-                console.log(data.orders)
-                setPaymentData(data.orders)
+                if (data) {
+                    console.log(data.orders)
+                    setOrderedItems(data.orders)
+                }
             })
             .catch((error) => console.error(error));
     }, []);
@@ -129,7 +132,9 @@ function Payment() {
                             </Grid2>
                             <Grid2 item xs={12} sm={12} md={4} lg={4} lx={4}>
                             <GlobalGreyBody3 text="TOTAL ORDERS" />
-                            <GlobalBlackBody1 text={ paymentList.ordered_items.length } />
+                            <GlobalBlackBody1 text={ 
+                                paymentList.ordered_items.reduce((sum, item) => sum + item.quantity, 0)
+                             } />
                             </Grid2>
                             <Grid2 item xs={12} sm={12} md={4} lg={4} lx={4}>
                             <GlobalGreyBody3 text="TOTAL AMOUNT" />

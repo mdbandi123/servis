@@ -1,5 +1,6 @@
 import * as React from 'react';
 import Grid2 from '@mui/material/Unstable_Grid2/Grid2';
+import { useStore } from '../../store/store';
 
 import { Box, Slide } from '@mui/material';
 import { IconButton, Button } from '@mui/material/';
@@ -23,6 +24,8 @@ function UpdateCategModal(props) {
     const [image, setImage] = React.useState(null);
     const [categoryName, setCategoryName] = React.useState(props.category_name);
 
+    const { user } = useStore();
+
     const CategCreateHandler = () => {
         setOpenCreateCategModal(true);
     };
@@ -38,6 +41,9 @@ function UpdateCategModal(props) {
 
             fetch(`${process.env.REACT_APP_BACKEND_URL}/upload`, {
             method: "POST",
+            headers: {
+                "Authorization": user.Aa,
+            },
             body: formData,
             })
             .then((response) => response.json())
@@ -46,6 +52,7 @@ function UpdateCategModal(props) {
                     method: "PUT",
                     headers: {
                         "Content-Type": "application/json",
+                        "Authorization": user.Aa,
                     },
                     body: JSON.stringify({
                         category_id: props.category_id,
@@ -68,6 +75,7 @@ function UpdateCategModal(props) {
                 method: "PUT",
                 headers: {
                     "Content-Type": "application/json",
+                    "Authorization": user.Aa,
                 },
                 body: JSON.stringify({
                     category_id: props.category_id,

@@ -61,6 +61,7 @@ const cart_items = new mongoose.Schema({
 const orders = new mongoose.Schema({
     table_number: { type: Number, required: true },
     is_paid: { type: Boolean, required: true, default: false },
+    billed_out: { type: Boolean, required: true, default: false },
     cart_items: [cart_items],
     ordered_items: [ordered_item],
     session_end: { type: Date, required: false },

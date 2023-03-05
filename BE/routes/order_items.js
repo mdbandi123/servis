@@ -1,5 +1,6 @@
 const express = require("express");
 const mongoose = require("mongoose");
+const auth = require("../middlewares/auth");
 
 const menu_model = require("../models/menu").menu_model;
 const order_model = require("../models/order").order_model;
@@ -13,7 +14,7 @@ const { cart_item_model } = require("../models/order");
 route.use(bodyParser.json());
 
 // retrieves all items on ALL tables including the table number
-route.get("/", async (req, res) => {
+route.get("/", auth, async (req, res) => {
     try {
         const order = await order_model.find();
         if (!order) {
@@ -68,7 +69,7 @@ route.get("/cart/:order_id", async (req, res) => {
 });
 
 //retrieve all items on all tables where is_paid is true
-route.get("/archive", async (req, res) => {
+route.get("/archive", auth, async (req, res) => {
     try {
         const order = await order_model.find({ is_paid: true });
         if (!order) {
@@ -203,7 +204,7 @@ route.post("/item", async (req, res) => {
   
 
 // update the status of an item in the order of the CURRENT session (body payload: order_id, item_id, status)
-route.put("/status", async (req, res) => {
+route.put("/status", auth, async (req, res) => {
     const order_id = req.body.order_id;
     const item_id = req.body.item_id;
     const status = req.body.status;
@@ -290,8 +291,6 @@ route.put("/checkout", async (req, res) => {
         return res.status(500).json({ message: "An error occurred", error });
       }
 });
-
-
 
 //remove the item from the cart of the CURRENT session (body payload: order_id, item_id)
 route.delete("/item", async (req, res) => {
