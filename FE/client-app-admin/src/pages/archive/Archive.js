@@ -1,6 +1,6 @@
 import * as React from 'react';
 import { archiveHeadCellsList } from './datas/ArchiveCellsListData';
-import { rows } from './datas/ArchiveData';
+// import { rows } from './datas/ArchiveData';
 import { visuallyHidden } from '@mui/utils';
 import PropTypes from 'prop-types';
 
@@ -161,13 +161,17 @@ EnhancedTableToolbar.propTypes = {
 };
 
 export default function EnhancedTable() {
-
+    const [rows, setRows] = React.useState([])
     React.useEffect(() => {
     fetch(`${process.env.REACT_APP_BACKEND_URL}/order_items/archive`,{
         method: 'GET',
     })
         .then(response => response.json())
-        .then(data => console.log(data))
+        .then(data => {
+            console.log('data here')
+            console.log(data);
+            setRows(data.items);
+        })
         .catch(error => console.log(error))
     }, []);
 
@@ -324,10 +328,10 @@ export default function EnhancedTable() {
                                                     <Checkbox sx={ rowCheckbox } checked={ isItemSelected } inputProps={{ 'aria-labelledby': labelId }} />
                                                 </TableCell>
                                                 <TableCell component='th' id={ labelId } scope='row' padding='none' sx={ uniqueId }>{row.orderId}</TableCell>
-                                                <TableCell align='left'>{row.orderName}</TableCell>
-                                                <TableCell align='left'>{row.category}</TableCell>
-                                                <TableCell align='left'>{row.code}</TableCell>
-                                                <TableCell align='left'>{[row.timeDate.getMonth() + '/', row.timeDate.getDate() + '/', row.timeDate.getFullYear() + ' ' + row.timeDate.getHours() + ':' + row.timeDate.getMinutes() + ':' + row.timeDate.getSeconds()]}</TableCell>
+                                                <TableCell align='left'>{row.item_name}</TableCell>
+                                                <TableCell align='left'>{row.item_category}</TableCell>
+                                                <TableCell align='left'>{}</TableCell>
+                                                <TableCell align='left'>{row.time_ordered}</TableCell>
                                             </TableRow>
                                         );
                                     })};
