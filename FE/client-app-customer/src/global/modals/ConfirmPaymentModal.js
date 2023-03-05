@@ -1,4 +1,5 @@
 import * as React from 'react';
+import store from '../../store/store';
 
 import { Dialog, DialogActions, DialogContent, DialogContentText, DialogTitle, Slide } from '@mui/material/';
 
@@ -14,6 +15,7 @@ const Transition = React.forwardRef(function Transition(props, ref) {
 
 function ConfirmPaymentModal(props) {
     const [openConfirmModal, setOpenConfirmModal] = React.useState(false);
+    const order_id = store((state) => state.order_id);
 
     const confirmHandler = () => {
         setOpenConfirmModal(true);
@@ -24,7 +26,19 @@ function ConfirmPaymentModal(props) {
     };
 
     const proceedConfirmHandler = () => {
-        setOpenConfirmModal(false);
+            fetch(`${process.env.REACT_APP_BACKEND_URL}/orders/billed_out/${order_id}`,
+                {
+                    method: 'PUT',
+                })
+                .then((response) => response.json())
+                .then((data) => {
+                    console.log(data.message);
+                    setOpenConfirmModal(false);
+                }
+            ).catch((error) => {
+                console.log(error);
+            });
+        
     };
 
     const dialogAlignment = {

@@ -20,11 +20,11 @@ const ordered_item = new mongoose.Schema({
     },
     total_price: {
         type: Number,
-        required: true,
+        required: false,
     },
     status: { type: String, default: "pending", required: true },
     time_ordered: { type: Date, required: true },
-    table_number: { type: Number, required: false },
+    table_number: { type: String, required: false },
     item_category: { type: String, required: true },
     item_image: { type: String, required: true },
     order_id: { type: String, required: false },
@@ -48,18 +48,18 @@ const cart_items = new mongoose.Schema({
     },
     total_price: {
         type: Number,
-        required: true,
+        required: false,
     },
     status: { type: String, default: "pending", required: true },
     time_ordered: { type: Date, required: false },
-    table_number: { type: Number, required: false },
+    table_number: { type: String, required: false },
     item_category: { type: String, required: true },
     item_image: { type: String, required: true },
     order_id: { type: String, required: false },
 });
 
 const orders = new mongoose.Schema({
-    table_number: { type: Number, required: true },
+    table_number: { type: String, required: true },
     is_paid: { type: Boolean, required: true, default: false },
     billed_out: { type: Boolean, required: true, default: false },
     cart_items: [cart_items],

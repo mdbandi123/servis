@@ -1,6 +1,6 @@
 import React from 'react';
 import { useNavigate, useParams } from 'react-router-dom';
-// import { StartersData } from '../starters/StartersList';
+import useStore from '../../store/store';
 
 import Grid2 from '@mui/material/Unstable_Grid2/Grid2';
 import { Box, Stack, Card, CardContent, CardMedia, IconButton } from '@mui/material';
@@ -18,15 +18,17 @@ import GlobalBlackHeader5 from '../../global/typographies/headers/BlackHeader5';
 
 function CategoryList() {
     const navigate = useNavigate();
-    const {category_name } = useParams();
+    const { category_name } = useParams();
     const [StartersData, setStartersData] = React.useState([]);
+
+    const { order_id } = useStore();
 
     React.useEffect(() => {
         fetch(`${process.env.REACT_APP_BACKEND_URL}/menu_items/items/${category_name}`)
          .then((response) => response.json())
             .then((data) => {
                 if (data.success) {
-                    console.log(data.items);
+                    // console.log(data.items);
                     setStartersData(data.items);
                 } else {
                     console.log(data.error);
@@ -36,6 +38,30 @@ function CategoryList() {
             console.log(error);
         });
     },[])
+
+    const addToCart = (item_id) => {
+        console.log(item_id);
+        fetch(`${process.env.REACT_APP_BACKEND_URL}/order_items/item/`, {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+            },
+            body: JSON.stringify({
+                item_id: item_id,
+                quantity: 1,
+                order_id: order_id
+            })
+        }).then((response) => response.json())
+            .then((data) => {
+                if (data.success) {
+                    console.log(data.message);
+                } else {
+                    console.log(data.error);
+                }
+            }).catch((error) => {
+                console.log(error);
+            });
+    }
 
     const pageContainer = {
         pb: 8,
@@ -123,7 +149,7 @@ function CategoryList() {
                                                     <GlobalPinkHeader6 sx={itemNamePrice} text={'$' + startersList.price.$numberDecimal} />
                                                 </Box>
                                                 <Box >
-                                                    <GlobalBlueContainedButton text='Add' sx={{ width: '100%' }} startIcon={<AddRoundedIcon />} />
+                                                    <GlobalBlueContainedButton text='Add' sx={{ width: '100%' }} startIcon={<AddRoundedIcon />} onClick={() => addToCart(startersList._id)}/>
                                                 </Box>
                                             </Stack>
                                         </CardContent>

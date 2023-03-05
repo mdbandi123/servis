@@ -59,7 +59,7 @@ route.get("/:order_id", async (req, res) => {
 
 
 // creates a new order session for the table and returns a QR code (body payload: table_number)
-route.post("/create/:table_number", auth, async (req, res) => {
+route.post("/create/:table_number", async (req, res) => {
     const order_id = createOrderId();
     const table_number = req.params.table_number;
 
@@ -96,6 +96,32 @@ route.post("/create/:table_number", auth, async (req, res) => {
         res.status(500).send({ error: "Error creating order session" });
     }
 });
+
+// set the billed_out to true for the order session (body payload: order_id)
+route.put("/billed_out/:order_id", async (req, res) => {
+    const order_id = req.params.order_id;
+
+    // check if the order_id is valid and is_paid is true then return session ended alredy
+    const order_session = await orders.findOne({
+        order_id: order_id,
+        is_paid: true,
+    });
+
+    if (order_session) {
+        return res.status(400).send({ error: "Session already ended" });
+    }
+
+    try {
+        await orders.findOneAndUpdate(
+            { order_id: order_id },
+            { billed_out: true }
+        );
+        res.status(200).send({ message: "Billed out" });
+    } catch (err) {
+        res.status(500).send({ error: "Error billing out" });
+    }
+});
+
 
 // ends the session for the table (body payload: order_id)
 route.put("/session/:order_id", auth, async (req, res) => {

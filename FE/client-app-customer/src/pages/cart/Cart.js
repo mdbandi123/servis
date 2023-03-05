@@ -22,8 +22,7 @@ function Cart() {
     const {setOrderedItems} = store.getState();
     const orderedItems = store((state) => state.orderedItems);
     const CartList = orderedItems
-
-    const order_id = "2iXvUIXaAsPatTbUtgok"
+    const order_id = store((state) => state.order_id);
 
     React.useEffect(() => {
         fetch(`${process.env.REACT_APP_BACKEND_URL}/order_items/cart/${order_id}`,

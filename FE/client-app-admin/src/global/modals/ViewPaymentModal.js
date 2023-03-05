@@ -211,7 +211,9 @@ function ViewPaymentModal(props) {
                                     <TableCell align='left'>{item.item_category}</TableCell>
                                     <TableCell align='left'>{item.quantity}</TableCell>
                                     <TableCell align='left'>{item.item_price.$numberDecimal}</TableCell>
-                                    <TableCell align='left'>{item.total_price}</TableCell>
+                                    <TableCell align='left'>{
+                                        item.total_price = item.quantity * item.item_price.$numberDecimal
+                                    }</TableCell>
                                 </TableRow>
                                 ))}
                                 <TableRow sx={totalPaymentTableRow}>

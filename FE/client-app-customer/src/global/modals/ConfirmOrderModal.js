@@ -1,4 +1,5 @@
 import * as React from 'react';
+import store from '../../store/store'
 
 import { Dialog, DialogActions, DialogContent, DialogContentText, DialogTitle, Slide } from '@mui/material/';
 
@@ -14,6 +15,8 @@ const Transition = React.forwardRef(function Transition(props, ref) {
 
 function ConfirmOrderModal(props) {
     const [openConfirmModal, setOpenConfirmModal] = React.useState(false);
+
+    const order_id = store((state) => state.order_id);
 
     const confirmHandler = () => {
         setOpenConfirmModal(true);
@@ -31,7 +34,7 @@ function ConfirmOrderModal(props) {
                     'Content-Type': 'application/json',
                 },
                 body: JSON.stringify({
-                    order_id: props.order_id,
+                    order_id: order_id,
                 })
             })
             .then((response) => response.json())

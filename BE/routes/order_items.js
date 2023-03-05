@@ -81,6 +81,7 @@ route.get("/archive", auth, async (req, res) => {
         order.forEach((order) => {
             order.ordered_items.forEach((item) => {
                 item.table_number = order.table_number;
+                item.order_id = order.order_id;
                 items.push(item);
             });
         });
@@ -168,7 +169,6 @@ route.post("/item", async (req, res) => {
           item_price: item.price,
           item_category: menu.category_name,
           quantity: quantity,
-          total_price: item.price * quantity,
           item_image: item.image,
         });
   
@@ -186,7 +186,6 @@ route.post("/item", async (req, res) => {
         // add 1 to the existing item's quantity
         const existingItem = order.cart_items[existingItemIndex];
         existingItem.quantity += 1;
-        existingItem.total_price = existingItem.item_price * existingItem.quantity;
 
         await order.save();
   
@@ -266,7 +265,7 @@ route.put("/quantity", async (req, res) => {
 
 // put all cart_items to ordered_items in the CURRENT session (body payload: order_id)
 route.put("/checkout", async (req, res) => {
-    const { order_id } = req.body;
+    const order_id = req.body.order_id;
 
     try {
         const order = await order_model.findOne({ order_id });

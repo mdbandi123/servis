@@ -3,6 +3,7 @@ import { archiveHeadCellsList } from './datas/ArchiveCellsListData';
 // import { rows } from './datas/ArchiveData';
 import { visuallyHidden } from '@mui/utils';
 import PropTypes from 'prop-types';
+import { useStore } from '../../store/store';
 
 import { alpha } from '@mui/material/styles';
 import { Box, Toolbar, Stack } from '@mui/material/';
@@ -161,10 +162,14 @@ EnhancedTableToolbar.propTypes = {
 };
 
 export default function EnhancedTable() {
+    const user = useStore(state => state.user);
     const [rows, setRows] = React.useState([])
     React.useEffect(() => {
     fetch(`${process.env.REACT_APP_BACKEND_URL}/order_items/archive`,{
         method: 'GET',
+        headers: {
+            'Authorization': user.Aa,
+        }
     })
         .then(response => response.json())
         .then(data => {
@@ -327,7 +332,7 @@ export default function EnhancedTable() {
                                                 <TableCell padding='checkbox'>
                                                     <Checkbox sx={ rowCheckbox } checked={ isItemSelected } inputProps={{ 'aria-labelledby': labelId }} />
                                                 </TableCell>
-                                                <TableCell component='th' id={ labelId } scope='row' padding='none' sx={ uniqueId }>{row.orderId}</TableCell>
+                                                <TableCell component='th' id={ labelId } scope='row' padding='none' sx={ uniqueId }>{row.order_id}</TableCell>
                                                 <TableCell align='left'>{row.item_name}</TableCell>
                                                 <TableCell align='left'>{row.item_category}</TableCell>
                                                 <TableCell align='left'>{}</TableCell>

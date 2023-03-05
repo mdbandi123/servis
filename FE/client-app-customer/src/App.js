@@ -1,29 +1,25 @@
-import React, {useEffect}from 'react';
+import React, {useEffect} from 'react';
 import RouteMenu from './RouteMenu';
 import { useLocation } from 'react-router-dom';
-import store from './store/store';
+import useStore from './store/store';
 import socketIOClient from "socket.io-client";
 
 function App() {
   const location = useLocation();
   const queryParams = new URLSearchParams(location.search);
-
-  const { setOrderId, setTableNumber, setMenuItems, setCategoryItems, setOrderedItems } = store.getState();
-  // const order_id = store((state) => state.order_id);
-
-  const order_id = "2iXvUIXaAsPatTbUtgok"
+  const { setOrderId, setTableNumber, setMenuItems, setCategoryItems, setOrderedItems } = useStore();
+  const order_id = useStore(state => state.order_id)
 
   useEffect(() => {
     const orderId = queryParams.get('order_id');
-    
+
     fetch(`${process.env.REACT_APP_BACKEND_URL}/orders/${orderId}`)
       .then((response) => response.json())
       .then((data) => {
         if (data.success) {
           setOrderId(orderId);
+          localStorage.setItem("order_id", orderId);
           setTableNumber(data.session.table_number);
-        } else {
-          console.log(data.error);
         }
       }
     ).catch((error) => {
@@ -33,9 +29,10 @@ function App() {
 
   React.useEffect(() => {
     const socket = socketIOClient(process.env.REACT_APP_BACKEND_URL);
-
     // Send the order_id to the server
+    const order_id = localStorage.getItem("order_id");
     socket.emit("sendOrderId", order_id);
+    setOrderId(order_id);
 
     //listen for real-time updates from the server menu
     socket.on("menu-update", (data) => {

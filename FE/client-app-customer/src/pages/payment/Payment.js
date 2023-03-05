@@ -1,6 +1,7 @@
 import * as React from 'react';
 import {useState} from 'react';
 import { PaymentMethodList } from './data/PaymentMethodList';
+import store from '../../store/store';
 
 import Grid2 from '@mui/material/Unstable_Grid2/Grid2';
 import { Table, TableBody, TableCell, TableContainer, TableHead, TableRow } from '@mui/material/';
@@ -31,9 +32,11 @@ const rows = [
 ];
 
 function Payment() {
+    const { setOrderedItems } = store.getState();
+    const order_id = store((state) => state.order_id);
+    const orderedItems = store((state) => state.orderedItems);
+    const rowItem = orderedItems
 
-    const order_id = "2iXvUIXaAsPatTbUtgok"
-    const [rowItem, setRowItem] = useState([]);
     React.useEffect(() => {
         fetch(`${process.env.REACT_APP_BACKEND_URL}/order_items/items/${order_id}`,
             {
@@ -45,7 +48,7 @@ function Payment() {
             .then((response) => response.json())
             .then((data) => {
                 if (data.success) {
-                    setRowItem(data.items);
+                    setOrderedItems(data.items);
                 } else {
                     console.log(data.error);
                 }
@@ -250,14 +253,21 @@ function Payment() {
                                     <TableCell align='left'>{row.item_name}</TableCell>
                                     <TableCell align='left'>{'$' + row.item_price.$numberDecimal}</TableCell>
                                     <TableCell align='left'>{row.quantity}</TableCell>
-                                    <TableCell align='left'>{'$' + row.total_price}</TableCell>
+                                    <TableCell align='left'>{'$' + 
+                                        (row.item_price.$numberDecimal * row.quantity).toFixed(2)
+                                    }</TableCell>
                                 </TableRow>
                             ))}
                             <TableRow >
                                 <TableCell align='left' colSpan={4}>
                                     <Box>
                                         <GlobalBlackHeader6 sx={totalMessage} text='Total:' />
-                                        <GlobalPinkHeader6 sx={totalAmount} text='$1323' />
+                                        <GlobalPinkHeader6 sx={totalAmount} text={
+                                            '$' +
+                                            (rowItem.reduce((acc, item) => {
+                                                return acc + (item.item_price.$numberDecimal * item.quantity)
+                                            }, 0)).toFixed(2)
+                                        } />
                                     </Box>
                                 </TableCell>
                             </TableRow>
@@ -287,7 +297,7 @@ function Payment() {
 
                 <Grid2 container sx={confirmContainer} justifyContent='center'>
                     <Grid2 sx={confirmBtn} item xs={12} sm={12} md={12} lg={12} lx={12}>
-                        <ConfirmPaymentModal sx={confirmBtn} text='Bill Out' variant='contained' context={'Are you sure do you want to Bill Out?'} disabled={false} />
+                        <ConfirmPaymentModal sx={confirmBtn} text='Bill Out' variant='contained' context={'Are you sure do you want to Bill Out?'} disabled={false}/>
                     </Grid2>
                 </Grid2>
             </Box>

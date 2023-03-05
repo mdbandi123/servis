@@ -138,7 +138,10 @@ function Payment(props) {
                             </Grid2>
                             <Grid2 item xs={12} sm={12} md={4} lg={4} lx={4}>
                             <GlobalGreyBody3 text="TOTAL AMOUNT" />
-                            <GlobalBlackBody1 text={ paymentList.ordered_items.reduce((sum, item) => sum + item.total_price, 0)} />
+                            <GlobalBlackBody1 text={
+                                // total amount of item price and quantity
+                                paymentList.ordered_items.reduce((sum, item) => sum + item.quantity * item.item_price.$numberDecimal, 0)
+                            } />
                             </Grid2>
                         </Grid2>
                         </CardContent>

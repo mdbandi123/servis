@@ -1,5 +1,6 @@
 import React, {useState} from 'react';
 import { CartList } from '../cart/data/CartList';
+import store from '../../store/store';
 
 import Grid2 from '@mui/material/Unstable_Grid2/Grid2';
 import { Card, Stack, Box, CardMedia } from '@mui/material';
@@ -15,8 +16,8 @@ import GlobalBlackHeader5 from '../../global/typographies/headers/BlackHeader5';
 import GlobalBlackHeader6 from '../../global/typographies/headers/BlackHeader6';
 
 function Pending() {
-
-    const order_id = "2iXvUIXaAsPatTbUtgok"
+    const order_id = store((state) => state.order_id);
+    
     const [pendingItems, setPendingItems] = useState([]);
 
     React.useEffect(() => {
