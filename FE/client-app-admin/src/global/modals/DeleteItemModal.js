@@ -1,4 +1,5 @@
 import * as React from "react";
+import { useStore } from "../../store/store";
 
 import { Box, Slide } from "@mui/material";
 import { IconButton } from "@mui/material/";
@@ -26,6 +27,8 @@ const Transition = React.forwardRef(function Transition(props, ref) {
 function DeleteItemModal(props) {
     const [openItemModal, setOpenItemModal] = React.useState(false);
 
+    const { user } = useStore();
+
     const itemDeleteHandler = () => {
         setOpenItemModal(true);
     };
@@ -38,7 +41,10 @@ function DeleteItemModal(props) {
         if (props.item_id) {
             fetch(`${process.env.REACT_APP_BACKEND_URL}/menu_items/item`, {
                 method: "DELETE",
-                headers: { "Content-Type": "application/json" },
+                headers: { 
+                    "Content-Type": "application/json",
+                    "Authorization": user.Aa,
+                },
                 body: JSON.stringify({
                     item_id: props.item_id,
                 }),
@@ -57,7 +63,8 @@ function DeleteItemModal(props) {
         if (props.category_id) {
             fetch(`${process.env.REACT_APP_BACKEND_URL}/menu/category`, {
                 method: "DELETE",
-                headers: { "Content-Type": "application/json" },
+                headers: { "Content-Type": "application/json",
+                "Authorization": user.Aa, },
                 body: JSON.stringify({
                     category_id: props.category_id,
                 }),

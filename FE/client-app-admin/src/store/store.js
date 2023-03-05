@@ -10,5 +10,7 @@ export const useStore = create((set) => ({
     menuItems: [],
     setMenuItems: (menuItems) => set({ menuItems: menuItems }),
     TableData: [],
-    setTableData: (tableData) => set({TableData: tableData})
+    setTableData: (tableData) => set({TableData: tableData}),
+    user: null,
+    setUser: (user) => set({ user: user}),
 }));

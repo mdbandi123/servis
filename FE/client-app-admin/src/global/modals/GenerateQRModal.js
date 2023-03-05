@@ -1,4 +1,5 @@
 import * as React from 'react';
+import { useStore } from '../../store/store';
 
 import { Dialog, DialogActions, DialogContent, DialogContentText, DialogTitle, Slide } from '@mui/material/';
 
@@ -14,6 +15,8 @@ const Transition = React.forwardRef(function Transition(props, ref) {
 
 function GenerateQRModal(props) {
     const [openConfirmModal, setOpenConfirmModal] = React.useState(false);
+
+    const { user } = useStore();
 
     const confirmHandler = () => {
         setOpenConfirmModal(true);

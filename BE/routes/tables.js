@@ -1,4 +1,5 @@
 const express = require("express");
+const auth = require("../middlewares/auth");
 
 const tables_model = require("../models/tables").tables_model;
 
@@ -8,7 +9,7 @@ const route = express();
 route.use(bodyParser.json());
 
 // retrieves all tables
-route.get("/", async (req, res) => {
+route.get("/", auth, async (req, res) => {
     try {
         const table = await tables_model.find();
         res.status(200).json({
@@ -21,7 +22,7 @@ route.get("/", async (req, res) => {
 });
 
 // create a new table
-route.post("/create", async (req, res) => {
+route.post("/create", auth, async (req, res) => {
     const table_name = req.body.table_name;
 
     const table = new tables_model({
@@ -40,7 +41,7 @@ route.post("/create", async (req, res) => {
 });
 
 // update a table
-route.put("/update/:table_name", async (req, res) => {
+route.put("/update/:table_name", auth, async (req, res) => {
     const table_name = req.params.table_name;
     const new_table_name = req.body.new_table_name;
 
@@ -61,7 +62,7 @@ route.put("/update/:table_name", async (req, res) => {
     
 
 // delete a table
-route.delete("/delete/:table_name", async (req, res) => {
+route.delete("/delete/:table_name", auth, async (req, res) => {
     const table_name = req.params.table_name;
 
     try {

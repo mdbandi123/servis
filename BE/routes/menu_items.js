@@ -1,4 +1,5 @@
 const express = require("express");
+const auth = require("../middlewares/auth");
 
 const menu_items = require("../models/menu").menu_item_model;
 const menu_model = require("../models/menu").menu_model;
@@ -35,7 +36,7 @@ route.get("/", async (req, res) => {
 });
 
 // create a new item under a category (body payload: category_name, name, price, image)
-route.post("/item", async (req, res) => {
+route.post("/item", auth, async (req, res) => {
     const category_name = req.body.category_name;
     const name = req.body.name;
     const price = req.body.price;
@@ -98,7 +99,7 @@ route.get("/item", async (req, res) => {
 });
 
 // update the item (body payload: item_id, name, price, unit_price, image, old_category, new_category, is_available)
-route.put("/item", async (req, res) => {
+route.put("/item", auth, async (req, res) => {
     try {
         const item_id = req.body.item_id;
         const name = req.body.name;
@@ -157,7 +158,7 @@ route.put("/item", async (req, res) => {
 
 
 // deletes an item from a category in the menu (body payload: item_id)
-route.delete("/item", async (req, res) => {
+route.delete("/item", auth, async (req, res) => {
     try {
         const item_id = req.body.item_id;
 

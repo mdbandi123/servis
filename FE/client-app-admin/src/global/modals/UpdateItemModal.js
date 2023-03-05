@@ -1,5 +1,6 @@
 import * as React from "react";
 import Grid2 from "@mui/material/Unstable_Grid2/Grid2";
+import { useStore } from "../../store/store";
 
 import { Box, Slide } from "@mui/material";
 import { IconButton, Button } from "@mui/material/";
@@ -34,11 +35,14 @@ function UpdateItemModal(props) {
     const [valueStatus, setValueStatus] = React.useState(props.availability);
     const [CategoryData, setCategoryData] = React.useState([]);
 
+    const { user } = useStore();
+
     React.useEffect(() => {
         fetch(`${process.env.REACT_APP_BACKEND_URL}/menu/categories`, {
             method: "GET",
             headers: {
                 "Content-Type": "application/json",
+                "Authorization": user.Aa,
             },
         })
             .then((response) => response.json())
@@ -63,6 +67,9 @@ function UpdateItemModal(props) {
 
             fetch(`${process.env.REACT_APP_BACKEND_URL}/upload`, {
             method: "POST",
+            headers: {
+                "Authorization": user.Aa,
+            },
             body: formData,
             })
             .then((response) => response.json())
@@ -72,6 +79,7 @@ function UpdateItemModal(props) {
                     method: "PUT",
                     headers: {
                         "Content-Type": "application/json",
+                        "Authorization": user.Aa,
                     },
                     body: JSON.stringify({
                         item_id: props.id,
@@ -98,6 +106,7 @@ function UpdateItemModal(props) {
                 method: "PUT",
                 headers: {
                     "Content-Type": "application/json",
+                    "Authorization": user.Aa,
                 },
                 body: JSON.stringify({
                     item_id: props.id,
@@ -116,8 +125,6 @@ function UpdateItemModal(props) {
                 })
                 .catch((error) => console.error(error));
         }
-
-        setValueStatus(props.availability);
     };
 
     const closeIconButton = {

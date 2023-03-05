@@ -1,4 +1,5 @@
 const express = require("express");
+const auth = require("../middlewares/auth");
 
 const menu_model = require("../models/menu").menu_model;
 
@@ -52,7 +53,7 @@ route.get("/category", async (req, res) => {
 });
 
 // create an item in a category (body payload: category_id, name, price, image, is_available)
-route.post("/category", async (req, res) => {
+route.post("/category", auth, async (req, res) => {
     const category = req.body.category_name;
     const image = req.body.category_image;
 
@@ -76,7 +77,7 @@ route.post("/category", async (req, res) => {
 });
 
 //update category name and image (body payload: category_id, category_name, category_image)
-route.put("/category", async (req, res) => {
+route.put("/category", auth, async (req, res) => {
     try {
         const category_id = req.body.category_id;
         const category_name = req.body.category_name;
@@ -103,7 +104,7 @@ route.put("/category", async (req, res) => {
 });
 
 // deletes a category (body payload: category_id)
-route.delete("/category", async (req, res) => {
+route.delete("/category", auth, async (req, res) => {
     try {
         const category_id = req.body.category_id;
 
