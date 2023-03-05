@@ -5,11 +5,7 @@ import Menu from './pages/menu/Menu';
 import Cart from './pages/cart/Cart';
 import Pending from './pages/pending/Pending';
 import Payment from './pages/payment/Payment';
-import Starters from './pages/menu/starters/Starters';
-import Meals from './pages/menu/meals/Meals';
-import SideDishes from './pages/menu/sidedishes/SideDishes';
-import Drinks from './pages/menu/drinks/Drinks';
-import Desserts from './pages/menu/desserts/Desserts';
+import CategoryList from './pages/menu/CategoryList';
 
 const RouteMenu = () => {
     return (
@@ -20,11 +16,7 @@ const RouteMenu = () => {
                 <Route path='/cart' exact element={<Cart />} />
                 <Route path='/pending' exact element={<Pending />} />
                 <Route path='/payment' exact element={<Payment />} />
-                <Route path='/starters' exact element={<Starters />} />
-                <Route path='/meals' exact element={<Meals />} />
-                <Route path='/sidedishes' exact element={<SideDishes />} />
-                <Route path='/drinks' exact element={<Drinks />} />
-                <Route path='/desserts' exact element={<Desserts />} />
+                <Route path='/menu/:category_name' exact element={<CategoryList />} />
             </Routes>
         </React.Fragment>
     )

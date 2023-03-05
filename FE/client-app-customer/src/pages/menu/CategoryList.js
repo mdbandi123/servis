@@ -17,10 +17,9 @@ import GlobalBlueContainedButton from '../../global/buttons/contains/BlueContain
 import GlobalBlackHeader5 from '../../global/typographies/headers/BlackHeader5';
 
 function CategoryList() {
-    const {category_name } = useParams();
-    console.log(category_name);
-
     const navigate = useNavigate();
+    const {category_name } = useParams();
+    const [StartersData, setStartersData] = React.useState([]);
 
     React.useEffect(() => {
         fetch(`${process.env.REACT_APP_BACKEND_URL}/menu_items/items/${category_name}`)
@@ -28,6 +27,7 @@ function CategoryList() {
             .then((data) => {
                 if (data.success) {
                     console.log(data.items);
+                    setStartersData(data.items);
                 } else {
                     console.log(data.error);
                 }
@@ -115,12 +115,12 @@ function CategoryList() {
                             {StartersData.map((startersList) => (
                                 <Grid2 item xs={6} sm={6} md={4} lg={3} lx={3}>
                                     <Card sx={cardContainer}>
-                                        <CardMedia component='img' image={startersList.foodItemImage} alt={startersList.foodItemName} />
+                                        <CardMedia component='img' image={`${process.env.REACT_APP_BACKEND_URL}${startersList.image}`} alt={startersList.name} />
                                         <CardContent sx={cardContent}>
                                             <Stack direction='column' spacing={2}>
                                                 <Box>
-                                                    <GlobalBlackHeader6 sx={itemNamePrice} text={startersList.foodItemName} />
-                                                    <GlobalPinkHeader6 sx={itemNamePrice} text={'$' + startersList.foodItemPrice} />
+                                                    <GlobalBlackHeader6 sx={itemNamePrice} text={startersList.name} />
+                                                    <GlobalPinkHeader6 sx={itemNamePrice} text={'$' + startersList.price.$numberDecimal} />
                                                 </Box>
                                                 <Box >
                                                     <GlobalBlueContainedButton text='Add' sx={{ width: '100%' }} startIcon={<AddRoundedIcon />} />
