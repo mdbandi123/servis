@@ -59,7 +59,7 @@ route.get("/:order_id", async (req, res) => {
 
 
 // creates a new order session for the table and returns a QR code (body payload: table_number)
-route.post("/create/:table_number", async (req, res) => {
+route.post("/create/:table_number", auth, async (req, res) => {
     const order_id = createOrderId();
     const table_number = req.params.table_number;
 
@@ -98,7 +98,7 @@ route.post("/create/:table_number", async (req, res) => {
 });
 
 // ends the session for the table (body payload: order_id)
-route.put("/session/:order_id", async (req, res) => {
+route.put("/session/:order_id", auth, async (req, res) => {
     const order_id = req.params.order_id;
 
     // check if the order_id is valid and is_paid is true then return session ended alredy
