@@ -25,6 +25,7 @@ import SettingsIcon from '@mui/icons-material/Settings';
 import LogoutIcon from '@mui/icons-material/Logout';
 
 import GlobalWhiteHeader5 from './global/typographies/headers/WhiteHeader5';
+import GlobalPinkBadge from './global/badges/PinkBadge';
 
 const drawerWidth = 220;
 
@@ -243,8 +244,8 @@ function Navbar() {
                         <ListItem disablePadding sx={ listItemContainer } key={ item.title } component={ Link } to={ item.path } button selected={ item.path === path } >
                             <ListItemButton sx={ listItemButtonContainer } >
                                 <ListItemIcon sx={ [centerMenuIcons, changeIconsColor] } >
-                                    { index === 0 && <MenuBookIcon /> }
-                                    { index === 1 && <PaymentIcon /> }
+                                    { index === 0 && <GlobalPinkBadge badgeContent={11} max={9}> <MenuBookIcon /> </GlobalPinkBadge>}
+                                    { index === 1 && <GlobalPinkBadge badgeContent={11} max={9}> <PaymentIcon /> </GlobalPinkBadge>}
                                     { index === 2 && <ArchiveIcon /> }
                                 </ListItemIcon>
                                 <ListItemText sx={ closeItemText } primary={ item.title } />

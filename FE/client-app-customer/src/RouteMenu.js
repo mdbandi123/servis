@@ -5,6 +5,7 @@ import Menu from './pages/menu/Menu';
 import Cart from './pages/cart/Cart';
 import Pending from './pages/pending/Pending';
 import Payment from './pages/payment/Payment';
+import Error from './pages/error/Error';
 import CategoryList from './pages/menu/CategoryList';
 
 const RouteMenu = () => {
@@ -17,7 +18,8 @@ const RouteMenu = () => {
                 <Route path='/pending' exact element={<Pending />} />
                 <Route path='/payment' exact element={<Payment />} />
                 <Route path='/menu/:category_name' exact element={<CategoryList />} />
-            </Routes>
+                <Route path='*' exact element={<Error />} />
+            </Routes> 
         </React.Fragment>
     )
 }

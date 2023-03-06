@@ -1,17 +1,20 @@
 import React from 'react';
-import Box from '@mui/material/Box';
-
-import { UserList } from './data/UserList';
 import { useStore } from '../../store/store';
 
+import Grid2 from '@mui/material/Unstable_Grid2/Grid2';
+import { Avatar, Card, MenuItem, TextField, Stack, Box } from '@mui/material';
+import { Dialog, DialogActions, DialogContent, DialogContentText, DialogTitle, Slide } from '@mui/material/';
+
+import GlobalGreyBody1 from '../../global/typographies/bodies/GreyBody1';
+import GlobalBlueTextButton from '../../global/buttons/text/BlueTextButton';
+import GlobalRedTextButton from '../../global/buttons/text/RedTextButton';
 import GlobalPurpleHeader4 from '../../global/typographies/headers/PurpleHeader4';
 import GlobalBlackHeader5 from '../../global/typographies/headers/BlackHeader5';
 import GlobalBlueContainedButton from '../../global/buttons/contains/BlueContainedButton';
-import GenerateQRModal from '../../global/modals/GenerateQRModal';
 
-import { Avatar, Card, MenuItem, TextField } from '@mui/material';
-import Grid2 from '@mui/material/Unstable_Grid2/Grid2';
-import { Stack } from '@mui/system';
+const Transition = React.forwardRef(function Transition(props, ref) {
+    return <Slide direction='up' ref={ref} {...props} />;
+});
 
 function Generate() {
 
@@ -34,6 +37,25 @@ function Generate() {
         });
 
     }, []);
+
+    const [openConfirmModal, setOpenConfirmModal] = React.useState(false);
+
+    const confirmHandler = () => {
+        setOpenConfirmModal(true);
+    };
+
+    const cancelConfirmHandler = () => {
+        setOpenConfirmModal(false);
+    };
+
+    const proceedConfirmHandler = () => {
+        setOpenConfirmModal(false);
+    };
+
+    const dialogAlignment = {
+        alignItems: 'center',
+        display: 'flex'
+    };
 
     const pageTitleContainer = {
         mb: 3,
@@ -82,7 +104,7 @@ function Generate() {
                                 </TextField>
                             </Box>
                             <Box sx={ qrBtnContainer }>
-                                <GenerateQRModal sx={ qrBtnContainer } text='Generate' context='Are you sure do you want to Generate QR Code?' />
+                                <GlobalBlueContainedButton sx={qrBtnContainer} text='Generate' variant='{props.variant}' onClick={confirmHandler} />
                             </Box>
                         </Stack>
                     </Card>
@@ -95,6 +117,20 @@ function Generate() {
                     </Card>
                 </Grid2>
             </Grid2>
+            <Dialog keepMounted maxWidth='sm' fullWidth open={openConfirmModal} TransitionComponent={Transition} onClose={cancelConfirmHandler} aria-describedby='alert-dialog-slide-description'>
+                <DialogTitle sx={dialogAlignment}>
+                    <GlobalBlackHeader5 text='Message Confirmation' />
+                </DialogTitle>
+                <DialogContent>
+                    <DialogContentText id='alert-dialog-slide-description'>
+                        <GlobalGreyBody1 text='Are you sure do you want to Generate QR Code?' />
+                    </DialogContentText>
+                </DialogContent>
+                <DialogActions>
+                    <GlobalRedTextButton text='Cancel' onClick={cancelConfirmHandler} />
+                    <GlobalBlueTextButton text='Confirm' onClick={proceedConfirmHandler} />
+                </DialogActions>
+            </Dialog>
         </React.Fragment>
     );
 };

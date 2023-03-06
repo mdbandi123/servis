@@ -8,6 +8,7 @@ import FoodItems from './pages/items/foodItems/FoodItems';
 import CategoryItems from './pages/items/categoryItems/CategoryItems';
 import Generate from './pages/generate/Generate';
 import Settings from './pages/settings/Settings';
+import Loading from './pages/loading/Loading';
 import Login from './pages/signin/SignIn'
 import Logout from './SignOut'
 
@@ -27,7 +28,7 @@ const RouteMenu = () => {
     }, []);
   
     if (loading) {
-      return <p>Loading...</p>;
+      return <Loading/>;
     }
 
     return (

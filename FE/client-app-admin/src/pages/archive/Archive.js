@@ -1,25 +1,21 @@
 import * as React from 'react';
 import { archiveHeadCellsList } from './datas/ArchiveCellsListData';
-// import { rows } from './datas/ArchiveData';
-import { visuallyHidden } from '@mui/utils';
+
 import PropTypes from 'prop-types';
 import { useStore } from '../../store/store';
-
 import { alpha } from '@mui/material/styles';
 import { Box, Toolbar, Stack } from '@mui/material/';
-import { Table, TableBody, TableCell, TableContainer, TableHead, TablePagination, TableRow, TableSortLabel } from '@mui/material/';
-import { FormControlLabel, Checkbox, Tooltip, Paper, IconButton } from '@mui/material/';
+import { Table, TableBody, TableCell, TableContainer, TableHead, TablePagination, TableRow } from '@mui/material/';
+import { FormControlLabel, Paper } from '@mui/material/';
 import { purple, pink } from '@mui/material/colors';
 import Typography from '@mui/material/Typography';
-
-import DeleteIcon from '@mui/icons-material/Delete';
 import FindInPageTwoToneIcon from '@mui/icons-material/FindInPageTwoTone';
-import FilterListIcon from '@mui/icons-material/FilterList';
 
 import GlobalPurpleHeader4 from '../../global/typographies/headers/PurpleHeader4';
 import GlobalPinkSwitch from '../../global/switches/PinkSwitch';
 import GlobalBlackHeader5 from '../../global/typographies/headers/BlackHeader5';
 import GlobalBlueContainedButton from '../../global/buttons/contains/BlueContainedButton';
+import GenerateDatePickerModal from '../../global/modals/GenerateDatePickerModal';
 
 function descendingComparator(a, b, orderBy) {
     if (b[orderBy] < a[orderBy]) {
@@ -48,47 +44,20 @@ function stableSort(array, comparator) {
 }
 
 function EnhancedTableHead(props) {
-    const { onSelectAllClick, order, orderBy, numSelected, rowCount, onRequestSort } = props;
-    
-    const createSortHandler = (property) => (event) => {
-        onRequestSort(event, property);
-    };
-
-    const selectAllCheckbox = {
-        '&.Mui-checked': { 
-            color: pink[500] 
-        },
-        '&.MuiCheckbox-indeterminate': {
-            color: pink[500] 
-        }
-    };
+    const { order, orderBy, onRequestSort } = props;
 
     const tableHeadTitleSort = {
         fontWeight: 'bold',
-        color: purple[900],
-        transition: '0.5s',
-        '&:hover': {
-            color: purple[700],
-            transition: '0.5s'
-        }
+        color: purple[900]
     };
 
     return (
         <TableHead>
             <TableRow >
-                <TableCell padding='checkbox'>
-                    <Checkbox sx={ selectAllCheckbox } indeterminate={ numSelected > 0 && numSelected < rowCount } checked={ rowCount > 0 && numSelected === rowCount } onChange={ onSelectAllClick } inputProps={{ 'aria-label': 'select all items' }} />
-                </TableCell>
+                <TableCell padding='checkbox'/>
                 {archiveHeadCellsList.map((archiveHeadItem) => (
-                    <TableCell key={ archiveHeadItem.id } align={ archiveHeadItem.dataAlignment ? 'right' : 'left' } padding={ archiveHeadItem.disablePadding ? 'none' : 'normal' } sortDirection={ orderBy === archiveHeadItem.id ? order : false } >
-                        <TableSortLabel active={ orderBy === archiveHeadItem.id } direction={ orderBy === archiveHeadItem.id ? order : 'asc' } onClick={ createSortHandler(archiveHeadItem.id) } sx={ tableHeadTitleSort } >
-                            { archiveHeadItem.label }
-                            { orderBy === archiveHeadItem.id ? (
-                                <Box component='span' sx={ visuallyHidden }>
-                                    { order === 'desc' ? 'sorted descending' : 'sorted ascending' }
-                                </Box>
-                            ) : null }
-                        </TableSortLabel>
+                    <TableCell sx={tableHeadTitleSort} key={ archiveHeadItem.id } align={ archiveHeadItem.dataAlignment ? 'right' : 'left' } padding={ archiveHeadItem.disablePadding ? 'none' : 'normal' } sortDirection={ orderBy === archiveHeadItem.id ? order : false } >
+                        { archiveHeadItem.label }
                     </TableCell>
                 ))}
             </TableRow>
@@ -103,62 +72,6 @@ EnhancedTableHead.propTypes = {
     order: PropTypes.oneOf(['asc', 'desc']).isRequired,
     orderBy: PropTypes.string.isRequired,
     rowCount: PropTypes.number.isRequired
-};
-
-function EnhancedTableToolbar(props) {
-    const { numSelected } = props;
-
-    const toolbarContainer = {
-        pl: { sm: 2 },
-        pr: {  xs: 1, sm: 1 },
-        ...(numSelected > 0 && {
-            bgcolor: (theme) =>
-                alpha(theme.palette.primary.main, theme.palette.action.activatedOpacity)
-        })
-    };
-
-    const toolbarDynamicText = {
-        flex: '1 1 100%'
-    };
-
-    const iconFilterDelete = {
-        color: purple[900]
-    };
-
-    return (
-        <Toolbar sx={ toolbarContainer } >
-            { numSelected > 0 ? (
-                <Typography sx={ toolbarDynamicText } variant='subtitle1' >
-                    {numSelected > 1 ? (
-                        <Typography> { numSelected } items selected</Typography>
-                    ) : (
-                        <Typography> { numSelected } item selected</Typography>
-                    )}
-                </Typography>
-            ) : (
-                <Typography sx={ toolbarDynamicText } variant='h6' id='tableTitle' component='div'>
-                    Data
-                </Typography>
-            )}
-            { numSelected > 0 ? (
-                <Tooltip title='Delete'>
-                    <IconButton sx={ iconFilterDelete }>
-                        <DeleteIcon />
-                    </IconButton>
-                </Tooltip>
-            ) : (
-                <Tooltip title='Filter list'>
-                    <IconButton sx={ iconFilterDelete }>
-                        <FilterListIcon />
-                    </IconButton>
-                </Tooltip>
-            )}
-        </Toolbar>
-    );
-};
-
-EnhancedTableToolbar.propTypes = {
-    numSelected: PropTypes.number.isRequired
 };
 
 export default function EnhancedTable() {
@@ -201,25 +114,6 @@ export default function EnhancedTable() {
             return;
         };
         setSelected([]);
-    };
-
-    const handleClick = (event, orderId) => {
-        const selectedIndex = selected.indexOf(orderId);
-        let newSelected = [];
-
-        if (selectedIndex === -1) {
-            newSelected = newSelected.concat(selected, orderId);
-        } else if (selectedIndex === 0) {
-            newSelected = newSelected.concat(selected.slice(1));
-        } else if (selectedIndex === selected.length - 1) {
-            newSelected = newSelected.concat(selected.slice(0, -1));
-        } else if (selectedIndex > 0) {
-            newSelected = newSelected.concat(
-                selected.slice(0, selectedIndex),
-                selected.slice(selectedIndex + 1));
-        };
-
-        setSelected(newSelected);
     };
 
     const handleChangePage = (event, newPage) => {
@@ -273,12 +167,6 @@ export default function EnhancedTable() {
         fontSize: '3em'
     };
 
-    const rowCheckbox = {
-        '&.Mui-checked': { 
-            color: pink[500] 
-        }
-    };
-
     if (rows.length === 0) {
         return (
             <React.Fragment>
@@ -290,7 +178,6 @@ export default function EnhancedTable() {
                 </Box>
                 <Box sx={ tableContainerWidth }>
                     <Paper sx={ archiveTablePaper }>
-                        <EnhancedTableToolbar numSelected={ selected.length } />
                         <TableContainer>
                             <Table sx={ archiveTable } aria-labelledby='tableTitle' size={ dense ? 'small' : 'medium' } >
                                 <EnhancedTableHead numSelected={ selected.length } order={ order } orderBy={ orderBy } onSelectAllClick={ handleSelectAllClick } onRequestSort={ handleRequestSort } />
@@ -314,11 +201,10 @@ export default function EnhancedTable() {
                 <GlobalPurpleHeader4 text='Archive' />
             </Box>
             <Box mb={3}>
-                <GlobalBlueContainedButton text='Generate' />
+                <GenerateDatePickerModal />
             </Box>
             <Box sx={ tableContainerWidth }>
                 <Paper sx={ archiveTablePaper }>
-                    <EnhancedTableToolbar numSelected={ selected.length } />
                     <TableContainer>
                         <Table sx={ archiveTable } aria-labelledby='tableTitle' size={ dense ? 'small' : 'medium' } >
                             <EnhancedTableHead numSelected={ selected.length } order={ order } orderBy={ orderBy } onSelectAllClick={ handleSelectAllClick } onRequestSort={ handleRequestSort } rowCount={ rows.length } />
@@ -328,14 +214,11 @@ export default function EnhancedTable() {
                                         const labelId = `enhanced-table-checkbox-${index}`;
 
                                         return (
-                                            <TableRow hover onClick={ (event) => handleClick(event, row.orderId) } role='checkbox' aria-checked={ isItemSelected } tabIndex={ -1 } key={ row.orderId } selected={ isItemSelected } >
-                                                <TableCell padding='checkbox'>
-                                                    <Checkbox sx={ rowCheckbox } checked={ isItemSelected } inputProps={{ 'aria-labelledby': labelId }} />
-                                                </TableCell>
+                                            <TableRow hover role='checkbox' aria-checked={ isItemSelected } tabIndex={ -1 } key={ row.orderId } selected={ isItemSelected } >
+                                                <TableCell padding='checkbox'/>
                                                 <TableCell component='th' id={ labelId } scope='row' padding='none' sx={ uniqueId }>{row.order_id}</TableCell>
                                                 <TableCell align='left'>{row.item_name}</TableCell>
                                                 <TableCell align='left'>{row.item_category}</TableCell>
-                                                <TableCell align='left'>{}</TableCell>
                                                 <TableCell align='left'>{row.time_ordered}</TableCell>
                                             </TableRow>
                                         );

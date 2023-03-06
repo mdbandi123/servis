@@ -154,7 +154,7 @@ function Payment() {
         color: grey[600]
     };
 
-    if (rows.length === 0) {
+    if (rowItem.length === 0) {
         return (
             <React.Fragment>
                 <Box sx={pageContainer}>

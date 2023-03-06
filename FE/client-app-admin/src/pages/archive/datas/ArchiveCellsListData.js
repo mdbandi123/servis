@@ -18,12 +18,6 @@ export const archiveHeadCellsList = [
         label: 'CATEGORY'
     },
     {
-        id: 'code',
-        dataAlignment: false,
-        disablePadding: false,
-        label: 'CODE'
-    },
-    {
         id: 'timeDate',
         dataAlignment: false,
         disablePadding: false,

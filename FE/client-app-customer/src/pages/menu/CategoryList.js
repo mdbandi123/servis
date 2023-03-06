@@ -100,6 +100,10 @@ function CategoryList() {
         color: grey[600]
     };
 
+    const addBtn = {
+        width: '100%'
+    }
+
     if (StartersData.length === 0) {
         return (
             <React.Fragment>
@@ -108,17 +112,17 @@ function CategoryList() {
                         <IconButton onClick={() => navigate('/')}>
                             <ArrowBackRoundedIcon />
                         </IconButton>
-                        <GlobalBlackHeader4 text='Starters' />
+                        <GlobalBlackHeader4 text={category_name} />
                     </Stack>
                     <Grid2 container sx={centerAlignment} spacing={1}>
                         <Grid2 item xs={12} sm={12} md={12} lg={12} lx={12}>
                             <ExtensionOffIcon sx={noItemIcon} />
                         </Grid2>
                         <Grid2 item xs={12} sm={12} md={12} lg={12} lx={12}>
-                            <GlobalBlackHeader5 text='No Starters Found' />
+                            <GlobalBlackHeader5 text={`No ${category_name} Found`} />
                         </Grid2>
                         <Grid2 item xs={12} sm={12} md={12} lg={12} lx={12}>
-                            <GlobalGreyBody2 text={`We couldn't find any Starters. Admin might not have created yet.`} />
+                            <GlobalGreyBody2 text={`We couldn't find any ${category_name}. Admin might not have created yet.`} />
                         </Grid2>
                     </Grid2>
                 </Box>
@@ -133,23 +137,23 @@ function CategoryList() {
                     <IconButton onClick={() => navigate('/')}>
                         <ArrowBackRoundedIcon />
                     </IconButton>
-                    <GlobalBlackHeader4 text='Starters' />
+                    <GlobalBlackHeader4 text={category_name} />
                 </Stack>
-                <Grid2 container justifyContent='center'>
+                <Grid2 container justifyContent='start'>
                     <Grid2 item>
                         <Grid2 container justifyContent='start' spacing={1}>
                             {StartersData.map((startersList) => (
                                 <Grid2 item xs={6} sm={6} md={4} lg={3} lx={3}>
                                     <Card sx={cardContainer}>
-                                        <CardMedia component='img' image={`${process.env.REACT_APP_BACKEND_URL}${startersList.image}`} alt={startersList.name} />
+                                        <CardMedia component='img' height='140' image={`${process.env.REACT_APP_BACKEND_URL}${startersList.image}`} alt={startersList.name} />
                                         <CardContent sx={cardContent}>
                                             <Stack direction='column' spacing={2}>
-                                                <Box>
+                                                <Box sx={{height: 90}}>
                                                     <GlobalBlackHeader6 sx={itemNamePrice} text={startersList.name} />
                                                     <GlobalPinkHeader6 sx={itemNamePrice} text={'$' + startersList.price.$numberDecimal} />
                                                 </Box>
                                                 <Box >
-                                                    <GlobalBlueContainedButton text='Add' sx={{ width: '100%' }} startIcon={<AddRoundedIcon />} onClick={() => addToCart(startersList._id)}/>
+                                                    <GlobalBlueContainedButton text='Add' sx={ addBtn } startIcon={<AddRoundedIcon />} onClick={() => addToCart(startersList._id)}/>
                                                 </Box>
                                             </Stack>
                                         </CardContent>

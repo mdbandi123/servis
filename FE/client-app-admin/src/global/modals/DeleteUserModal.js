@@ -54,7 +54,7 @@ function DeleteUserModal(props) {
             <Dialog keepMounted maxWidth='sm' fullWidth open={openModal} TransitionComponent={Transition} onClose={cancelDeleteHandler} aria-describedby='alert-dialog-slide-description'>
                 <DialogTitle sx={dialogAlignment}>
                     <ReportProblemIcon sx={deleteIcon} />
-                    <GlobalBlackHeader5 text='Delete User Confirmation' />
+                    <GlobalBlackHeader5 text={props.message} />
                 </DialogTitle>
                 <Box sx={closeIconButton}>
                     <IconButton>

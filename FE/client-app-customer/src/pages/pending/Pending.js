@@ -78,7 +78,7 @@ function Pending() {
         color: grey[600]
     };
 
-    if(CartList.length === 0) {
+    if (pendingItems.length === 0) {
         return (
             <React.Fragment>
                 <Box sx={pageContainer}>

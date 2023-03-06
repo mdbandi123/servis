@@ -10,19 +10,14 @@ import GlobalGreyBody2 from '../../global/typographies/bodies/GreyBody2';
 
 function Error() {
     const pageContainer = {
-        pb: 8,
-        pr: 1,
-        pl: 1,
-        pt: 2,
-    };
-
-    const centerAlignment = {
-        pt: 3,
         textAlign: 'center',
         justifyContent: 'center',
         alignItems: 'center',
-        display: 'flex'
+        display: 'flex',
+        height: '80vh',
+        width: '100vw',
     };
+
 
     const searchIcon = {
         fontSize: '6em',
@@ -32,14 +27,10 @@ function Error() {
     return (
         <React.Fragment>
             <Box sx={pageContainer}>
-                <Grid2 container sx={centerAlignment} spacing={1}>
+                <Grid2 container spacing={1}>
                     <Grid2 item xs={12} sm={12} md={12} lg={12} lx={12}>
                         <SearchIcon sx={searchIcon} />
-                    </Grid2>
-                    <Grid2 item xs={12} sm={12} md={12} lg={12} lx={12}>
                         <GlobalBlackHeader5 text='404 Error' />
-                    </Grid2>
-                    <Grid2 item xs={12} sm={12} md={12} lg={12} lx={12}>
                         <GlobalGreyBody2 text={`Sorry, page not found.`} />
                     </Grid2>
                 </Grid2>

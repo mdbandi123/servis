@@ -1,12 +1,10 @@
 import React from 'react';
-
 import { UserList } from './data/Users';
 
 import Grid2 from '@mui/material/Unstable_Grid2/Grid2';
 import { Avatar, Card, CardContent, Box, IconButton } from '@mui/material';
 import { purple, grey } from '@mui/material/colors';
 import AddCircleOutlineRoundedIcon from '@mui/icons-material/AddCircleOutlineRounded';
-import EditIcon from '@mui/icons-material/Edit';
 
 import GlobalPurpleHeader4 from '../../global/typographies/headers/PurpleHeader4';
 import GlobalBlackHeader5 from '../../global/typographies/headers/BlackHeader5';
@@ -91,10 +89,10 @@ function Settings() {
                                     <Grid2 item xs={8} sm={8} md={8} lg={8} lx={8}>
                                         <Grid2 container alignItems="center" spacing={2}>
                                             <Grid2 item>
-                                                <Avatar sx={{ backgroundColor: userList.theme }}>{userList.firstName.charAt(0) + userList.lastName.charAt(0)}</Avatar>
+                                                <Avatar />
                                             </Grid2>
                                             <Grid2 item>
-                                                <GlobalBlackHeader6 text={userList.firstName + ' ' + userList.lastName} />
+                                                <GlobalBlackHeader6 text={'Table ' + userList.tableName.toUpperCase()} />
                                             </Grid2>
                                         </Grid2>
                                     </Grid2>
@@ -102,12 +100,12 @@ function Settings() {
                                         <Grid2 container justifyContent='flex-end'>
                                             <Grid2 item>
                                                 <IconButton>
-                                                    <DeleteUserModal sx={actionIcon} context={'Are you sure do you want to delete ' + userList.firstName + ' ' + userList.lastName + '?' } />
+                                                    <DeleteUserModal sx={actionIcon} context={`Are you sure do you want to delete Table ${userList.tableName.toUpperCase()}?`} message={`Delete Table ${userList.tableName.toUpperCase()}`} />
                                                 </IconButton>
                                             </Grid2>
                                             <Grid2 item>
                                                 <IconButton>
-                                                    <UpdateUserModal sx={actionIcon} title={'Update ' + userList.firstName + ' ' + userList.lastName} defaultFName={userList.firstName} defaultLName={userList.lastName} />
+                                                    <UpdateUserModal sx={actionIcon} title={`Update Table ${userList.tableName.toUpperCase()}`} defaultName={userList.tableName.toUpperCase()} />
                                                 </IconButton>
                                             </Grid2>
                                         </Grid2>

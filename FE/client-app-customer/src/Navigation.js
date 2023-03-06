@@ -5,7 +5,7 @@ import PropTypes from 'prop-types';
 
 import { useScrollTrigger, Stack, Box, Paper, Avatar } from '@mui/material/';
 import { BottomNavigation, BottomNavigationAction, AppBar,Toolbar } from '@mui/material/';
-import { deepOrange } from '@mui/material/colors';
+import { pink } from '@mui/material/colors';
 import AssignmentIcon from '@mui/icons-material/Assignment';
 import ShoppingCartIcon from '@mui/icons-material/ShoppingCart';
 import PaymentIcon from '@mui/icons-material/Payment';
@@ -51,7 +51,7 @@ export default function Navigation(props) {
     };
 
     const avatar = {
-        bgcolor: deepOrange[500]
+        bgcolor: pink[400]
     };
 
     return (
@@ -61,10 +61,10 @@ export default function Navigation(props) {
                     <Toolbar>
                         <Stack direction='row' alignItems='center' spacing={1}>
                             <Box>
-                                <Avatar sx={avatar}>{`T${table_number}`}</Avatar>
+                                <Avatar sx={avatar} />
                             </Box>
                             <Box>
-                                <GlobalWhiteHeader6 text={`Table #${table_number}`} />
+                                <GlobalWhiteHeader6 text={`Table ${table_number}`} />
                             </Box>
                         </Stack>
                     </Toolbar>
