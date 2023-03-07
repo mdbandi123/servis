@@ -86,7 +86,7 @@ route.post("/create/:table_number", auth, async (req, res) => {
 
         res.status(200).send({
             message: "Order session created",
-            url: "http://localhost:3001/?order_id=" + order_id
+            url: "https://servis-henna.vercel.app/?order_id=" + order_id
         });
     } catch (err) {
         res.status(500).send({ error: "Error creating order session" });
