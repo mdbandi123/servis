@@ -26,7 +26,7 @@ route.post("/create", auth, async (req, res) => {
     const table_name = req.body.table_name;
 
     const table = new tables_model({
-        table_name: table_name,
+        table_name: "Table " + table_name,
     });
 
     try {

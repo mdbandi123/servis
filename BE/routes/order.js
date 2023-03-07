@@ -59,7 +59,7 @@ route.get("/:order_id", async (req, res) => {
 
 
 // creates a new order session for the table and returns a QR code (body payload: table_number)
-route.post("/create/:table_number", async (req, res) => {
+route.post("/create/:table_number", auth, async (req, res) => {
     const order_id = createOrderId();
     const table_number = req.params.table_number;
 
@@ -83,15 +83,11 @@ route.post("/create/:table_number", async (req, res) => {
 
     try {
         await order_session.save();
-        const qr_svg = qr.image(
-            `http://localhost:3001/?order_id=${order_id}`,
-            {
-                type: "svg",
-            }
-        );
 
-        res.type("svg");
-        qr_svg.pipe(res);
+        res.status(200).send({
+            message: "Order session created",
+            url: "http://localhost:3001/?order_id=" + order_id
+        });
     } catch (err) {
         res.status(500).send({ error: "Error creating order session" });
     }

@@ -1,5 +1,7 @@
-import React from 'react';
+import React, {useRef} from 'react';
 import { useStore } from '../../store/store';
+import QRCode from 'qrcode.react';
+import ReactToPrint from 'react-to-print';
 
 import Grid2 from '@mui/material/Unstable_Grid2/Grid2';
 import { Avatar, Card, MenuItem, TextField, Stack, Box } from '@mui/material';
@@ -17,10 +19,15 @@ const Transition = React.forwardRef(function Transition(props, ref) {
 });
 
 function Generate() {
+    const componentRef = useRef();
+
+    const [url, setUrl] = React.useState(null);
+    const [table, setTable] = React.useState(null);
 
     const { user } = useStore();
 
     const {TableData, setTableData} = useStore();
+
     React.useEffect(() => {
         fetch(`${process.env.REACT_APP_BACKEND_URL}/tables/`, {
             method: 'GET',
@@ -49,8 +56,55 @@ function Generate() {
     };
 
     const proceedConfirmHandler = () => {
-        setOpenConfirmModal(false);
+        fetch(`${process.env.REACT_APP_BACKEND_URL}/orders/create/${table}`, {
+            method: 'POST',
+            headers: {
+                "Authorization": user.Aa,
+            }
+        }).then(response => response.json())
+        .then(data => {
+            setUrl(data.url);
+            setOpenConfirmModal(false);
+        }
+        ).catch((error) => {
+            console.log(error);
+        });
     };
+
+    const styles = {
+        qrCodeContainer: {
+          justifyContent: 'center',
+          alignItems: 'center',
+          width: '20%',
+          margin: '0 auto',
+          textAlign: 'center',
+          fontSize: '10px',
+        },
+      
+        qrCode: {
+          width: '60px',
+          height: '60px',
+        },
+      };
+    
+    const QRCodePrinter = (props) => {
+        const componentRef = useRef();
+      
+        return (
+          <div>
+            <div ref={componentRef} style={styles.qrCodeContainer}>
+            <p>{props.table}</p>
+                <QRCode value={props.url} style={styles.qrCode}/>
+                <p>Scan this QR Code to access online ordering on your device.</p>
+            </div>
+            
+            <ReactToPrint
+              trigger={() => <button>Print QR Code</button>}
+              content={() => componentRef.current}
+            />
+          </div>
+        );
+      };
 
     const dialogAlignment = {
         alignItems: 'center',
@@ -88,7 +142,7 @@ function Generate() {
                                 <GlobalBlackHeader5 text='Create QR Code' />
                             </Box>
                             <Box>
-                                <TextField color='primary' label='User' helperText='Select User' variant='filled' fullWidth select>
+                                <TextField color='primary' label='User' helperText='Select User' variant='filled' fullWidth select onChange={(e) => setTable(e.target.value)}>
                                     {TableData.map((tableList) => (
                                         <MenuItem key={tableList.table_name} value={tableList.table_name}>
                                             <Stack direction='row' alignItems='center' spacing={1}>
@@ -112,7 +166,10 @@ function Generate() {
                 <Grid2 item xs={12} sm={12} md={8} lg={8} lx={8}>
                     <Card sx={qrCardContainer}>
                         <Box sx={qrHeader}>
-                            <GlobalBlackHeader5 text='Blank' />
+                            {url && table && <>
+                                <GlobalBlackHeader5 text='Generated QR Code:' />
+                                <QRCodePrinter table={table} url={url}/>
+                            </>}
                         </Box>
                     </Card>
                 </Grid2>

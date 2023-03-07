@@ -1,4 +1,5 @@
 import * as React from 'react';
+import { useStore } from '../../store/store';
 
 import Grid2 from '@mui/material/Unstable_Grid2/Grid2';
 import { Box, CardActionArea, Slide } from '@mui/material';
@@ -15,6 +16,9 @@ const Transition = React.forwardRef(function Transition(props, ref) {
 });
 
 function CreateUserModal(props) {
+    const { user } = useStore();
+
+    const [tableName, setTableName] = React.useState(null);
     const [openCreateModal, setOpenCreateModal] = React.useState(false);
 
     const CreateHandler = () => {
@@ -26,7 +30,24 @@ function CreateUserModal(props) {
     };
 
     const confirmCreateHandler = () => {
-        setOpenCreateModal(false);
+            fetch(`${process.env.REACT_APP_BACKEND_URL}/tables/create`, {
+                method: 'POST',
+                headers: {
+                    "Content-Type": "application/json",
+                    "Authorization": user.Aa,
+                },
+                body: JSON.stringify({
+                    table_name: tableName,
+                })
+            })
+                .then(response => response.json())
+                .then(data => {
+                    console.log(data);
+                    setOpenCreateModal(false);
+                }
+            ).catch((error) => {
+                console.log(error);
+            });
     };
 
     const closeIconButton = {
@@ -58,7 +79,7 @@ function CreateUserModal(props) {
                             <Grid2 item xs={12} sm={12} md={12} lg={12} lx={12}>
                                 <Grid2 container spacing={1}>
                                     <Grid2 item xs={12} sm={12} md={12} lg={12} lx={12}>
-                                        <TextField id='outlined-textarea' color='primary' type='text' label='User Name' placeholder='Enter User Name' variant='filled' fullWidth />
+                                        <TextField id='outlined-textarea' color='primary' type='text' label='User Name' placeholder='Enter User Name' variant='filled' fullWidth onChange={(e) => setTableName(e.target.value)}/>
                                     </Grid2>
                                 </Grid2>
                             </Grid2>

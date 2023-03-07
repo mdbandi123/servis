@@ -14,7 +14,9 @@ function Loading() {
 
     return (
         <React.Fragment>
-            <Backdrop sx={backDrop} open={open} >
+            <Backdrop sx={backDrop} 
+            // open={open} 
+            >
                 <CircularProgress sx={loadingProgressIcon} size='4em' />
             </Backdrop>
         </React.Fragment>

@@ -8,7 +8,6 @@ function App() {
   const location = useLocation();
   const queryParams = new URLSearchParams(location.search);
   const { setOrderId, setTableNumber, setMenuItems, setCategoryItems, setOrderedItems } = useStore();
-  const order_id = useStore(state => state.order_id)
 
   useEffect(() => {
     const orderId = queryParams.get('order_id');
@@ -30,9 +29,8 @@ function App() {
   React.useEffect(() => {
     const socket = socketIOClient(process.env.REACT_APP_BACKEND_URL);
     // Send the order_id to the server
-    const order_id = localStorage.getItem("order_id");
-    socket.emit("sendOrderId", order_id);
-    setOrderId(order_id);
+    socket.emit("sendOrderId", queryParams.get('order_id'));
+    setOrderId(queryParams.get('order_id'));
 
     //listen for real-time updates from the server menu
     socket.on("menu-update", (data) => {
@@ -41,7 +39,7 @@ function App() {
     });
 
     // Listen for real-time updates from the server
-    socket.on(`${order_id}-orders-update`, (data) => {
+    socket.on(`${queryParams.get('order_id')}-orders-update`, (data) => {
       setOrderedItems(data.items);
       console.log("orders update: ", data.items);
     });

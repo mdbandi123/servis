@@ -1,5 +1,6 @@
 import React from 'react';
 import { UserList } from './data/Users';
+import { useStore } from '../../store/store';
 
 import Grid2 from '@mui/material/Unstable_Grid2/Grid2';
 import { Avatar, Card, CardContent, Box, IconButton } from '@mui/material';
@@ -14,6 +15,29 @@ import DeleteUserModal from '../../global/modals/DeleteUserModal';
 import UpdateUserModal from '../../global/modals/UpdateUserModal';
 
 function Settings() {
+    const { user } = useStore();
+
+    // const [UserList, setUserList] = useStore([]);
+
+    React.useEffect(() => {
+        document.title = 'Settings';
+
+        fetch(`${process.env.REACT_APP_BACKEND_URL}/tables/`, {
+            method: 'GET',
+            headers: {
+                "Authorization": user.Aa,
+            },
+        })
+            .then(response => response.json())
+            .then(data => {
+                console.log(data.items);
+                // setUserList(data.tables)
+            }
+        ).catch((error) => {
+            console.log(error);
+        });
+    }, []);
+
     const pageTitleContainer = {
         mb: 3,
         textAlign: { xs: 'center', sm: 'center', md: 'left', lg: 'left', lx: 'left' }
