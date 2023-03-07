@@ -10,14 +10,19 @@ function App() {
   const { setOrderId, setTableNumber, setMenuItems, setCategoryItems, setOrderedItems } = useStore();
 
   useEffect(() => {
-    const orderId = queryParams.get('order_id');
+    document.title = 'Menu';
+    setOrderId(queryParams.get('order_id') || localStorage.getItem("order_id"));
+  }, []);
 
-    fetch(`${process.env.REACT_APP_BACKEND_URL}/orders/${orderId}`)
+  useEffect(() => {
+    const order_id = queryParams.get('order_id') || localStorage.getItem('order_id');
+
+    fetch(`${process.env.REACT_APP_BACKEND_URL}/orders/${order_id}`)
       .then((response) => response.json())
       .then((data) => {
         if (data.success) {
-          setOrderId(orderId);
-          localStorage.setItem("order_id", orderId);
+          setOrderId(order_id);
+          localStorage.setItem("order_id", order_id);
           setTableNumber(data.session.table_number);
         }
       }
@@ -29,8 +34,7 @@ function App() {
   React.useEffect(() => {
     const socket = socketIOClient(process.env.REACT_APP_BACKEND_URL);
     // Send the order_id to the server
-    socket.emit("sendOrderId", queryParams.get('order_id'));
-    setOrderId(queryParams.get('order_id'));
+    socket.emit("sendOrderId", queryParams.get('order_id') || localStorage.getItem("order_id"));
 
     //listen for real-time updates from the server menu
     socket.on("menu-update", (data) => {
@@ -39,7 +43,7 @@ function App() {
     });
 
     // Listen for real-time updates from the server
-    socket.on(`${queryParams.get('order_id')}-orders-update`, (data) => {
+    socket.on(`${queryParams.get('order_id') || localStorage.getItem("order_id")}-orders-update`, (data) => {
       setOrderedItems(data.items);
       console.log("orders update: ", data.items);
     });
