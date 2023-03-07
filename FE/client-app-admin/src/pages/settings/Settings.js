@@ -1,5 +1,4 @@
 import React from 'react';
-import { UserList } from './data/Users';
 import { useStore } from '../../store/store';
 
 import Grid2 from '@mui/material/Unstable_Grid2/Grid2';
@@ -16,8 +15,7 @@ import UpdateUserModal from '../../global/modals/UpdateUserModal';
 
 function Settings() {
     const { user } = useStore();
-
-    // const [UserList, setUserList] = useStore([]);
+    const [UserList, setUserList] = React.useState([]);
 
     React.useEffect(() => {
         document.title = 'Settings';
@@ -30,8 +28,8 @@ function Settings() {
         })
             .then(response => response.json())
             .then(data => {
-                console.log(data.items);
-                // setUserList(data.tables)
+                console.log("tables", data.tables);
+                setUserList(data.tables)
             }
         ).catch((error) => {
             console.log(error);
@@ -116,7 +114,7 @@ function Settings() {
                                                 <Avatar />
                                             </Grid2>
                                             <Grid2 item>
-                                                <GlobalBlackHeader6 text={'Table ' + userList.tableName.toUpperCase()} />
+                                                <GlobalBlackHeader6 text={userList.table_name.toUpperCase()} />
                                             </Grid2>
                                         </Grid2>
                                     </Grid2>
@@ -124,12 +122,12 @@ function Settings() {
                                         <Grid2 container justifyContent='flex-end'>
                                             <Grid2 item>
                                                 <IconButton>
-                                                    <DeleteUserModal sx={actionIcon} context={`Are you sure do you want to delete Table ${userList.tableName.toUpperCase()}?`} message={`Delete Table ${userList.tableName.toUpperCase()}`} />
+                                                    <DeleteUserModal tableName={userList.table_name} sx={actionIcon} context={`Are you sure do you want to delete Table ${userList.table_name.toUpperCase()}?`} message={`Delete Table ${userList.table_name.toUpperCase()}`} />
                                                 </IconButton>
                                             </Grid2>
                                             <Grid2 item>
                                                 <IconButton>
-                                                    <UpdateUserModal sx={actionIcon} title={`Update Table ${userList.tableName.toUpperCase()}`} defaultName={userList.tableName.toUpperCase()} />
+                                                    <UpdateUserModal tableName={userList.table_name} sx={actionIcon} title={`Update Table ${userList.table_name.toUpperCase()}`} defaultName={userList.table_name.toUpperCase()} />
                                                 </IconButton>
                                             </Grid2>
                                         </Grid2>

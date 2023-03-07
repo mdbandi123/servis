@@ -1,4 +1,5 @@
 import * as React from 'react';
+import { useStore } from '../../store/store';
 
 import { Box, Slide } from '@mui/material';
 import { Dialog, DialogActions, DialogContent, DialogContentText, DialogTitle, IconButton } from '@mui/material/';
@@ -18,6 +19,7 @@ const Transition = React.forwardRef(function Transition(props, ref) {
 });
 
 function DeleteUserModal(props) {
+    const { user } = useStore();
     const [openModal, setOpenModal] = React.useState(false);
 
     const deleteHandler = () => {
@@ -29,6 +31,22 @@ function DeleteUserModal(props) {
     };
 
     const confirmDeleteHandler = () => {
+        fetch(`${process.env.REACT_APP_BACKEND_URL}/tables/delete/${props.tableName}`, {
+            method: 'DELETE',
+            headers: {
+                'Authorization': user.Aa
+            }
+        })
+            .then(res => res.json())
+            .then(data => {
+                if (data.success) {
+                    console.log(data.message);
+                }
+            })
+            .catch(err => console.log(err));
+
+
+
         setOpenModal(false);
     };
 

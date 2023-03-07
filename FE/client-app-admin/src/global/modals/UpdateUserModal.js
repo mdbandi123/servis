@@ -1,5 +1,6 @@
 import * as React from 'react';
 import Grid2 from '@mui/material/Unstable_Grid2/Grid2';
+import { useStore } from '../../store/store';
 
 import { Box, Slide } from '@mui/material';
 import { IconButton } from '@mui/material/';
@@ -17,7 +18,10 @@ const Transition = React.forwardRef(function Transition(props, ref) {
 });
 
 function UpdateUserModal(props) {
+    const { user } = useStore();
     const [openUpdateItemModal, setOpenUpdateItemModal] = React.useState(false);
+
+    const [newTableName, setNewTableName] = React.useState('');
 
     const ItemUpdateHandler = () => {
         setOpenUpdateItemModal(true);
@@ -28,7 +32,22 @@ function UpdateUserModal(props) {
     };
 
     const confirmItemUpdateHandler = () => {
-        setOpenUpdateItemModal(false);
+    fetch(`${process.env.REACT_APP_BACKEND_URL}/tables/update/${props.tableName}`, {
+            method: 'PUT',
+            headers: {
+                'Content-Type': 'application/json',
+                'Authorization': user.Aa
+            },
+            body: JSON.stringify({
+                new_table_name: newTableName,
+            })
+        }).then(response => response.json())
+            .then(data => {
+                console.log(data.message);
+                setOpenUpdateItemModal(false);
+            }).catch((error) => {
+                console.log(error);
+            });
     };
 
     const closeIconButton = {
@@ -58,7 +77,7 @@ function UpdateUserModal(props) {
                     <DialogContentText id='alert-dialog-slide-description'>
                         <Grid2 container spacing={2}>
                             <Grid2 item xs={12} sm={12} md={12} lg={12} lx={12}>
-                                <TextField id='outlined-textarea' color='primary' type='text' label='User Name' defaultValue={props.defaultName} placeholder='Enter User Name' variant='filled' fullWidth />
+                                <TextField id='outlined-textarea' color='primary' type='text' label='User Name' defaultValue={props.defaultName} placeholder='Enter User Name' variant='filled' fullWidth onChange={(e) => setNewTableName(e.target.value)} />
                             </Grid2>
                         </Grid2>
                     </DialogContentText>
