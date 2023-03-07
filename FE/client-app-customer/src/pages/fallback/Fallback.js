@@ -37,7 +37,7 @@ function Fallback() {
                         <HourglassDisabledRoundedIcon sx={sessionExpiredIcon} />
                     </Grid2>
                     <Grid2 item xs={12} sm={12} md={12} lg={12} lx={12}>
-                        <GlobalBlackHeader5 text='Your Session Has Expired' />
+                        <GlobalBlackHeader5 text='Your Session is Invalid or Expired' />
                     </Grid2>
                     <Grid2 item xs={12} sm={12} md={12} lg={12} lx={12}>
                         <GlobalGreyBody2 text={`Try scanning a new QR Code to access again.`} />

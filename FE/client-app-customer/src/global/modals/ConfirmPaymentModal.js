@@ -1,5 +1,6 @@
 import * as React from 'react';
 import store from '../../store/store';
+import { useNavigate } from 'react-router-dom';
 
 import { Dialog, DialogActions, DialogContent, DialogContentText, DialogTitle, Slide } from '@mui/material/';
 
@@ -16,6 +17,9 @@ const Transition = React.forwardRef(function Transition(props, ref) {
 function ConfirmPaymentModal(props) {
     const [openConfirmModal, setOpenConfirmModal] = React.useState(false);
     const order_id = store((state) => state.order_id);
+    const { setOrderId } = store();
+
+    const navigate = useNavigate();
 
     const confirmHandler = () => {
         setOpenConfirmModal(true);
@@ -34,6 +38,9 @@ function ConfirmPaymentModal(props) {
                 .then((data) => {
                     console.log(data.message);
                     setOpenConfirmModal(false);
+                    localStorage.removeItem('order_id');
+                    setOrderId(null)
+                    navigate('/');
                 }
             ).catch((error) => {
                 console.log(error);

@@ -19,13 +19,15 @@ import GlobalGreyBody2 from '../../global/typographies/bodies/GreyBody2';
 import store from '../../store/store';
 
 function Cart() {
-    const {setOrderedItems} = store.getState();
-    const orderedItems = store((state) => state.orderedItems);
-    const CartList = orderedItems
+    const { setCartItems } = store.getState();
+    const cartItems = store((state) => state.cartItems);
+    const CartList = cartItems || [];
     const order_id = store((state) => state.order_id);
 
+    console.log("cartItems", cartItems);
+
     React.useEffect(() => {
-        fetch(`${process.env.REACT_APP_BACKEND_URL}/order_items/cart/${order_id}`,
+        fetch(`${process.env.REACT_APP_BACKEND_URL}/order_items/cart/${order_id || localStorage.getItem("order_id")}`,
             {
                 method: 'GET',
                 headers: {
@@ -34,12 +36,8 @@ function Cart() {
             })
             .then((response) => response.json())
             .then((data) => {
-                if (data.success) {
-                    console.log(data.items);
-                    setOrderedItems(data.items);
-                } else {
-                    console.log(data.error);
-                }
+                console.log(data);
+                setCartItems(data.items);
             }
         ).catch((error) => {
             console.log(error);
@@ -54,7 +52,7 @@ function Cart() {
                     'Content-Type': 'application/json',
                 },
                 body: JSON.stringify({
-                    order_id: order_id,
+                    order_id: order_id || localStorage.getItem("order_id"),
                     quantity: current_quantity+1,
                     item_id: item_id
                 })
@@ -80,7 +78,7 @@ function Cart() {
                     'Content-Type': 'application/json',
                 },
                 body: JSON.stringify({
-                    order_id: order_id,
+                    order_id: order_id || localStorage.getItem("order_id"),
                     quantity: current_quantity-1,
                     item_id: item_id
                 })

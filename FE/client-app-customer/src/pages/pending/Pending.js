@@ -17,11 +17,14 @@ import GlobalBlackHeader6 from '../../global/typographies/headers/BlackHeader6';
 
 function Pending() {
     const order_id = store((state) => state.order_id);
+    const { orderedItems,setOrderedItems } = store();
     
-    const [pendingItems, setPendingItems] = useState([]);
+    const pendingItems = orderedItems.filter((item) => item.status !== 'served');
+
+    console.log(orderedItems);
 
     React.useEffect(() => {
-        fetch(`${process.env.REACT_APP_BACKEND_URL}/order_items/items/${order_id}`,
+        fetch(`${process.env.REACT_APP_BACKEND_URL}/order_items/items/${order_id || localStorage.getItem("order_id")}`,
             {
                 method: 'GET',
                 headers: {
@@ -31,7 +34,8 @@ function Pending() {
             .then((response) => response.json())
             .then((data) => {
                 if (data.success) {
-                    setPendingItems(data.items);
+                    console.log(data.items);
+                    setOrderedItems(data.items);
                 } else {
                     console.log(data.error);
                 }
@@ -121,7 +125,7 @@ function Pending() {
                             </Grid2>
                             <Grid2 container direction='row' >
                                 <Grid2 item alignSelf='center' xs={5} sm={8} md={9} lg={10} lx={10}>
-                                    <GlobalGreyBody2 text='Quantity: 1' />
+                                    <GlobalGreyBody2 text={`Quantity: ${cartList.quantity}`} />
                                 </Grid2>
                                 <Grid2 item xs={7} sm={4} md={3} lg={2} lx={2}>
                                     <Stack direction='row' justifyContent='flex-end' alignItems='center'>

@@ -63,6 +63,7 @@ function Generate() {
             }
         }).then(response => response.json())
         .then(data => {
+            console.log(data);
             setUrl(data.url);
             setOpenConfirmModal(false);
         }

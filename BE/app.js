@@ -38,27 +38,34 @@ app.use("/tables", tables_routes);
 
 // Listen for real time updates in orders collection based on order_id/session
 io.on("connection", (socket) => {
-    console.log("New connection");
     socket.on("sendOrderId", async (order_id) => {
-        console.log("Table Order_Id: " + order_id);
+        console.log("New connection from Table Order_Id: " + order_id);
         socket.join(order_id);
         try {
             const changeStream = order_model.watch();
             changeStream.on("change", async (data) => {
                 try {
                     record = await order_model.find({ order_id: order_id });
-                    const list = [];
+ 
+                    const orderedList = [];
+                    const cartList = [];
                     record.forEach((order) => {
-                        order.cart_items.forEach((item) => {
+                        order.ordered_items.forEach((item) => {
                             item.table_number = order.table_number;
-                            list.push(item);
+                            orderedList.push(item);
                         });
                     });
 
-                    // emit the list to the client
-                    console.log(list);
+                    record.forEach((order) => {
+                        order.cart_items.forEach((item) => {
+                            item.table_number = order.table_number;
+                            cartList.push(item);
+                        });
+                    });
+
                     io.to(order_id).emit(`${order_id}-orders-update`, {
-                        items: list,
+                        ordered_items: orderedList,
+                        cart_items: cartList,
                     });
                 } catch (error) {
                     console.log(error);
@@ -72,6 +79,7 @@ io.on("connection", (socket) => {
         console.log("Client disconnected");
     });
 });
+
 
 // Listen for real-time updates in the orders collection
 const orders_stream = order_model.watch();

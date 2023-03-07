@@ -38,7 +38,7 @@ function Payment() {
     const rowItem = orderedItems
 
     React.useEffect(() => {
-        fetch(`${process.env.REACT_APP_BACKEND_URL}/order_items/items/${order_id}`,
+        fetch(`${process.env.REACT_APP_BACKEND_URL}/order_items/items/${order_id || localStorage.getItem("order_id")}`,
             {
                 method: 'GET',
                 headers: {

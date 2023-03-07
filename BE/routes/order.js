@@ -69,10 +69,15 @@ route.post("/create/:table_number", auth, async (req, res) => {
         is_paid: false,
     });
 
+    console.log(table_in_use);
+
     if (table_in_use) {
         return res
-            .status(400)
-            .send({ error: "Table number is already in use." });
+            .status(200)
+            .send({ 
+            message: "order exists",
+            url: "https://servis-henna.vercel.app/?order_id=" + table_in_use.order_id
+        });
     }
 
     const order_session = new orders({

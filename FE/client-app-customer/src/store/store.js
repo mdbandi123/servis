@@ -9,6 +9,8 @@ const useStore = create((set) => ({
     setCategoryItems: (categories) => set({ CategoryData: categories }),
     orderedItems: [],
     setOrderedItems: (orders) => set({ orderedItems: orders }),
+    cartItems: [],
+    setCartItems: (cartItems) => set({ cartItems: cartItems }),
     menuItems: [],
     setMenuItems: (menuItems) => set({ menuItems: menuItems }),
 }));
