@@ -2,6 +2,10 @@ const express = require("express");
 const mongoose = require("mongoose");
 const auth = require("../middlewares/auth");
 
+const json2csv = require("json2csv").parse;
+const fs = require("fs");
+const path = require("path");
+
 const menu_model = require("../models/menu").menu_model;
 const order_model = require("../models/order").order_model;
 const ordered_item = require("../models/order").ordered_item_model;
@@ -93,6 +97,64 @@ route.get("/archive", auth, async (req, res) => {
         res.status(400).json({ success: false, message: error.message });
     }
 });
+
+// retrieve all items on all tables where is_paid is true and within the date range and export to csv
+route.get("/archive-csv", async (req, res) => {
+    try {
+        const start_date = req.query.start_date;
+        const end_date = req.query.end_date;
+
+        const order = await order_model.find({
+            is_paid: true,
+            session_start: { $gte: new Date(start_date), $lte: new Date(end_date) },
+        }).lean();
+        if (!order) {
+            return res
+                .status(404)
+                .json({ success: false, message: "Order not found" });
+        }
+        const items = [];
+        order.forEach((order) => {
+            order.ordered_items.forEach((item) => {
+                item.table_number = order.table_number;
+                item.order_id = order.order_id;
+                item.session_start = order.session_start;
+                item.item_price = JSON.parse(JSON.stringify(item.item_price)).$numberDecimal
+                items.push(item);
+            });
+        });
+
+        const fields = [
+            "table_number",
+            "order_id",
+            "item_name",
+            "quantity",
+            "item_price",
+            "session_start",
+        ];
+        const opts = { fields };
+        try {
+            const csv = json2csv(items, opts);
+            await fs.promises.writeFile('archive.csv', csv, function (err) {
+                if (err) return console.error(err);
+                console.log("Data written to file");
+            });
+        } catch (err) {
+            console.error(err);
+        }
+
+        res.sendFile(path.resolve(__dirname, "../archive.csv"), function (err) {
+            if (err) {
+                console.error(err);
+                return res.status(500).send(err.message);
+            }
+        });
+
+    } catch (error) {
+        res.status(400).json({ success: false, message: error.message });
+    }
+});
+
 
 // retrieves all items in the order of the CURRENT session (body payload: order_id)
 route.get("/items/:order_id", async (req, res) => {
