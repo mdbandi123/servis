@@ -6,7 +6,7 @@ import { Box, Slide } from '@mui/material';
 import { IconButton, Button } from '@mui/material/';
 import { Dialog, DialogActions, DialogContent, DialogContentText, DialogTitle } from '@mui/material/';
 import { Stack, TextField } from '@mui/material/';
-import { grey } from '@mui/material/colors';
+import { grey, indigo } from '@mui/material/colors';
 import CloseIcon from '@mui/icons-material/Close';
 import FileUploadIcon from '@mui/icons-material/FileUpload';
 import InsertPhotoIcon from '@mui/icons-material/InsertPhoto';
@@ -119,6 +119,14 @@ function CreateCategModal(props) {
         color: grey[500]
     };
 
+    const uploadButton = {
+        backgroundColor: indigo[800],
+        '&:hover': {
+            backgroundColor: indigo[900],
+            transition: '0.5s'
+        }
+    }
+
     return (
         <React.Fragment>
             <GlobalBlueContainedButton text='Create' onClick={ CategCreateHandler } />
@@ -141,7 +149,7 @@ function CreateCategModal(props) {
                                         <GlobalGreyBody1 text='Upload Category Image' />
                                     </Box>
                                     <Box>
-                                        <Button variant='contained' component='label' startIcon={ <FileUploadIcon /> }>
+                                        <Button sx={uploadButton} variant='contained' component='label' startIcon={ <FileUploadIcon /> }>
                                             Upload <input hidden accept='image/*' multiple type='file' onChange={(e) => setCategoryImage(e.target.files[0])}/>
                                         </Button>
                                     </Box>
@@ -150,7 +158,7 @@ function CreateCategModal(props) {
                             <Grid2 item xs={12} sm={12} md={12} lg={12} lx={12}>
                                 <Stack spacing={1}>
                                     <Box>
-                                        <TextField id='outlined-textarea' color='primary' type='text' label='Name' placeholder='Enter Category Name' variant='filled' onChange={(e)=>{
+                                        <TextField id='outlined-textarea' color='warning' type='text' label='Name' placeholder='Enter Category Name' variant='filled' onChange={(e)=>{
                                             setCategoryName(e.target.value);
                                         }} fullWidth />
                                     </Box>

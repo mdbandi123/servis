@@ -1,6 +1,6 @@
 import * as React from 'react';
 import { Backdrop, CircularProgress } from '@mui/material/';
-import { pink } from '@mui/material/colors';
+import { orange } from '@mui/material/colors';
 
 function Loading() {
     const backDrop = {
@@ -9,7 +9,7 @@ function Loading() {
     };
 
     const loadingProgressIcon = {
-        color: pink[500]
+        color: orange[600]
     };
 
     return (

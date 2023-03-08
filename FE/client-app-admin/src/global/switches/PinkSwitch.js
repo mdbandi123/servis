@@ -2,7 +2,7 @@ import * as React from "react";
 
 import { styled } from "@mui/material/styles";
 import { Switch } from "@mui/material/";
-import { pink, grey } from "@mui/material/colors";
+import { teal, grey } from "@mui/material/colors";
 
 const CustomSwitch = styled((props) => (
     <Switch
@@ -20,9 +20,9 @@ const CustomSwitch = styled((props) => (
         transitionDuration: "300ms",
         "&.Mui-checked": {
             transform: "translateX(16px)",
-            color: pink[500],
+            color: teal[500],
             "& + .MuiSwitch-track": {
-                backgroundColor: pink[200],
+                backgroundColor: teal[200],
                 opacity: 1,
                 border: 0,
             },

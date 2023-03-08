@@ -7,7 +7,7 @@ import { IconButton, Button } from '@mui/material/';
 import { Dialog, DialogActions, DialogContent, DialogContentText, DialogTitle } from '@mui/material/';
 import { Stack, TextField } from '@mui/material/';
 import { CardMedia, Card } from '@mui/material/';
-import { grey } from '@mui/material/colors';
+import { grey, indigo } from '@mui/material/colors';
 import CloseIcon from '@mui/icons-material/Close';
 import FileUploadIcon from '@mui/icons-material/FileUpload';
 
@@ -110,9 +110,13 @@ function UpdateCategModal(props) {
         display: 'flex'
     };
 
-    const disableItem = {
-        color: grey[900]
-    };
+    const uploadButton = {
+        backgroundColor: indigo[800],
+        '&:hover': {
+            backgroundColor: indigo[900],
+            transition: '0.5s'
+        }
+    }
 
     return (
         <React.Fragment>
@@ -137,7 +141,7 @@ function UpdateCategModal(props) {
                                         </Card>
                                     </Box>
                                     <Box>
-                                        <Button variant='contained' component='label' startIcon={ <FileUploadIcon /> }>
+                                        <Button sx={uploadButton} variant='contained' component='label' startIcon={ <FileUploadIcon /> }>
                                             Upload <input hidden accept='image/*' onChange={(e) => setImage(e.target.files[0])} multiple type='file' />
                                         </Button>
                                     </Box>
@@ -146,7 +150,7 @@ function UpdateCategModal(props) {
                             <Grid2 item xs={12} sm={12} md={12} lg={12} lx={12}>
                                 <Stack spacing={1}>
                                     <Box>
-                                        <TextField id='outlined-textarea' defaultValue={ props.value } color='primary' type='text' label='Name' onChange={(e) => setCategoryName(e.target.value)} placeholder='Enter Category Name' variant='filled' fullWidth />
+                                        <TextField id='outlined-textarea' defaultValue={ props.value } color='warning' type='text' label='Name' onChange={(e) => setCategoryName(e.target.value)} placeholder='Enter Category Name' variant='filled' fullWidth />
                                     </Box>
                                 </Stack>
                             </Grid2>

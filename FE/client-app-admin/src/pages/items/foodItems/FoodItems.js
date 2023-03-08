@@ -7,6 +7,7 @@ import { CardActions, CardMedia, CardContent, Card } from "@mui/material/";
 import FolderOffTwoToneIcon from "@mui/icons-material/FolderOffTwoTone";
 
 import GlobalPurpleHeader4 from "../../../global/typographies/headers/PurpleHeader4";
+import GlobalPurpleHeader6 from "../../../global/typographies/headers/PurpleHeader6";
 import GlobalBlackHeader6 from "../../../global/typographies/headers/BlackHeader6";
 import GlobalGreyBody2 from "../../../global/typographies/bodies/GreyBody2";
 import GlobalPinkHeader6 from "../../../global/typographies/headers/PinkHeader6";
@@ -99,11 +100,11 @@ function FoodItems() {
                                 image={`${process.env.REACT_APP_BACKEND_URL}${foodItemList.image}`}
                             />
                             <CardContent>
-                                <GlobalBlackHeader6 text={foodItemList.name} />
+                                <GlobalPurpleHeader6 text={foodItemList.name} />
                                 <GlobalGreyBody2
                                     text={foodItemList.category_name}
                                 />
-                                <GlobalPinkHeader6
+                                <GlobalBlackHeader6
                                     text={foodItemList.price.$numberDecimal}
                                 />
                             </CardContent>

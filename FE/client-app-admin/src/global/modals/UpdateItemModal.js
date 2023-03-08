@@ -20,7 +20,7 @@ import GlobalBlackHeader5 from "../typographies/headers/BlackHeader5";
 import GlobalRedTextButton from "../buttons/text/RedTextButton";
 import GlobalBlueTextButton from "../buttons/text/BlueTextButton";
 import GlobalPinkSwitch from "../switches/PinkSwitch";
-import { grey } from "@mui/material/colors";
+import { grey, indigo } from "@mui/material/colors";
 
 const Transition = React.forwardRef(function Transition(props, ref) {
     return <Slide direction="up" ref={ref} {...props} />;
@@ -149,6 +149,14 @@ function UpdateItemModal(props) {
         color: grey[900],
     };
 
+    const uploadButton = {
+        backgroundColor: indigo[800],
+        '&:hover': {
+            backgroundColor: indigo[900],
+            transition: '0.5s'
+        }
+    }
+
     return (
         <React.Fragment>
             <GlobalBlueTextButton text="Update" onClick={ItemUpdateHandler} />
@@ -194,6 +202,7 @@ function UpdateItemModal(props) {
                                     </Box>
                                     <Box>
                                         <Button
+                                            sx={uploadButton}
                                             variant="contained"
                                             component="label"
                                             startIcon={<FileUploadIcon />}
@@ -216,7 +225,7 @@ function UpdateItemModal(props) {
                                         <TextField
                                             id="outlined-textarea"
                                             defaultValue={props.valueName}
-                                            color="primary"
+                                            color="warning"
                                             type="text"
                                             label="Name"
                                             placeholder="Enter Food Name"
@@ -231,7 +240,7 @@ function UpdateItemModal(props) {
                                         <TextField
                                             id="outlined-textarea"
                                             defaultValue={props.valuePrice}
-                                            color="primary"
+                                            color="warning"
                                             type="number"
                                             label="Price"
                                             placeholder="Enter Food Price"
@@ -246,7 +255,7 @@ function UpdateItemModal(props) {
                                         <TextField
                                             id="filled-select-currency"
                                             defaultValue={props.valueCateg}
-                                            color="primary"
+                                            color="warning"
                                             label="Category"
                                             helperText="Select Category"
                                             variant="filled"

@@ -6,7 +6,7 @@ import { Box, Slide } from '@mui/material';
 import { IconButton, Button } from '@mui/material/';
 import { Dialog, DialogActions, DialogContent, DialogContentText, DialogTitle } from '@mui/material/';
 import { Stack, TextField, MenuItem } from '@mui/material/';
-import { grey } from '@mui/material/colors';
+import { grey, indigo } from '@mui/material/colors';
 import CloseIcon from '@mui/icons-material/Close';
 import FileUploadIcon from '@mui/icons-material/FileUpload';
 import InsertPhotoIcon from '@mui/icons-material/InsertPhoto';
@@ -139,6 +139,14 @@ function CreateItemModal() {
         color: grey[500]
     };
 
+    const uploadButton = {
+        backgroundColor: indigo[800],
+        '&:hover': {
+            backgroundColor: indigo[900],
+            transition: '0.5s'
+        }
+    }
+
     return (
         <React.Fragment>
             <GlobalBlueContainedButton text='Create' onClick={ ItemCreateHandler } />
@@ -161,7 +169,7 @@ function CreateItemModal() {
                                         <GlobalGreyBody1 text='Upload Item Image' />
                                     </Box>
                                     <Box>
-                                        <Button variant='contained' component='label' startIcon={ <FileUploadIcon /> }>
+                                        <Button sx={ uploadButton } variant='contained' component='label' startIcon={ <FileUploadIcon /> }>
                                             Upload <input hidden accept='image/*' onChange={(e) => setItemImage(e.target.files[0])} multiple type='file' />
                                         </Button>
                                     </Box>
@@ -170,13 +178,13 @@ function CreateItemModal() {
                             <Grid2 item xs={12} sm={12} md={6} lg={6} lx={6}>
                                 <Stack spacing={1}>
                                     <Box>
-                                        <TextField id='outlined-textarea' color='primary' type='text' label='Name' placeholder='Enter Food Name' onChange={(e) => setItemName(e.target.value)} variant='filled' fullWidth />
+                                        <TextField id='outlined-textarea' color="warning" type='text' label='Name' placeholder='Enter Food Name' onChange={(e) => setItemName(e.target.value)} variant='filled' fullWidth />
                                     </Box>
                                     <Box>
-                                        <TextField id='outlined-textarea' color='primary' type='number' label='Price' placeholder='Enter Food Price' onChange={(e) => setItemPrice(e.target.value)} variant='filled' fullWidth />
+                                        <TextField id='outlined-textarea' color="warning" type='number' label='Price' placeholder='Enter Food Price' onChange={(e) => setItemPrice(e.target.value)} variant='filled' fullWidth />
                                     </Box>
                                     <Box>
-                                        <TextField id='filled-select-currency' color='primary' label='Category' helperText='Select Category' variant='filled' onChange={(e) => {setItemCategory(e.target.value)}} fullWidth select>
+                                        <TextField id='filled-select-currency' color="warning" label='Category' helperText='Select Category' variant='filled' onChange={(e) => {setItemCategory(e.target.value)}} fullWidth select>
                                             {CategoryData.map((selectCateg) => (
                                                 <MenuItem key={ selectCateg.category_name } value={ selectCateg.category_name }>
                                                     { selectCateg.category_name }

@@ -3,6 +3,7 @@ import firebase from "firebase/app";
 import "firebase/auth";
 import {useNavigate} from 'react-router-dom';
 
+import { teal } from "@mui/material/colors";
 import Grid2 from "@mui/material/Unstable_Grid2/Grid2";
 import { Box, Stack } from "@mui/material/";
 import { IconButton } from "@mui/material/";
@@ -78,7 +79,7 @@ function SignIn() {
   };
 
   const signUpContainer = {
-    backgroundColor: "#506AD8D9",
+    backgroundColor: teal[600],
     height: { xs: "50vh", sm: "50vh", md: "100vh", lg: "100vh", lx: "100vh" },
   };
 
@@ -103,7 +104,7 @@ function SignIn() {
               <Box>
                 <TextField
                   id="outlined-textarea"
-                  color="primary"
+                  color="warning"
                   type="email"
                   label="Email"
                   placeholder="Enter your Email"
@@ -115,11 +116,11 @@ function SignIn() {
               </Box>
               <Box>
                 <FormControl variant="filled" fullWidth>
-                  <InputLabel htmlFor="filled-adornment-password">
+                  <InputLabel color="warning" htmlFor="filled-adornment-password">
                     Password
                   </InputLabel>
                   <FilledInput
-                    color="primary"
+                    color="warning"
                     placeholder="Enter your password"
                     id="filled-adornment-password"
                     type={showPassword ? "text" : "password"}

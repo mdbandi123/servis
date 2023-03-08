@@ -5,7 +5,7 @@ import Grid2 from '@mui/material/Unstable_Grid2/Grid2';
 import { Box, Slide, Stack, Card, CardActionArea, Paper, IconButton } from '@mui/material';
 import { Dialog, DialogActions, DialogContent, DialogContentText, DialogTitle, ListItem, Avatar, ListItemAvatar } from '@mui/material/';
 import { DragDropContext, Draggable, Droppable } from 'react-beautiful-dnd';
-import { purple, blue, grey, red, green, yellow, orange } from '@mui/material/colors';
+import { purple, blue, grey, red, green, yellow, orange, teal } from '@mui/material/colors';
 import CloseIcon from '@mui/icons-material/Close';
 import CalendarMonthIcon from '@mui/icons-material/CalendarMonth';
 import AccessTimeFilledIcon from '@mui/icons-material/AccessTimeFilled';
@@ -14,7 +14,7 @@ import FindInPageTwoToneIcon from '@mui/icons-material/FindInPageTwoTone';
 
 import GlobalBlackBody1 from '../typographies/bodies/BlackBody1';
 import GlobalBlackHeader5 from '../typographies/headers/BlackHeader5';
-import GlobalBlueTextButton from '../buttons/text/BlueTextButton';
+import GlobalRedTextButton from '../buttons/text/RedTextButton';
 import GlobalBlackHeader6 from '../typographies/headers/BlackHeader6';
 import GlobalBlackBody2 from '../typographies/bodies/BlackBody2';
 import GlobalGreyBody2 from '../typographies/bodies/GreyBody2';
@@ -211,7 +211,7 @@ function ViewOrderModal(props) {
         marginBottom: 0.5,
         minHeight: '50px',
         color: grey[900],
-        borderLeft: `3px solid ` + blue[900],
+        borderLeft: `3px solid ` + teal[800],
         '&:hover': {
             backgroundColor: grey[100],
             Transition: '0.5s'
@@ -341,7 +341,7 @@ function ViewOrderModal(props) {
                         </DialogContentText>
                     </DialogContent>
                     <DialogActions>
-                        <GlobalBlueTextButton text='Close' onClick={cancelViewModalHandler} />
+                        <GlobalRedTextButton text='Close' onClick={cancelViewModalHandler} />
                     </DialogActions>
                 </Dialog>
             </React.Fragment>
@@ -401,7 +401,7 @@ function ViewOrderModal(props) {
                                                                                                 <Grid2 container spacing={2}>
                                                                                                     <Grid2 item xs={12} sm={12} md={12} lg={12} lx={12}>
                                                                                                         <GlobalBlackBody1 text={item.item_name} sx={item_name} />
-                                                                                                        <GlobalBlackBody2 text={`#${item._id.substr(0,9)}`} />
+                                                                                                        <GlobalGreyBody2 text={`#${item._id.substr(0,9)}`} />
                                                                                                     </Grid2>
                                                                                                     <Grid2 item xs={12} sm={12} md={12} lg={12} lx={12}>
                                                                                                         <GlobalGreyBody2 text='06/25/2022 | 03:12:21' sx={orderListDate} />
@@ -429,7 +429,7 @@ function ViewOrderModal(props) {
                     </DialogContentText>
                 </DialogContent>
                 <DialogActions>
-                    <GlobalBlueTextButton text='Close' onClick={ cancelViewModalHandler } />
+                    <GlobalRedTextButton text='Close' onClick={ cancelViewModalHandler } />
                 </DialogActions>
             </Dialog>
         </React.Fragment>

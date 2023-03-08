@@ -2,7 +2,7 @@ import * as React from 'react';
 import { Link, useLocation, Outlet } from 'react-router-dom';
 
 import { styled, useTheme } from '@mui/material/styles';
-import { blue, grey } from '@mui/material/colors';
+import { orange, grey } from '@mui/material/colors';
 import { List, ListItem, ListItemButton, ListItemIcon, ListItemText, Collapse } from '@mui/material/';
 import { CssBaseline, IconButton } from '@mui/material/';
 import { Box, Toolbar, Divider } from '@mui/material/';
@@ -26,11 +26,12 @@ import LogoutIcon from '@mui/icons-material/Logout';
 
 import GlobalWhiteHeader5 from './global/typographies/headers/WhiteHeader5';
 import GlobalPinkBadge from './global/badges/PinkBadge';
+import { Stack } from '@mui/system';
 
 const drawerWidth = 220;
 
 const openedMixin = (theme) => ({
-    backgroundColor: blue[700],
+    backgroundColor: orange[700],
     color: grey[50],
     width: drawerWidth,
     transition: theme.transitions.create('width', {
@@ -41,7 +42,7 @@ const openedMixin = (theme) => ({
 });
 
 const closedMixin = (theme) => ({
-    backgroundColor: blue[700],
+    backgroundColor: orange[700],
     color: grey[50],
     transition: theme.transitions.create('width', {
         easing: theme.transitions.easing.sharp,
@@ -65,7 +66,7 @@ const DrawerHeader = styled('div')(({ theme }) => ({
 const AppBar = styled(MuiAppBar, {
     shouldForwardProp: (prop) => prop !== 'open'
 })(({ theme, open }) => ({
-    backgroundColor: blue[700],
+    backgroundColor: orange[700],
     zIndex: theme.zIndex.drawer + 1,
     transition: theme.transitions.create(['width', 'margin'], {
         easing: theme.transitions.easing.sharp,
@@ -118,10 +119,6 @@ function Navbar() {
         setOpen(false);
     };
 
-    const adminAccount = [
-        { name: 'Admin User',business: 'Business Name', path: '/settings' }
-    ];
-
     const menuList1 = [
         { title: 'Orders List', path: '/' },
         { title: 'Payment', path: '/payment' },
@@ -163,9 +160,9 @@ function Navbar() {
 
     const drawerCloseIcon = {
         color: grey[50],
-        backgroundColor: blue[500],
+        backgroundColor: orange[500],
         '&:hover': {
-            backgroundColor: blue[600],
+            backgroundColor: orange[600],
             transition: '0.5s'
         }
     };
@@ -179,7 +176,7 @@ function Navbar() {
         justifyContent: open ? 'initial' : 'center',
         px: 2.5,
         '&:hover': {
-            backgroundColor: blue[800],
+            backgroundColor: orange[800],
             transition: '0.5s',
         }
     };
@@ -196,9 +193,9 @@ function Navbar() {
     const accordionItemButtonContainer = {
         minHeight: 48, 'initial': 'center', 
         px: 2.5,
-        backgroundColor: blue[800],
+        backgroundColor: orange[800],
         '&:hover': {
-            backgroundColor: blue[900],
+            backgroundColor: orange[900],
             transition: '0.5s',
         }
     };
@@ -216,7 +213,14 @@ function Navbar() {
                     <IconButton sx={ menuIcon } color='inherit' aria-label='open drawer' onClick={ handleDrawerOpen } edge='start'>
                         <MenuIcon />
                     </IconButton>
-                    <GlobalWhiteHeader5 text='Admin Interface'/>
+                    <Stack direction='row' spacing={2} alignItems="center">
+                        <Box>
+                            <AccountCircleIcon sx={{fontSize: '2em'}} />
+                        </Box>
+                        <Box>
+                            <GlobalWhiteHeader5 text='Admin Interface' />
+                        </Box>
+                    </Stack>
                 </Toolbar>
             </AppBar>
             <Drawer variant='permanent' open={ open }>
@@ -225,19 +229,6 @@ function Navbar() {
                         { theme.direction === 'rtl' ? <ChevronRightIcon /> : <ChevronLeftIcon /> }
                     </IconButton>
                 </DrawerHeader>
-                <Divider />
-                <List>
-                    {adminAccount.map((item, index) => (
-                        <ListItem disablePadding sx={ listItemContainer } key={ item.name } component={ Link } to={ item.path } button selected={ item.path === path }>
-                            <ListItemButton sx={ listItemButtonContainer } >
-                                <ListItemIcon sx={ [centerMenuIcons, changeIconsColor] } >
-                                    { index === 0 && <AccountCircleIcon /> }
-                                </ListItemIcon>
-                                <ListItemText sx={ closeItemText } primary={ item.name } />
-                            </ListItemButton>
-                        </ListItem>
-                    ))}
-                </List>
                 <Divider />
                 <List>
                     {menuList1.map((item, index) => (

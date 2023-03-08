@@ -2,19 +2,19 @@ import * as React from 'react';
 
 import Button from '@mui/material/Button';
 import { styled } from '@mui/material/styles';
-import { blue } from '@mui/material/colors';
+import { teal } from '@mui/material/colors';
 
 const ColorButton = styled(Button)(({ theme }) => ({
-    backgroundColor: blue[800],
+    backgroundColor: teal[400],
     '&:hover': {
-        backgroundColor: blue[900],
+        backgroundColor: teal[500],
         transition: '0.5s'
     }
 }));
 
 function GlobalBlueContainedButton(props) {
     return (
-        <ColorButton variant='contained' onClick={ props.onClick } sx={ props.sx }>{props.text}</ColorButton>
+        <ColorButton variant='contained' onClick={props.onClick} sx={props.sx} disabled={props.disabled}>{props.text}</ColorButton>
     );
 };
 

@@ -121,7 +121,7 @@ function Pending() {
                             <Grid2 item>
                                 <GlobalBlackHeader6 text={cartList.item_name} />
                                 <GlobalGreyBody1 text={cartList.item_category} />
-                                <GlobalPinkBody1 text={'$'+cartList.item_price.$numberDecimal} />
+                                <GlobalPinkBody1 text={'₱'+cartList.item_price.$numberDecimal} />
                             </Grid2>
                             <Grid2 container direction='row' >
                                 <Grid2 item alignSelf='center' xs={5} sm={8} md={9} lg={10} lx={10}>

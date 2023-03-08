@@ -2,10 +2,10 @@ import * as React from 'react';
 
 import { styled } from '@mui/material/styles';
 import { Button } from '@mui/material';
-import { blue } from '@mui/material/colors';
+import { indigo } from '@mui/material/colors';
 
 const CustomOutlinedButton = styled(Button)(({ theme }) => ({
-    color: blue[700]
+    color: indigo[700]
 }));
 
 function GlobalBlueOutlinedButton(props) {

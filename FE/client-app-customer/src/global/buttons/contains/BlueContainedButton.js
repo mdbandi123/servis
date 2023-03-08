@@ -2,12 +2,12 @@ import * as React from 'react';
 
 import Button from '@mui/material/Button';
 import { styled } from '@mui/material/styles';
-import { blue } from '@mui/material/colors';
+import { teal } from '@mui/material/colors';
 
 const ColorButton = styled(Button)(({ theme }) => ({
-    backgroundColor: blue[800],
+    backgroundColor: teal[500],
     '&:hover': {
-        backgroundColor: blue[900],
+        backgroundColor: teal[600],
         transition: '0.5s'
     }
 }));

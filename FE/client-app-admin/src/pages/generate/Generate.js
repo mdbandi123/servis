@@ -7,12 +7,17 @@ import Grid2 from '@mui/material/Unstable_Grid2/Grid2';
 import { Avatar, Card, MenuItem, TextField, Stack, Box } from '@mui/material';
 import { Dialog, DialogActions, DialogContent, DialogContentText, DialogTitle, Slide } from '@mui/material/';
 
+import AccountCircleIcon from '@mui/icons-material/AccountCircle';
+
 import GlobalGreyBody1 from '../../global/typographies/bodies/GreyBody1';
+import GlobalGreyBody3 from '../../global/typographies/bodies/GreyBody3';
+import GlobalBlackBody1 from '../../global/typographies/bodies/BlackBody1';
 import GlobalBlueTextButton from '../../global/buttons/text/BlueTextButton';
 import GlobalRedTextButton from '../../global/buttons/text/RedTextButton';
 import GlobalPurpleHeader4 from '../../global/typographies/headers/PurpleHeader4';
 import GlobalBlackHeader5 from '../../global/typographies/headers/BlackHeader5';
 import GlobalBlueContainedButton from '../../global/buttons/contains/BlueContainedButton';
+import { grey } from '@mui/material/colors';
 
 const Transition = React.forwardRef(function Transition(props, ref) {
     return <Slide direction='up' ref={ref} {...props} />;
@@ -76,15 +81,14 @@ function Generate() {
         qrCodeContainer: {
           justifyContent: 'center',
           alignItems: 'center',
-          width: '20%',
+          width: '100%',
           margin: '0 auto',
           textAlign: 'center',
-          fontSize: '10px',
         },
       
         qrCode: {
-          width: '60px',
-          height: '60px',
+          width: '600px',
+          height: '600px'
         },
       };
     
@@ -92,18 +96,25 @@ function Generate() {
         const componentRef = useRef();
       
         return (
-          <div>
-            <div ref={componentRef} style={styles.qrCodeContainer}>
-            <p>{props.table}</p>
-                <QRCode value={props.url} style={styles.qrCode}/>
-                <p>Scan this QR Code to access online ordering on your device.</p>
-            </div>
-            
-            <ReactToPrint
-              trigger={() => <button>Print QR Code</button>}
-              content={() => componentRef.current}
-            />
-          </div>
+          <React.Fragment>
+            <Stack direction='column' spacing={1} ref={componentRef} sx={styles.qrCodeContainer}>
+                <Box>
+                    <GlobalBlackBody1 text={props.table} />
+                </Box>
+                <Box>
+                    <QRCode value={props.url} sx={styles.qrCode} />
+                </Box>
+                <Box>
+                    <GlobalGreyBody3 text='Scan this QR Code to access online ordering on your device.' />
+                </Box>
+                <Box pt={2}>
+                    <ReactToPrint
+                    trigger={() => <GlobalBlueContainedButton text='Print' />}
+                    content={() => componentRef.current}
+                    />
+                </Box>
+            </Stack>
+          </React.Fragment>
         );
       };
 
@@ -130,25 +141,34 @@ function Generate() {
         mb: 2
     };
 
+    const qrCardResult = {
+        height: 450,
+    };
+
+    const userTableIcon = {
+        color: grey[800],
+        fontSize: '2.5em'
+    }
+
     return (
         <React.Fragment>
             <Box sx={pageTitleContainer}>
                 <GlobalPurpleHeader4 text='Generate' />
             </Box>
             <Grid2 container spacing={3}>
-                <Grid2 item xs={12} sm={12} md={4} lg={4} lx={4}>
+                <Grid2 item xs={12} sm={12} md={5} lg={5} lx={5}>
                     <Card sx={ qrCardContainer }>
                         <Stack direction='column' spacing={3}>
                             <Box sx={ qrHeader }>
                                 <GlobalBlackHeader5 text='Create QR Code' />
                             </Box>
                             <Box>
-                                <TextField color='primary' label='User' helperText='Select User' variant='filled' fullWidth select onChange={(e) => setTable(e.target.value)}>
+                                <TextField color='warning' label='User' helperText='Select User' variant='filled' fullWidth select onChange={(e) => setTable(e.target.value)}>
                                     {TableData.map((tableList) => (
                                         <MenuItem key={tableList.table_name} value={tableList.table_name}>
                                             <Stack direction='row' alignItems='center' spacing={1}>
                                                 <Box>
-                                                    <Avatar></Avatar>
+                                                    <AccountCircleIcon sx={userTableIcon} />
                                                 </Box>
                                                 <Box>
                                                     {tableList.table_name}
@@ -164,12 +184,18 @@ function Generate() {
                         </Stack>
                     </Card>
                 </Grid2>
-                <Grid2 item xs={12} sm={12} md={8} lg={8} lx={8}>
-                    <Card sx={qrCardContainer}>
+                <Grid2 item xs={12} sm={12} md={7} lg={7} lx={7}>
+                    <Card sx={[qrCardContainer, qrCardResult]}>
                         <Box sx={qrHeader}>
                             {url && table && <>
-                                <GlobalBlackHeader5 text='Generated QR Code:' />
-                                <QRCodePrinter table={table} url={url}/>
+                                <Stack direction='column' spacing={3}>
+                                    <Box>
+                                        <GlobalBlackHeader5 text='Generated QR Code:' />
+                                    </Box>
+                                    <Box>
+                                        <QRCodePrinter table={table} url={url} />
+                                    </Box>
+                                </Stack>
                             </>}
                         </Box>
                     </Card>

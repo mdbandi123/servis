@@ -77,7 +77,7 @@ function UpdateUserModal(props) {
                     <DialogContentText id='alert-dialog-slide-description'>
                         <Grid2 container spacing={2}>
                             <Grid2 item xs={12} sm={12} md={12} lg={12} lx={12}>
-                                <TextField id='outlined-textarea' color='primary' type='text' label='User Name' defaultValue={props.defaultName} placeholder='Enter User Name' variant='filled' fullWidth onChange={(e) => setNewTableName(e.target.value)} />
+                                <TextField id='outlined-textarea' color='warning' type='text' label='User Name' defaultValue={props.defaultName} placeholder='Enter User Name' variant='filled' fullWidth onChange={(e) => setNewTableName(e.target.value)} />
                             </Grid2>
                         </Grid2>
                     </DialogContentText>

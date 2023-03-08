@@ -2,7 +2,7 @@ import React from 'react';
 
 import Grid2 from '@mui/material/Unstable_Grid2/Grid2';
 import { Card, CardMedia, IconButton, Stack, Box } from '@mui/material';
-import { blue, grey } from '@mui/material/colors';
+import { blue, grey, teal } from '@mui/material/colors';
 import AddRoundedIcon from '@mui/icons-material/AddRounded';
 import RemoveRoundedIcon from '@mui/icons-material/RemoveRounded';
 import ExtensionOffIcon from '@mui/icons-material/ExtensionOff';
@@ -117,9 +117,9 @@ function Cart() {
     };
 
     const quantityBtn = {
-        border: '1.5px solid' + blue[600],
+        border: '1.5px solid' + teal[500],
         borderRadius: '50%',
-        color: blue[600]
+        color: teal[500]
     };
 
     const quantityText = {
@@ -217,7 +217,7 @@ function Cart() {
                             </Grid2>
                             <Grid2 container direction='row' >
                                 <Grid2 item alignSelf='center' xs={5} sm={8} md={9} lg={10} lx={10}>
-                                    <GlobalPinkHeader6 text={'$'+cartList.item_price.$numberDecimal} />
+                                    <GlobalPinkHeader6 text={'₱'+cartList.item_price.$numberDecimal} />
                                 </Grid2>
                                 <Grid2 item xs={7} sm={4} md={3} lg={2} lx={2}>
                                     <Stack direction='row' justifyContent='center' alignItems='center'>
@@ -245,7 +245,7 @@ function Cart() {
                     <Box>
                         <GlobalBlackHeader6 sx={ totalMessage } text='Total:' />
                         <GlobalPinkHeader6 sx={ totalAmount } text={
-                            '$' + CartList.reduce((acc, item) => acc + (item.item_price.$numberDecimal * item.quantity), 0).toFixed(2)
+                            '₱' + CartList.reduce((acc, item) => acc + (item.item_price.$numberDecimal * item.quantity), 0).toFixed(2)
                         } />
                     </Box>
                 </Card>

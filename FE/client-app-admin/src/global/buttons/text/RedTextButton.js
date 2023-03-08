@@ -2,10 +2,10 @@ import * as React from 'react';
 
 import { styled } from '@mui/material/styles';
 import { Button } from '@mui/material';
-import { red } from '@mui/material/colors';
+import { deepOrange } from '@mui/material/colors';
 
 const CustomTextButton = styled(Button)(({ theme }) => ({
-    color: red[700]
+    color: deepOrange[700]
 }));
 
 function GlobalRedTextButton(props) {

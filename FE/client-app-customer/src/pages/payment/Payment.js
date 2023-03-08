@@ -6,7 +6,7 @@ import store from '../../store/store';
 import Grid2 from '@mui/material/Unstable_Grid2/Grid2';
 import { Table, TableBody, TableCell, TableContainer, TableHead, TableRow } from '@mui/material/';
 import { Box, Paper } from '@mui/material';
-import { blue, grey } from '@mui/material/colors';
+import { blue, grey, orange } from '@mui/material/colors';
 import { List, ListItem, Radio, RadioGroup } from '@mui/joy/';
 import ExtensionOffIcon from '@mui/icons-material/ExtensionOff';
 
@@ -107,7 +107,7 @@ function Payment() {
     };
 
     const confirmContainer = {
-        mt: 0.5
+        mt: 1
     };
 
     const confirmBtn = {
@@ -115,7 +115,7 @@ function Payment() {
     };
 
     const tableHead = {
-        backgroundColor: blue[700]
+        backgroundColor: orange[700]
     };
 
     const tableRow = {
@@ -198,29 +198,6 @@ function Payment() {
                             </TableBody>
                         </Table>
                     </TableContainer>
-
-                    <Box sx={paymentMethod}>
-                        <GlobalBlackHeader4 text='Payment Method' />
-                    </Box>
-                    <RadioGroup defaultValue='Cash'>
-                        <List sx={paymentMethodList} >
-                            {PaymentMethodList.map((paymentMethod) => (
-                                <ListItem key={paymentMethod.id} sx={paymentMethodListItem} >
-                                    <Radio overlay value={paymentMethod.id} label={<><GlobalBlackBody1 text={paymentMethod.paymentName} /><GlobalGreyBody1 text={paymentMethod.desc} /></>} sx={radioAlignment}
-                                        slotProps={{
-                                            action: ({ checked }) => ({
-                                                sx: (theme) => ({
-                                                    ...(checked && {
-                                                        zIndex: -1, border: '2px solid', borderColor: blue[700]
-                                                    }),
-                                                }),
-                                            }),
-                                        }} />
-                                </ListItem>
-                            ))}
-                        </List>
-                    </RadioGroup>
-
                     <Grid2 container sx={confirmContainer} justifyContent='center'>
                         <Grid2 sx={confirmBtn} item xs={12} sm={12} md={12} lg={12} lx={12}>
                             <ConfirmPaymentModal sx={confirmBtn} text='Bill Out' variant='contained' context={'Are you sure do you want to Bill Out?'} disabled={true} />
@@ -274,27 +251,6 @@ function Payment() {
                         </TableBody>
                     </Table>
                 </TableContainer>
-
-                <Box sx={paymentMethod}>
-                    <GlobalBlackHeader4 text='Payment Method' />
-                </Box>
-                <RadioGroup defaultValue='Cash'>
-                    <List sx={ paymentMethodList } >
-                        {PaymentMethodList.map((paymentMethod) => (
-                            <ListItem key={paymentMethod.id} sx={ paymentMethodListItem } >
-                                <Radio overlay value={paymentMethod.id} label={<><GlobalBlackBody1 text={paymentMethod.paymentName} /><GlobalGreyBody1 text={paymentMethod.desc} /></>} sx={ radioAlignment }
-                                    slotProps={{
-                                        action: ({ checked }) => ({
-                                            sx: (theme) => ({ ...(checked && {  zIndex: -1,  border: '2px solid', borderColor: blue[700]
-                                                }),
-                                            }),
-                                        }),
-                                    }} />
-                            </ListItem>
-                        ))}
-                    </List>
-                </RadioGroup>
-
                 <Grid2 container sx={confirmContainer} justifyContent='center'>
                     <Grid2 sx={confirmBtn} item xs={12} sm={12} md={12} lg={12} lx={12}>
                         <ConfirmPaymentModal sx={confirmBtn} text='Bill Out' variant='contained' context={'Are you sure do you want to Bill Out?'} disabled={false}/>

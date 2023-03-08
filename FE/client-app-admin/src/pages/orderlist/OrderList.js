@@ -6,7 +6,7 @@ import Grid2 from '@mui/material/Unstable_Grid2/Grid2';
 import MuiDrawer from '@mui/material/Drawer';
 import { List, ListItem, ListItemButton, ListItemIcon, ListItemText } from '@mui/material/';
 import { AppBar, Divider, Card, CardContent, Typography, CssBaseline } from '@mui/material';
-import { purple, blue, grey } from '@mui/material/colors';
+import { indigo, teal, grey } from '@mui/material/colors';
 import AccountCircleIcon from '@mui/icons-material/AccountCircle';
 import LocalDiningIcon from '@mui/icons-material/LocalDining';
 import ChevronLeftIcon from '@mui/icons-material/ChevronLeft';
@@ -129,15 +129,16 @@ function OrderList(props) {
     };
 
     const notificationOpenHandler = {
-        backgroundColor: 'rgba(13, 71, 161, 0.4)',
+        backgroundColor: 'rgba(0, 105, 92, 0.4)',
         fontSize: '2em',
-        color: blue[900],
+        color: teal[900],
         borderRadius: '50%',
         textAlign: 'center'
     };
 
     const notificationUserPhoto = {
-        fontSize: '1.7em'
+        fontSize: '2.1em',
+        color: grey[800]
     };
 
     const notificationTitle = {
@@ -146,7 +147,7 @@ function OrderList(props) {
 
     const notificationTitleText = {
         opacity: open ? 1 : 0,
-        color: blue[900],
+        color: teal[900],
         fontSize: '1.5em'
     };
 
@@ -156,11 +157,11 @@ function OrderList(props) {
 
     const notificationUserName = {
         fontSize: '1.1em', 
-        fontWeight: 'bold'
     };
 
     const userTableIcon = {
-        fontSize: '3em'
+        fontSize: '2.6em',
+        color: grey[800]
     };
 
     const orderListCard = {
@@ -173,7 +174,7 @@ function OrderList(props) {
     };
 
     const orderNumberIcon = {
-        color: purple[900]
+        color: indigo[900]
     };
 
     const centerAlignment = {
@@ -188,7 +189,6 @@ function OrderList(props) {
     };
 
     const orderListUsername = {
-        fontWeight: 'bold',
         fontSize: '1.4em'
     };
 
@@ -234,7 +234,7 @@ function OrderList(props) {
                     <Divider />
                     {orderListNotification.map((notificationItem) => (
                         <ListItem disablePadding sx={ notificationListItem } >
-                            <ViewOrderModal orders={notificationItem} title={ notificationItem.userName } userId={ notificationItem.userNameId } sx={{ color: notificationItem.profileTheme, fontSize: '2em' }}>
+                            <ViewOrderModal orders={notificationItem} title={ notificationItem.userName } userId={ notificationItem.userNameId } sx={{ color: grey[800], fontSize: '2em' }}>
                             <ListItemButton sx={ notificationItemButton } >
                                 <ListItemIcon sx={ notificationItemIcon } >
                                         <AccountCircleIcon sx={ [notificationUserPhoto, { color: notificationItem.profileTheme }] } />
@@ -277,11 +277,11 @@ function OrderList(props) {
                             <Grid2 sx={ orderListCard } item xs={12} sm={6} md={6} lg={4} lx={4}>
                                 {console.log(notificationItem)}
                             <Card sx={[{ borderBottom: `4px solid ` + notificationItem.profileTheme }]} >
-                                    <ViewOrderModal orders={notificationItem} title={ notificationItem.table_number } userId={ notificationItem.order_id } sx={{ color: notificationItem.profileTheme, fontSize: '2em' }}>
+                                    <ViewOrderModal orders={notificationItem} title={ notificationItem.table_number } userId={ notificationItem.order_id } sx={{ color: grey[800], fontSize: '2em' }}>
                                 <CardContent>
                                     <Grid2 container spacing={1}>
                                         <Grid2 item> 
-                                            <AccountCircleIcon sx={ [ {color: notificationItem.profileTheme}, userTableIcon] } />
+                                            <AccountCircleIcon sx={ userTableIcon } />
                                         </Grid2>
                                         <Grid2 item xs={12} sm container>
                                             <Grid2 item xs container direction='column' spacing={2}>
@@ -292,7 +292,7 @@ function OrderList(props) {
                                                             <LocalDiningIcon sx={ orderNumberIcon } />
                                                         </GlobalPinkBadge>
                                                     </Stack>
-                                                    <GlobalGreyBody2 text={ notificationItem.order_id } />
+                                                    <GlobalGreyCaption2  text={ notificationItem.order_id } />
                                                 </Grid2>
                                                 <Grid2 item>
                                                     <GlobalGreyCaption1 text={ [new Date(notificationItem.session_start).getMonth() + '-', new Date(notificationItem.session_start).getDate() + '-', new Date(notificationItem.session_start).getFullYear() + ' | ' + new Date(notificationItem.session_start).getHours() + ':' + new Date(notificationItem.session_start).getMinutes() + ':' + new Date(notificationItem.session_start).getSeconds()] } />
@@ -331,7 +331,7 @@ function OrderList(props) {
                             <ViewOrderModal orders={notificationItem} title={ notificationItem.table_number } userId={ notificationItem.order_id } sx={{ color: notificationItem.profileTheme, fontSize: '2em' }}>
                             <ListItemButton sx={notificationItemButton}>
                             <ListItemIcon sx={notificationItemIcon}>
-                                <AccountCircleIcon sx={[notificationUserPhoto, { color: notificationItem.profileTheme }]} />
+                                <AccountCircleIcon sx={[notificationUserPhoto]} />
                             </ListItemIcon>
                             <Stack direction="column" justifyContent="flex-start" spacing={-1}>
                                 <Stack direction="row">

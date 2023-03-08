@@ -2,10 +2,10 @@ import * as React from 'react';
 
 import { styled } from '@mui/material/styles';
 import Typography from '@mui/material/Typography';
-import { purple } from '@mui/material/colors';
+import { indigo } from '@mui/material/colors';
 
 const CustomTypographyHeader2 = styled(Typography)(({ theme }) => ({
-    color: purple[900]
+    color: indigo[900]
 }));
 
 function GlobalPurpleHeader2(props) {

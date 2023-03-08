@@ -2,10 +2,10 @@ import * as React from 'react';
 
 import { styled } from '@mui/material/styles';
 import Typography from '@mui/material/Typography';
-import { pink } from '@mui/material/colors';
+import { teal } from '@mui/material/colors';
 
 const CustomTypographyHeader6 = styled(Typography)(({ theme }) => ({
-    color: pink[500],
+    color: teal[500],
     fontSize: '1.2em'
 }));
 

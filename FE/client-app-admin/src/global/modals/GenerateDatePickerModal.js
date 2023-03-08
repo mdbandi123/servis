@@ -5,7 +5,7 @@ import { Box, Slide } from '@mui/material';
 import { IconButton, Button } from '@mui/material/';
 import { Dialog, DialogActions, DialogContent, DialogContentText, DialogTitle } from '@mui/material/';
 import { Stack, TextField } from '@mui/material/';
-import { grey } from '@mui/material/colors';
+import { orange } from '@mui/material/colors';
 import CloseIcon from '@mui/icons-material/Close';
 import FileUploadIcon from '@mui/icons-material/FileUpload';
 import InsertPhotoIcon from '@mui/icons-material/InsertPhoto';
@@ -50,6 +50,17 @@ function GenerateDatePickerModal(props) {
         display: 'flex'
     };
 
+    const textField = {
+        '& label.Mui-focused': {
+            color: orange[700],
+        },
+        '& .MuiOutlinedInput-root': {
+            '&.Mui-focused fieldset': {
+                borderColor: orange[700],
+            },
+        },
+    }
+
     return (
         <React.Fragment>
             <GlobalBlueContainedButton text='Generate' onClick={GenerateReportHandler} />
@@ -67,12 +78,12 @@ function GenerateDatePickerModal(props) {
                         <Stack direction='row' justifyContent="space-between">
                             <Box>
                                 <LocalizationProvider dateAdapter={AdapterMoment}>
-                                    <DatePicker label="Start" slotProps={{ textField: { helperText: 'MM / DD / YYYY' } }} />
+                                    <DatePicker sx={textField} label="Start" slotProps={{ textField: { helperText: 'MM / DD / YYYY' } }} />
                                 </LocalizationProvider>
                             </Box>
                             <Box>
                                 <LocalizationProvider dateAdapter={AdapterMoment}>
-                                    <DatePicker label="End" slotProps={{ textField: { helperText: 'MM / DD / YYYY' } }} />
+                                    <DatePicker sx={textField} label="End" slotProps={{ textField: { helperText: 'MM / DD / YYYY' } }} />
                                 </LocalizationProvider>
                             </Box>
                         </Stack>

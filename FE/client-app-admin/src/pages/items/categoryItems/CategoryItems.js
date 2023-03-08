@@ -13,6 +13,7 @@ import GlobalGreyBody2 from "../../../global/typographies/bodies/GreyBody2";
 import DeleteItemModal from "../../../global/modals/DeleteItemModal";
 import CreateCategModal from "../../../global/modals/CreateCategModal";
 import UpdateCategModal from "../../../global/modals/UpdateCategModal";
+import GlobalPurpleHeader6 from "../../../global/typographies/headers/PurpleHeader6";
 
 function CategoryItems() {
     const {CategoryData, setCategoryItems} = useStore();
@@ -106,7 +107,7 @@ function CategoryItems() {
                                 image={`${process.env.REACT_APP_BACKEND_URL}${categItemList.category_image}`}
                             />
                             <CardContent>
-                                <GlobalBlackHeader6
+                                <GlobalPurpleHeader6
                                     text={categItemList.category_name}
                                 />
                             </CardContent>

@@ -1,18 +1,19 @@
 import * as React from 'react';
 
-import { grey, pink } from '@mui/material/colors';
+import { styled } from '@mui/material/styles';
+import { grey, teal } from '@mui/material/colors';
 import { Badge } from '@mui/material';
 
-const badgeStyle = {
+const BadgeColor = styled(Badge)(({ theme }) => ({
     '& .MuiBadge-badge': {
         color: grey[50],
-        backgroundColor: pink[500]
+        backgroundColor: teal[400],
     }
-};
+}));
 
 function GlobalPinkBadge(props) {
     return (
-        <Badge sx={[badgeStyle]} badgeContent={props.badgeContent} overlap={props.overlap} max={props.max} variant={props.variant} >{props.children}</Badge>
+        <BadgeColor sx={props.sx} badgeContent={props.badgeContent} overlap={props.overlap} max={props.max} variant={props.variant} >{props.children}</BadgeColor>
     );
 };
 

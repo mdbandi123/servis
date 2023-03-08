@@ -5,6 +5,7 @@ import Grid2 from '@mui/material/Unstable_Grid2/Grid2';
 import { Avatar, Card, CardContent, Box, IconButton } from '@mui/material';
 import { purple, grey } from '@mui/material/colors';
 import AddCircleOutlineRoundedIcon from '@mui/icons-material/AddCircleOutlineRounded';
+import AccountCircleIcon from '@mui/icons-material/AccountCircle';
 
 import GlobalPurpleHeader4 from '../../global/typographies/headers/PurpleHeader4';
 import GlobalBlackHeader5 from '../../global/typographies/headers/BlackHeader5';
@@ -12,6 +13,7 @@ import GlobalBlackHeader6 from '../../global/typographies/headers/BlackHeader6';
 import CreateUserModal from '../../global/modals/CreateUserModal';
 import DeleteUserModal from '../../global/modals/DeleteUserModal';
 import UpdateUserModal from '../../global/modals/UpdateUserModal';
+import GlobalBlackBody1 from '../../global/typographies/bodies/BlackBody1';
 
 function Settings() {
     const { user } = useStore();
@@ -48,8 +50,11 @@ function Settings() {
     };
 
     const settingsContainer = {
-        with: '80%',
-        p: 3,
+        with: '100%',
+        pt: 3,
+        pb: 1,
+        pl: 1,
+        pr: 1,
         backgroundColor: grey[100]
     };
 
@@ -72,6 +77,11 @@ function Settings() {
     const actionAddIcon = {
         color: grey[700],
         fontSize: '1.3em'
+    }
+
+    const tableUserIcon = {
+        color: grey[700],
+        fontSize: '2em'
     }
 
     return (
@@ -111,10 +121,10 @@ function Settings() {
                                     <Grid2 item xs={8} sm={8} md={8} lg={8} lx={8}>
                                         <Grid2 container alignItems="center" spacing={2}>
                                             <Grid2 item>
-                                                <Avatar />
+                                                <AccountCircleIcon sx={tableUserIcon} />
                                             </Grid2>
                                             <Grid2 item>
-                                                <GlobalBlackHeader6 text={userList.table_name.toUpperCase()} />
+                                                <GlobalBlackBody1 sx={{fontSize: '1em', fontWeight: 'bold'}} text={userList.table_name} />
                                             </Grid2>
                                         </Grid2>
                                     </Grid2>

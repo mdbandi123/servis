@@ -1,6 +1,7 @@
 import React from 'react';
 import { useStore } from '../../store/store';
 
+import { grey, teal } from '@mui/material/colors';
 import Box from '@mui/material/Box';
 import Grid2 from '@mui/material/Unstable_Grid2/Grid2';
 import Card from '@mui/material/Card';
@@ -16,6 +17,7 @@ import GlobalGreyBody2 from '../../global/typographies/bodies/GreyBody2';
 import GlobalGreyBody3 from '../../global/typographies/bodies/GreyBody3';
 import ViewPaymentModal from '../../global/modals/ViewPaymentModal';
 import GlobalBlueContainedButton from '../../global/buttons/contains/BlueContainedButton';
+import { Badge } from '@mui/material';
 
 function Payment(props) {
     const { setOrderedItems, user } = useStore();
@@ -53,7 +55,8 @@ function Payment(props) {
     };
 
     const userTableIcon = {
-        fontSize: '4em'
+        fontSize: '4em',
+        color: grey[800]
     }
 
     const centerAlignment = {
@@ -66,6 +69,13 @@ function Payment(props) {
     const noItemIcon = {
         fontSize: '8em'
     };
+
+    const badgePayment = {
+        '& .MuiBadge-badge': {
+            color: teal[400],
+            backgroundColor: teal[400],
+        }
+    }
 
     if (PaymentData.length === 0) {
         return (
@@ -112,16 +122,18 @@ function Payment(props) {
                         userId={paymentList.order_id}
                         orderDate={[month + "/" + day + "/" + year]}
                         orderTime={[hour + ":" + minute]}
-                        sx={{ color: paymentList.userTableColor, fontSize: "2em" }}
+                        sx={{ color: grey[800], fontSize: "3em" }}
                         ordered_items={paymentList.ordered_items}
                     >
                         <CardContent>
                         <Grid2 container sx={userTableProfile}>
-                            <Grid2 item xs={12} sm={12} md={3} lg={3} lx={3}>
-                            <AccountCircleIcon sx={[{ color: paymentList.userTableColor }, userTableIcon]} />
+                            <Grid2 item xs={12} sm={12} md={3} lg={3} lx={3} >
+                                <Badge badgeContent={1} overlap='circular' sx={badgePayment}> 
+                                    <AccountCircleIcon sx={userTableIcon} /> 
+                                </Badge>
                             </Grid2>
                             <Grid2 item xs={12} sm={12} md={9} lg={9} lx={9}>
-                            <GlobalBlackHeader5 text={"Table: "+paymentList.table_number} />
+                            <GlobalBlackHeader5 text={paymentList.table_number} />
                             <GlobalGreyBody2 text={paymentList.order_id} />
                             </Grid2>
                         </Grid2>

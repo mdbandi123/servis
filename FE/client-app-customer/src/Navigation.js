@@ -5,7 +5,7 @@ import PropTypes from 'prop-types';
 
 import { useScrollTrigger, Stack, Box, Paper, Avatar } from '@mui/material/';
 import { BottomNavigation, BottomNavigationAction, AppBar,Toolbar } from '@mui/material/';
-import { pink } from '@mui/material/colors';
+import { teal, orange, grey } from '@mui/material/colors';
 import AssignmentIcon from '@mui/icons-material/Assignment';
 import ShoppingCartIcon from '@mui/icons-material/ShoppingCart';
 import PaymentIcon from '@mui/icons-material/Payment';
@@ -51,13 +51,13 @@ export default function Navigation(props) {
     };
 
     const avatar = {
-        bgcolor: pink[400]
+        bgcolor: grey[700]
     };
 
     return (
         <React.Fragment>
             <ElevationScroll {...props}>
-                <AppBar>
+                <AppBar sx={{backgroundColor: orange[700]}}>
                     <Toolbar>
                         <Stack direction='row' alignItems='center' spacing={1}>
                             <Box>
@@ -74,10 +74,10 @@ export default function Navigation(props) {
             <Outlet/>
             <Paper sx={navigation} elevation={10}>
                 <BottomNavigation showLabels value={value} onChange={(event, value) => setValue(value)} >
-                    <BottomNavigationAction onClick={() => navigate('/')} label='Menu' value='menu' icon={<AssignmentIcon />} />
-                    <BottomNavigationAction onClick={() => navigate('/cart')} label='Cart' value='cart' icon={<GlobalPinkBadge badgeContent='10' max='9' overlap='circular'><ShoppingCartIcon /> </GlobalPinkBadge>} />
-                    <BottomNavigationAction onClick={() => navigate('/pending')} label='Pending' value='pending' icon={<GlobalPinkBadge badgeContent='10' max='9' overlap='circular'><PendingActionsIcon /></GlobalPinkBadge>} />
-                    <BottomNavigationAction onClick={() => navigate('/payment')} label='Payment' value='payment' icon={<PaymentIcon />} />
+                    <BottomNavigationAction sx={{'&.Mui-selected':{color: orange[700]}}} onClick={() => navigate('/')} label='Menu' value='menu' icon={<AssignmentIcon />} />
+                    <BottomNavigationAction sx={{ '&.Mui-selected': { color: orange[700] } }} onClick={() => navigate('/cart')} label='Cart' value='cart' icon={<GlobalPinkBadge badgeContent='10' max='9' overlap='circular'><ShoppingCartIcon /> </GlobalPinkBadge>} />
+                    <BottomNavigationAction sx={{ '&.Mui-selected': { color: orange[700] } }} onClick={() => navigate('/pending')} label='Pending' value='pending' icon={<GlobalPinkBadge badgeContent='10' max='9' overlap='circular'><PendingActionsIcon /></GlobalPinkBadge>} />
+                    <BottomNavigationAction sx={{ '&.Mui-selected': { color: orange[700] } }} onClick={() => navigate('/payment')} label='Payment' value='payment' icon={<PaymentIcon />} />
                 </BottomNavigation>
             </Paper>
         </React.Fragment>

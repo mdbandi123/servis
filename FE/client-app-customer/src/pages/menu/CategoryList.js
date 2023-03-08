@@ -150,7 +150,7 @@ function CategoryList() {
                                             <Stack direction='column' spacing={2}>
                                                 <Box sx={{height: 90}}>
                                                     <GlobalBlackHeader6 sx={itemNamePrice} text={startersList.name} />
-                                                    <GlobalPinkHeader6 sx={itemNamePrice} text={'$' + startersList.price.$numberDecimal} />
+                                                    <GlobalPinkHeader6 sx={itemNamePrice} text={'₱' + startersList.price.$numberDecimal} />
                                                 </Box>
                                                 <Box >
                                                     <GlobalBlueContainedButton text='Add' sx={ addBtn } startIcon={<AddRoundedIcon />} onClick={() => addToCart(startersList._id)}/>
