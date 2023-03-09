@@ -41,6 +41,7 @@ route.get("/:order_id", async (req, res) => {
     const order_session = await orders.findOne({
         order_id: order_id,
         is_paid: false,
+        billed_out: false
     });
 
     if (!order_session) {

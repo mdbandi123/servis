@@ -52,6 +52,21 @@ function App() {
     socket.on(`${order_id}-orders-update`, (data) => {
       setOrderedItems(data.ordered_items);
       setCartItems(data.cart_items)
+
+    const order_id = queryParams.get('order_id') || localStorage.getItem('order_id');
+
+    fetch(`${process.env.REACT_APP_BACKEND_URL}/orders/${order_id}`)
+      .then((response) => response.json())
+      .then((data) => {
+        if (data.success !== true) {
+          setOrderId(null);
+          localStorage.removeItem("order_id");
+          setOrderIdValid(false)
+        } 
+      }
+    ).catch((error) => {
+      console.log(error);
+    });
     });
 
     // listen for real-time updates from the server categories
