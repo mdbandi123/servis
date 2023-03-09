@@ -130,7 +130,7 @@ function Pending() {
                                 <Grid2 item xs={7} sm={4} md={3} lg={2} lx={2}>
                                     <Stack direction='row' justifyContent='flex-end' alignItems='center'>
                                         <Box>
-                                            <GlobalGreyBody2 text={cartList.status} sx={[{ border: '1px solid '  }, pendingStatusText ]} />
+                                            <GlobalGreyBody2 text={cartList.status} sx={[{ border: '1px solid ', color: cartList.status==='pending'? 'red':'orange' }, pendingStatusText ]} />
                                         </Box>
                                     </Stack>
                                 </Grid2>
