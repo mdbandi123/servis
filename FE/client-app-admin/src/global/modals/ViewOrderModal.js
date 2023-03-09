@@ -365,6 +365,7 @@ function ViewOrderModal(props) {
                         <Grid2 container justifyContent='center' >
                             <DragDropContext onDragEnd={(result) => onDragEnd(result, columns, setColumns, user)} >
                                 {Object.entries(columns).map(([columnId, column], index) => {
+                                    console.log(column);
                                     return (
                                         <Card sx={[userOrderStatusContainer, {borderTop: '5px solid ' + column.theme }]} key={columnId} >
                                             <Grid2 container sx={orderStatusSection}>
@@ -373,7 +374,7 @@ function ViewOrderModal(props) {
                                                         <Grid2 item>
                                                             <Stack direction='row' alignItems='center' spacing={2}>
                                                                 <GlobalBlackHeader6 sx={[orderStatusName]} text={column.name} />
-                                                                <GlobalBlackHeader6 sx={[orderStatusName, {color: column.theme}]} text='5' />
+                                                                <GlobalBlackHeader6 sx={[orderStatusName, {color: column.theme}]} text={column.items.length} />
                                                             </Stack>
                                                         </Grid2>
                                                     </Grid2>

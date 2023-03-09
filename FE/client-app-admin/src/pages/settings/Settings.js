@@ -16,8 +16,9 @@ import UpdateUserModal from '../../global/modals/UpdateUserModal';
 import GlobalBlackBody1 from '../../global/typographies/bodies/BlackBody1';
 
 function Settings() {
-    const { user } = useStore();
-    const [UserList, setUserList] = React.useState([]);
+    const { user, setTableData } = useStore();
+
+    const UserList = useStore(state => state.tableData) || [];
 
     React.useEffect(() => {
         document.title = 'Settings';
@@ -30,8 +31,8 @@ function Settings() {
         })
             .then(response => response.json())
             .then(data => {
-                console.log("tables", data.tables);
-                setUserList(data.tables)
+                console.log(data);
+                setTableData(data.tables)
             }
         ).catch((error) => {
             console.log(error);

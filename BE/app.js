@@ -5,6 +5,7 @@ require("dotenv").config();
 
 const order_model = require("./models/order").order_model;
 const menu_model = require("./models/menu").menu_model;
+const tables_model = require("./models/tables").tables_model;
 
 const order_route = require("./routes/order");
 const menu_route = require("./routes/menu");
@@ -134,6 +135,22 @@ menu_stream.on("change", async () => {
         });
 
         io.emit("menu-update", { items: list });
+    } catch (error) {
+        console.log(error);
+    }
+});
+
+//listen for real time updates in tables collection
+const tables_stream = tables_model.watch();
+tables_stream.on("change", async () => {
+    try {
+        record = await tables_model.find({});
+        const list = [];
+        record.forEach((table) => {
+            list.push(table);
+        });
+
+        io.emit("tables-update", { tables: list });
     } catch (error) {
         console.log(error);
     }

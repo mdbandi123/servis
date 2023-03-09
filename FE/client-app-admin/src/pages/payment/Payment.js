@@ -106,7 +106,7 @@ function Payment(props) {
                 <GlobalPurpleHeader4 text='Payment' />
             </Box>
             <Grid2 container spacing={3}>
-            {PaymentData.map((paymentList) => {
+            {PaymentData.sort((a, b) => b.billed_out - a.billed_out).map((paymentList) => {
                 const date = new Date(paymentList.session_start);
                 const month = date.getMonth() + 1;
                 const day = date.getDate();
@@ -128,9 +128,11 @@ function Payment(props) {
                         <CardContent>
                         <Grid2 container sx={userTableProfile}>
                             <Grid2 item xs={12} sm={12} md={3} lg={3} lx={3} >
+                                {paymentList.billed_out ? <>
                                 <Badge badgeContent={1} overlap='circular' sx={badgePayment}> 
                                     <AccountCircleIcon sx={userTableIcon} /> 
                                 </Badge>
+                                </> : <AccountCircleIcon sx={userTableIcon} />}
                             </Grid2>
                             <Grid2 item xs={12} sm={12} md={9} lg={9} lx={9}>
                             <GlobalBlackHeader5 text={paymentList.table_number} />
@@ -151,7 +153,6 @@ function Payment(props) {
                             <Grid2 item xs={12} sm={12} md={4} lg={4} lx={4}>
                             <GlobalGreyBody3 text="TOTAL AMOUNT" />
                             <GlobalBlackBody1 text={
-                                // total amount of item price and quantity
                                 paymentList.ordered_items.reduce((sum, item) => sum + item.quantity * item.item_price.$numberDecimal, 0)
                             } />
                             </Grid2>

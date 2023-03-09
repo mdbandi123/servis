@@ -23,7 +23,8 @@ function App() {
     setMenuItems,
     setCategoryItems,
     setOrderedItems,
-    setUser
+    setUser,
+    setTableData
   } = useStore();
 
   React.useEffect(() => {
@@ -51,6 +52,12 @@ function App() {
     socket.on("menu-update", (data) => {
         setMenuItems(data.items);
         console.log("menu update: ", data.items);
+    });
+
+    //listen for real-time updates from table menu
+    socket.on("tables-update", (data) => {
+        console.log("table update: ", data.tables);
+        setTableData(data.tables);
     });
 
     // listen for real-time updates from the server categories

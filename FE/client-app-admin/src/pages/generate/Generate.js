@@ -31,7 +31,7 @@ function Generate() {
 
     const { user } = useStore();
 
-    const {TableData, setTableData} = useStore();
+    const {tableData, setTableData} = useStore();
 
     React.useEffect(() => {
         fetch(`${process.env.REACT_APP_BACKEND_URL}/tables/`, {
@@ -164,7 +164,7 @@ function Generate() {
                             </Box>
                             <Box>
                                 <TextField color='warning' label='User' helperText='Select User' variant='filled' fullWidth select onChange={(e) => setTable(e.target.value)}>
-                                    {TableData.map((tableList) => (
+                                    {tableData.map((tableList) => (
                                         <MenuItem key={tableList.table_name} value={tableList.table_name}>
                                             <Stack direction='row' alignItems='center' spacing={1}>
                                                 <Box>

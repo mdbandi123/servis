@@ -85,7 +85,7 @@ function OrderList(props) {
         })
             .then((response) => response.json())
             .then((data) => {
-                console.log("data.orders",data.orders);
+                // console.log("data.orders",data.orders);
                 setOrderedItems(data.orders)
             })
             .catch((error) => console.error(error));
@@ -222,9 +222,7 @@ function OrderList(props) {
                         <ListItem disablePadding sx={ notificationListItem } >
                             <ListItemButton onClick={ handleClick } sx={[ notificationItemButton]} >
                                     <ListItemIcon sx={ notificationItemIcon } >
-                                        <GlobalPinkBadge badgeContent={11}>
                                             { openNotificationAppBar ? <ChevronRightIcon sx={ notificationOpenHandler } /> : <ChevronLeftIcon sx={ notificationOpenHandler } />}
-                                        </GlobalPinkBadge>
                                     </ListItemIcon>
                                 <ListItemText sx={ notificationTitle } disableTypography primary={ <Typography sx={ notificationTitleText } variant='body1' >Notification</Typography> } />
                             </ListItemButton>
@@ -232,7 +230,7 @@ function OrderList(props) {
                     </List>
                     </AppBar>
                     <Divider />
-                    {orderListNotification.map((notificationItem) => (
+                    {/* {orderListNotification.map((notificationItem) => (
                         <ListItem disablePadding sx={ notificationListItem } >
                             <ViewOrderModal orders={notificationItem} title={ notificationItem.userName } userId={ notificationItem.userNameId } sx={{ color: grey[800], fontSize: '2em' }}>
                             <ListItemButton sx={ notificationItemButton } >
@@ -258,7 +256,7 @@ function OrderList(props) {
                             </ViewOrderModal>
                             <Divider />
                         </ListItem>
-                    ))}
+                    ))} */}
                 </Drawer>
             </Box>
         </React.Fragment>
@@ -288,7 +286,9 @@ function OrderList(props) {
                                                 <Grid2 item xs>
                                                     <Stack direction='row' alignItems='center' spacing={2}>
                                                         <GlobalBlackHeader6 sx={orderListUsername} text={ notificationItem.table_number } />
-                                                        <GlobalPinkBadge badgeContent={11} max={9}>
+                                                        <GlobalPinkBadge badgeContent={
+                                                            notificationItem.ordered_items.filter((orderedItem) => orderedItem.status !== 'served').length
+                                                        } max={9}>
                                                             <LocalDiningIcon sx={ orderNumberIcon } />
                                                         </GlobalPinkBadge>
                                                     </Stack>
@@ -315,7 +315,10 @@ function OrderList(props) {
                         <ListItem disablePadding sx={ notificationListItem } >
                             <ListItemButton onClick={ handleClick } sx={[ notificationItemButton]} >
                                     <ListItemIcon sx={ notificationItemIcon } >
-                                        <GlobalPinkBadge badgeContent={11}>
+                                        <GlobalPinkBadge badgeContent={
+                                            orderListNotification.map((item) => (
+                                                item.ordered_items.filter((item) => item.status !== "served"))).flat().length
+                                        }>
                                             { openNotificationAppBar ? <ChevronRightIcon sx={ notificationOpenHandler } /> : <ChevronLeftIcon sx={ notificationOpenHandler } />}
                                         </GlobalPinkBadge>
                                     </ListItemIcon>

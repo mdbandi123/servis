@@ -1,5 +1,6 @@
 import * as React from 'react';
 import { Link, useLocation, Outlet } from 'react-router-dom';
+import { useStore } from './store/store';
 
 import { styled, useTheme } from '@mui/material/styles';
 import { orange, grey } from '@mui/material/colors';
@@ -100,6 +101,24 @@ const Drawer = styled(MuiDrawer, { shouldForwardProp: (prop) => prop !== 'open' 
 );
 
 function Navbar() {
+    const { setOrderedItems, user } = useStore.getState();
+
+    const ordered_items = useStore((state) => state.orderedItems);
+
+    React.useEffect(() => {
+        fetch(`${process.env.REACT_APP_BACKEND_URL}/orders`, {
+            method: "GET",
+            headers: {
+                "Authorization": user.Aa
+            },
+        })
+            .then((response) => response.json())
+            .then((data) => {
+                setOrderedItems(data.orders)
+            })
+            .catch((error) => console.error(error));
+    }, []);
+
     const theme = useTheme();
 
     const location = useLocation();
@@ -235,8 +254,13 @@ function Navbar() {
                         <ListItem disablePadding sx={ listItemContainer } key={ item.title } component={ Link } to={ item.path } button selected={ item.path === path } >
                             <ListItemButton sx={ listItemButtonContainer } >
                                 <ListItemIcon sx={ [centerMenuIcons, changeIconsColor] } >
-                                    { index === 0 && <GlobalPinkBadge badgeContent={11} max={9}> <MenuBookIcon /> </GlobalPinkBadge>}
-                                    { index === 1 && <GlobalPinkBadge badgeContent={11} max={9}> <PaymentIcon /> </GlobalPinkBadge>}
+                                    { index === 0 && <GlobalPinkBadge badgeContent={
+                                            ordered_items.map((item) => (
+                                                item.ordered_items.filter((item) => item.status !== "served"))).flat().length
+                                    } max={9}> <MenuBookIcon /> </GlobalPinkBadge>}
+                                    { index === 1 && <GlobalPinkBadge badgeContent={
+                                        ordered_items.filter((item) => item.billed_out === true).length
+                                    } max={9}> <PaymentIcon /> </GlobalPinkBadge>}
                                     { index === 2 && <ArchiveIcon /> }
                                 </ListItemIcon>
                                 <ListItemText sx={ closeItemText } primary={ item.title } />

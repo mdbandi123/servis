@@ -25,6 +25,9 @@ const Transition = React.forwardRef(function Transition(props, ref) {
 });
 
 function GenerateDatePickerModal(props) {
+    const [startDate, setStartDate] = React.useState(null);
+    const [endDate, setEndDate] = React.useState(null);
+
     const [openGenerateReportModal, setOpenGenerateReportModal] = React.useState(false);
 
     const GenerateReportHandler = () => {
@@ -35,9 +38,38 @@ function GenerateDatePickerModal(props) {
         setOpenGenerateReportModal(false);
     };
 
-    const confirmGenerateReportHandler = () => {
+    const confirmGenerateReportHandler = async () => {
+        const start_date = convertUTCDateToLocalDate(startDate).toISOString().split('T')[0]
+        const end_date = convertUTCDateToLocalDate(endDate).toISOString().split('T')[0]
+
+        try {
+            const response = await fetch(
+                `${process.env.REACT_APP_BACKEND_URL}/order_items/archive-csv?start_date=${start_date}&end_date=${end_date}`,
+                {
+                    method: "GET",
+                }
+            );
+    
+            const data = await response.blob();
+            console.log(data);
+            const url = window.URL.createObjectURL(data);
+            const link = document.createElement("a");
+            link.href = url;
+            link.setAttribute("download", `archive_${start_date}_${end_date}.csv`);
+            document.body.appendChild(link);
+            link.click();
+        } catch (error) {
+            console.error(error);
+        }
+
+
         setOpenGenerateReportModal(false);
     };
+
+    function convertUTCDateToLocalDate(date) {
+        var newDate = new Date(date.getTime() - date.getTimezoneOffset()*60*1000);
+        return newDate;   
+    }
 
     const closeIconButton = {
         position: 'absolute',
@@ -78,12 +110,12 @@ function GenerateDatePickerModal(props) {
                         <Stack direction='row' justifyContent="space-between">
                             <Box>
                                 <LocalizationProvider dateAdapter={AdapterMoment}>
-                                    <DatePicker sx={textField} label="Start" slotProps={{ textField: { helperText: 'MM / DD / YYYY' } }} />
+                                    <DatePicker sx={textField} label="Start" slotProps={{ textField: { helperText: 'MM / DD / YYYY' } }} onChange={(e) => setStartDate(new Date(e._d))}/>
                                 </LocalizationProvider>
                             </Box>
                             <Box>
                                 <LocalizationProvider dateAdapter={AdapterMoment}>
-                                    <DatePicker sx={textField} label="End" slotProps={{ textField: { helperText: 'MM / DD / YYYY' } }} />
+                                    <DatePicker sx={textField} label="End" slotProps={{ textField: { helperText: 'MM / DD / YYYY' }}} onChange={(e) => setEndDate(new Date(e._d))} />
                                 </LocalizationProvider>
                             </Box>
                         </Stack>

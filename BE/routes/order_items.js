@@ -104,24 +104,69 @@ route.get("/archive-csv", async (req, res) => {
         const start_date = req.query.start_date;
         const end_date = req.query.end_date;
 
-        const order = await order_model.find({
+        const orders = await order_model.find({
             is_paid: true,
             session_start: { $gte: new Date(start_date), $lte: new Date(end_date) },
         }).lean();
-        if (!order) {
+        if (!orders) {
             return res
                 .status(404)
-                .json({ success: false, message: "Order not found" });
+                .json({ success: false, message: "Orders not found" });
         }
+
         const items = [];
-        order.forEach((order) => {
+        let itemTotals = {};
+        let totalEarnings = 0;
+        orders.forEach((order) => {
             order.ordered_items.forEach((item) => {
                 item.table_number = order.table_number;
                 item.order_id = order.order_id;
                 item.session_start = order.session_start;
                 item.item_price = JSON.parse(JSON.stringify(item.item_price)).$numberDecimal
                 items.push(item);
+
+                if (!itemTotals[item.item_name]) {
+                    itemTotals[item.item_name] = 0;
+                }
+                itemTotals[item.item_name] += item.quantity;
+                totalEarnings += item.item_price * item.quantity;
             });
+        });
+
+        let mostOrderedItem = "";
+        let highestQuantity = 0;
+        Object.keys(itemTotals).forEach((itemName) => {
+            if (itemTotals[itemName] > highestQuantity) {
+                highestQuantity = itemTotals[itemName];
+                mostOrderedItem = itemName;
+            }
+        });
+
+        items.push({
+            table_number: "",
+            order_id: "",
+            item_name: "",
+            quantity: "",
+            item_price: "",
+            session_start: "",
+        });
+
+        items.push({
+            table_number: "",
+            order_id: "",
+            item_name: "Most Ordered Item",
+            quantity: mostOrderedItem,
+            item_price: "",
+            session_start: "",
+        });
+
+        items.push({
+            table_number: "",
+            order_id: "",
+            item_name: "Total Earnings",
+            quantity: totalEarnings,
+            item_price: "",
+            session_start: "",
         });
 
         const fields = [
