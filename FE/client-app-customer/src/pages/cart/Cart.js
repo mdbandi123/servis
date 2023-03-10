@@ -185,7 +185,7 @@ function Cart() {
                     <Card sx={totalContainer} space={1}>
                         <Box>
                             <GlobalBlackHeader6 sx={totalMessage} text='Total:' />
-                            <GlobalPinkHeader6 sx={totalAmount} text='$0' />
+                            <GlobalPinkHeader6 sx={totalAmount} text='₱0' />
                         </Box>
                     </Card>
                     <Grid2 container sx={confirmContainer} justifyContent='center'>

@@ -64,7 +64,7 @@ export default function Navigation(props) {
                                 <Avatar sx={avatar} />
                             </Box>
                             <Box>
-                                <GlobalWhiteHeader6 text={`Table ${table_number}`} />
+                                <GlobalWhiteHeader6 text={`${table_number}`} />
                             </Box>
                         </Stack>
                     </Toolbar>

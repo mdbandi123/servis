@@ -228,9 +228,9 @@ function Payment() {
                             {rowItem.map((row) => (
                                 <TableRow key={row.item_name} sx={tableRow} >
                                     <TableCell align='left'>{row.item_name}</TableCell>
-                                    <TableCell align='left'>{'$' + row.item_price.$numberDecimal}</TableCell>
+                                    <TableCell align='left'>{'₱' + row.item_price.$numberDecimal}</TableCell>
                                     <TableCell align='left'>{row.quantity}</TableCell>
-                                    <TableCell align='left'>{'$' + 
+                                    <TableCell align='left'>{'₱' + 
                                         (row.item_price.$numberDecimal * row.quantity).toFixed(2)
                                     }</TableCell>
                                 </TableRow>
@@ -240,7 +240,7 @@ function Payment() {
                                     <Box>
                                         <GlobalBlackHeader6 sx={totalMessage} text='Total:' />
                                         <GlobalPinkHeader6 sx={totalAmount} text={
-                                            '$' +
+                                            '₱' +
                                             (rowItem.reduce((acc, item) => {
                                                 return acc + (item.item_price.$numberDecimal * item.quantity)
                                             }, 0)).toFixed(2)
