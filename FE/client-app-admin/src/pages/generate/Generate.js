@@ -107,13 +107,13 @@ function Generate() {
                 <Box>
                     <GlobalGreyBody3 text='Scan this QR Code to access online ordering on your device.' />
                 </Box>
-                <Box pt={2}>
+            </Stack>
+            <Box pt={2}>
                     <ReactToPrint
                     trigger={() => <GlobalBlueContainedButton text='Print' />}
                     content={() => componentRef.current}
                     />
                 </Box>
-            </Stack>
           </React.Fragment>
         );
       };
