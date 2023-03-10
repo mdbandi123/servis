@@ -41,6 +41,7 @@ route.get("/:order_id", async (req, res) => {
     const order_session = await orders.findOne({
         order_id: order_id,
         is_paid: false,
+        billed_out: false
     });
 
     if (!order_session) {
@@ -76,7 +77,7 @@ route.post("/create/:table_number", auth, async (req, res) => {
             .status(200)
             .send({ 
             message: "order exists",
-            url: "https://servis-henna.vercel.app/?order_id=" + table_in_use.order_id
+            url: "https://customer-omega.vercel.app/?order_id=" + table_in_use.order_id
         });
     }
 
@@ -91,7 +92,7 @@ route.post("/create/:table_number", auth, async (req, res) => {
 
         res.status(200).send({
             message: "Order session created",
-            url: "https://servis-henna.vercel.app/?order_id=" + order_id
+            url: "https://customer-omega.vercel.app/?order_id=" + order_id
         });
     } catch (err) {
         res.status(500).send({ error: "Error creating order session" });

@@ -346,9 +346,12 @@ route.put("/quantity", async (req, res) => {
 
     try {
         if (quantity < 1) {
-            return res.status(400).json({
-            message: "Item quantity cannot be less than 1",
-            });
+            // delete the item from the cart
+            await order_model.findOneAndUpdate(
+                { order_id: order_id },
+                { $pull: { cart_items: { _id: item_id } } },
+                { new: true }
+            );
             }
             
         // update the quantity of the item in the order collection
