@@ -158,7 +158,7 @@ function CategoryList() {
                                                     <GlobalOrangeHeader6 sx={itemNamePrice} text={'₱' + startersList.price.$numberDecimal} />
                                                 </Box>
                                                 <Box >
-                                                    <GlobalTealContainedButton text='Add' sx={addBtn} startIcon={<AddRoundedIcon />} onClick={() => addToCart(startersList._id)} />
+                                                    <GlobalTealContainedButton text='Add to cart' sx={addBtn} startIcon={<AddRoundedIcon />} onClick={() => addToCart(startersList._id)} />
                                                 </Box>
                                             </Stack>
                                         </CardContent>
