@@ -47,7 +47,7 @@ io.on("connection", (socket) => {
             changeStream.on("change", async (data) => {
                 try {
                     record = await order_model.find({ order_id: order_id });
- 
+
                     const orderedList = [];
                     const cartList = [];
                     record.forEach((order) => {
@@ -81,26 +81,24 @@ io.on("connection", (socket) => {
     });
 });
 
-
 // Listen for real-time updates in the orders collection
 const orders_stream = order_model.watch();
 orders_stream.on("change", async () => {
-  try {
-    record = await order_model.find({ is_paid: false });
-    const list = [];
-    record.forEach((order) => {
-        order.ordered_items.forEach((item) => {
-            item.order_id = order.order_id;
+    try {
+        record = await order_model.find({ is_paid: false });
+        const list = [];
+        record.forEach((order) => {
+            order.ordered_items.forEach((item) => {
+                item.order_id = order.order_id;
+            });
+            list.push(order);
         });
-        list.push(order);
-    });
-    // Emit the list of unpaid orders to the client
-    io.emit("orders-update", { items: list });
-  } catch (error) {
-    console.log(error);
-  }
+        // Emit the list of unpaid orders to the client
+        io.emit("orders-update", { items: list });
+    } catch (error) {
+        console.log(error);
+    }
 });
-
 
 //listen for real time updates in categories
 const categories_stream = menu_model.watch();
@@ -155,7 +153,6 @@ tables_stream.on("change", async () => {
         console.log(error);
     }
 });
-
 
 server.listen(process.env.PORT || 8080, () => {
     console.log("Server started on port 8080");

@@ -572,9 +572,7 @@ function OrderList() {
                                                             }
                                                             primary={
                                                                 <GlobalBlackBody2
-                                                                    text={
-                                                                        filteredItem.item_name
-                                                                    }
+                                                                    text={`x${filteredItem.quantity} ${filteredItem.item_name}`}
                                                                 />
                                                             }
                                                         />

@@ -1,27 +1,34 @@
-import React, {useRef} from 'react';
-import { useStore } from '../../store/store';
-import QRCode from 'qrcode.react';
-import ReactToPrint from 'react-to-print';
+import React, { useRef } from "react";
+import { useStore } from "../../store/store";
+import QRCode from "qrcode.react";
+import ReactToPrint from "react-to-print";
 
-import Grid2 from '@mui/material/Unstable_Grid2/Grid2';
-import { Card, MenuItem, TextField, Stack, Box } from '@mui/material';
-import { Dialog, DialogActions, DialogContent, DialogContentText, DialogTitle, Slide } from '@mui/material/';
-import { grey } from '@mui/material/colors';
-import AccountCircleIcon from '@mui/icons-material/AccountCircle';
-import QrCodeIcon from '@mui/icons-material/QrCode';
+import Grid2 from "@mui/material/Unstable_Grid2/Grid2";
+import { Card, MenuItem, TextField, Stack, Box } from "@mui/material";
+import {
+    Dialog,
+    DialogActions,
+    DialogContent,
+    DialogContentText,
+    DialogTitle,
+    Slide,
+} from "@mui/material/";
+import { grey } from "@mui/material/colors";
+import AccountCircleIcon from "@mui/icons-material/AccountCircle";
+import QrCodeIcon from "@mui/icons-material/QrCode";
 
-import GlobalGreyBody1 from '../../global/typographies/bodies/GreyBody1';
-import GlobalGreyBody3 from '../../global/typographies/bodies/GreyBody3';
-import GlobalBlackBody1 from '../../global/typographies/bodies/BlackBody1';
-import GlobalIndigoTextButton from '../../global/buttons/text/IndigoTextButton';
-import GlobalOrangeTextButton from '../../global/buttons/text/OrangeTextButton';
-import GlobalIndigoHeader4 from '../../global/typographies/headers/IndigoHeader4';
-import GlobalBlackHeader5 from '../../global/typographies/headers/BlackHeader5';
-import GlobalTealContainedButton from '../../global/buttons/contains/TealContainedButton';
-import SlideDown from '../../animation/SlideDown';
+import GlobalGreyBody1 from "../../global/typographies/bodies/GreyBody1";
+import GlobalGreyBody3 from "../../global/typographies/bodies/GreyBody3";
+import GlobalBlackBody1 from "../../global/typographies/bodies/BlackBody1";
+import GlobalIndigoTextButton from "../../global/buttons/text/IndigoTextButton";
+import GlobalOrangeTextButton from "../../global/buttons/text/OrangeTextButton";
+import GlobalIndigoHeader4 from "../../global/typographies/headers/IndigoHeader4";
+import GlobalBlackHeader5 from "../../global/typographies/headers/BlackHeader5";
+import GlobalTealContainedButton from "../../global/buttons/contains/TealContainedButton";
+import SlideDown from "../../animation/SlideDown";
 
 const Transition = React.forwardRef(function Transition(props, ref) {
-    return <Slide direction='up' ref={ref} {...props} />;
+    return <Slide direction="up" ref={ref} {...props} />;
 });
 
 function Generate() {
@@ -32,23 +39,24 @@ function Generate() {
 
     const { user } = useStore();
 
-    const {tableData, setTableData} = useStore();
+    const { setTableData } = useStore();
+
+    const tableData = useStore((state) => state.tableData) || [];
 
     React.useEffect(() => {
         fetch(`${process.env.REACT_APP_BACKEND_URL}/tables/`, {
-            method: 'GET',
+            method: "GET",
             headers: {
-                "Authorization": user.Aa,
+                Authorization: user.Aa,
             },
         })
-            .then(response => response.json())
-            .then(data => {
+            .then((response) => response.json())
+            .then((data) => {
                 setTableData(data.tables);
-            }
-        ).catch((error) => {
-            console.log(error);
-        });
-
+            })
+            .catch((error) => {
+                console.log(error);
+            });
     }, []);
 
     const [openConfirmModal, setOpenConfirmModal] = React.useState(false);
@@ -63,85 +71,103 @@ function Generate() {
 
     const proceedConfirmHandler = () => {
         fetch(`${process.env.REACT_APP_BACKEND_URL}/orders/create/${table}`, {
-            method: 'POST',
+            method: "POST",
             headers: {
-                "Authorization": user.Aa,
-            }
-        }).then(response => response.json())
-        .then(data => {
-            console.log(data);
-            setUrl(data.url);
-            setOpenConfirmModal(false);
-        }
-        ).catch((error) => {
-            console.log(error);
-        });
+                Authorization: user.Aa,
+            },
+        })
+            .then((response) => response.json())
+            .then((data) => {
+                console.log(data);
+                setUrl(data.url);
+                setOpenConfirmModal(false);
+            })
+            .catch((error) => {
+                console.log(error);
+            });
     };
 
     const styles = {
         qrCodeContainer: {
-          justifyContent: 'center',
-          alignItems: 'center',
-          width: '100%',
-          margin: '0 auto',
-          textAlign: 'center',
+            justifyContent: "center",
+            alignItems: "center",
+            width: "100%",
+            margin: "0 auto",
+            textAlign: "center",
         },
-      
+
         qrCode: {
-          width: '600px',
-          height: '600px'
+            width: "600px",
+            height: "600px",
         },
-      };
-    
+    };
+
     const QRCodePrinter = (props) => {
         const componentRef = useRef();
-      
+
         return (
-          <React.Fragment>
-            <Stack direction='column' spacing={1} ref={componentRef} sx={styles.qrCodeContainer}>
-                <Box>
-                    <GlobalBlackBody1 text={props.table} />
-                </Box>
-                <Box>
-                    <QRCode value={props.url} sx={styles.qrCode} />
-                </Box>
-                <Box>
-                    <GlobalGreyBody3 text='Scan this QR Code to access Smart Menu.' />
-                </Box>
-            </Stack>
-            <Stack direction='column' spacing={1} sx={styles.qrCodeContainer}>
-                <Box pt={2}>
-                    <ReactToPrint
-                        trigger={() => <GlobalTealContainedButton text='Print' />}
-                        content={() => componentRef.current}
-                    />
-                </Box>
-            </Stack>
-          </React.Fragment>
+            <React.Fragment>
+                <Stack
+                    direction="column"
+                    spacing={1}
+                    ref={componentRef}
+                    sx={styles.qrCodeContainer}
+                >
+                    <Box>
+                        <GlobalBlackBody1 text={props.table} />
+                    </Box>
+                    <Box>
+                        <QRCode value={props.url} sx={styles.qrCode} />
+                    </Box>
+                    <Box>
+                        <GlobalGreyBody3 text="Scan this QR Code to access Smart Menu." />
+                    </Box>
+                </Stack>
+                <Stack
+                    direction="column"
+                    spacing={1}
+                    sx={styles.qrCodeContainer}
+                >
+                    <Box pt={2}>
+                        <ReactToPrint
+                            trigger={() => (
+                                <GlobalTealContainedButton text="Print" />
+                            )}
+                            content={() => componentRef.current}
+                        />
+                    </Box>
+                </Stack>
+            </React.Fragment>
         );
-      };
+    };
 
     const dialogAlignment = {
-        alignItems: 'center',
-        display: 'flex'
+        alignItems: "center",
+        display: "flex",
     };
 
     const pageTitleContainer = {
         mb: 3,
-        textAlign: { xs: 'center', sm: 'center', md: 'left', lg: 'left', lx: 'left' }
+        textAlign: {
+            xs: "center",
+            sm: "center",
+            md: "left",
+            lg: "left",
+            lx: "left",
+        },
     };
 
     const qrCardContainer = {
-        p: 4
+        p: 4,
     };
 
     const qrBtnContainer = {
-        width: '100%'
+        width: "100%",
     };
 
     const qrHeader = {
-        textAlign: 'center',
-        mb: 2
+        textAlign: "center",
+        mb: 2,
     };
 
     const qrCardResult = {
@@ -150,33 +176,50 @@ function Generate() {
 
     const userTableIcon = {
         color: grey[800],
-        fontSize: '2.5em'
+        fontSize: "2.5em",
     };
 
     const QrIcon = {
-        fontSize: '8em',
-        color: grey[500]
-    }
+        fontSize: "8em",
+        color: grey[500],
+    };
 
     return (
         <SlideDown>
             <Box sx={pageTitleContainer}>
-                <GlobalIndigoHeader4 text='Generate' />
+                <GlobalIndigoHeader4 text="Generate" />
             </Box>
             <Grid2 container spacing={3}>
                 <Grid2 item xs={12} sm={12} md={5} lg={5} lx={5}>
-                    <Card sx={ qrCardContainer }>
-                        <Stack direction='column' spacing={3}>
-                            <Box sx={ qrHeader }>
-                                <GlobalBlackHeader5 text='Create QR Code' />
+                    <Card sx={qrCardContainer}>
+                        <Stack direction="column" spacing={3}>
+                            <Box sx={qrHeader}>
+                                <GlobalBlackHeader5 text="Create QR Code" />
                             </Box>
                             <Box>
-                                <TextField color='warning' label='User' helperText='Select User' variant='filled' fullWidth select onChange={(e) => setTable(e.target.value)}>
+                                <TextField
+                                    color="warning"
+                                    label="User"
+                                    helperText="Select User"
+                                    variant="filled"
+                                    fullWidth
+                                    select
+                                    onChange={(e) => setTable(e.target.value)}
+                                >
                                     {tableData.map((tableList) => (
-                                        <MenuItem key={tableList.table_name} value={tableList.table_name}>
-                                            <Stack direction='row' alignItems='center' spacing={1}>
+                                        <MenuItem
+                                            key={tableList.table_name}
+                                            value={tableList.table_name}
+                                        >
+                                            <Stack
+                                                direction="row"
+                                                alignItems="center"
+                                                spacing={1}
+                                            >
                                                 <Box>
-                                                    <AccountCircleIcon sx={userTableIcon} />
+                                                    <AccountCircleIcon
+                                                        sx={userTableIcon}
+                                                    />
                                                 </Box>
                                                 <Box>
                                                     {tableList.table_name}
@@ -186,8 +229,12 @@ function Generate() {
                                     ))}
                                 </TextField>
                             </Box>
-                            <Box sx={ qrBtnContainer }>
-                                <GlobalTealContainedButton sx={qrBtnContainer} text='Generate' onClick={confirmHandler} />
+                            <Box sx={qrBtnContainer}>
+                                <GlobalTealContainedButton
+                                    sx={qrBtnContainer}
+                                    text="Generate"
+                                    onClick={confirmHandler}
+                                />
                             </Box>
                         </Stack>
                     </Card>
@@ -195,59 +242,86 @@ function Generate() {
                 <Grid2 item xs={12} sm={12} md={7} lg={7} lx={7}>
                     <Card sx={[qrCardContainer, qrCardResult]}>
                         <Box sx={qrHeader}>
-                            {url && table ? <>
-                                <Stack direction='column' spacing={3}>
-                                    <Box>
-                                        <GlobalBlackHeader5 text='Generated QR Code:' />
-                                    </Box>
-                                    <Box>
-                                        <QRCodePrinter table={table} url={url} />
-                                    </Box>
-                                </Stack>
-                            </> : 
-                            <>
-                                <Stack direction='column' spacing={3}>
-                                    <Box>
-                                        <GlobalBlackHeader5 text='Generated QR Code:' />
-                                    </Box>
-                                    <Box>
-                                        <Stack direction='column' spacing={1} sx={styles.qrCodeContainer}>
-                                            <Box>
-                                                <GlobalBlackBody1 text='No QR code generate' />
-                                            </Box>
-                                            <Box>
-                                                <QrCodeIcon sx={ QrIcon } />
-                                            </Box>
-                                            <Box>
-                                                <GlobalGreyBody3 text='Please select user and generate QR code' />
-                                            </Box>
-                                            <Box pt={2}>
-                                                <GlobalTealContainedButton text='Print' disabled={true} />
-                                            </Box>
-                                        </Stack>
-                                    </Box>
-                                </Stack>
-                            </>}
+                            {url && table ? (
+                                <>
+                                    <Stack direction="column" spacing={3}>
+                                        <Box>
+                                            <GlobalBlackHeader5 text="Generated QR Code:" />
+                                        </Box>
+                                        <Box>
+                                            <QRCodePrinter
+                                                table={table}
+                                                url={url}
+                                            />
+                                        </Box>
+                                    </Stack>
+                                </>
+                            ) : (
+                                <>
+                                    <Stack direction="column" spacing={3}>
+                                        <Box>
+                                            <GlobalBlackHeader5 text="Generated QR Code:" />
+                                        </Box>
+                                        <Box>
+                                            <Stack
+                                                direction="column"
+                                                spacing={1}
+                                                sx={styles.qrCodeContainer}
+                                            >
+                                                <Box>
+                                                    <GlobalBlackBody1 text="No QR code generate" />
+                                                </Box>
+                                                <Box>
+                                                    <QrCodeIcon sx={QrIcon} />
+                                                </Box>
+                                                <Box>
+                                                    <GlobalGreyBody3 text="Please select user and generate QR code" />
+                                                </Box>
+                                                <Box pt={2}>
+                                                    <GlobalTealContainedButton
+                                                        text="Print"
+                                                        disabled={true}
+                                                    />
+                                                </Box>
+                                            </Stack>
+                                        </Box>
+                                    </Stack>
+                                </>
+                            )}
                         </Box>
                     </Card>
                 </Grid2>
             </Grid2>
-            <Dialog keepMounted maxWidth='sm' fullWidth open={openConfirmModal} TransitionComponent={Transition} onClose={cancelConfirmHandler} aria-describedby='alert-dialog-slide-description'>
+            <Dialog
+                keepMounted
+                maxWidth="sm"
+                fullWidth
+                open={openConfirmModal}
+                TransitionComponent={Transition}
+                onClose={cancelConfirmHandler}
+                aria-describedby="alert-dialog-slide-description"
+            >
                 <DialogTitle sx={dialogAlignment}>
-                    <GlobalBlackHeader5 text='Message Confirmation' />
+                    <GlobalBlackHeader5 text="Message Confirmation" />
                 </DialogTitle>
                 <DialogContent>
-                    <DialogContentText id='alert-dialog-slide-description'>
-                        <GlobalGreyBody1 text='Are you sure do you want to Generate QR Code?' />
+                    <DialogContentText id="alert-dialog-slide-description">
+                        <GlobalGreyBody1 text="Are you sure do you want to Generate QR Code?" />
                     </DialogContentText>
                 </DialogContent>
                 <DialogActions>
-                    <GlobalOrangeTextButton text='Cancel' onClick={cancelConfirmHandler} />
-                    <GlobalIndigoTextButton text='Confirm' onClick={proceedConfirmHandler} />
+                    <GlobalOrangeTextButton
+                        text="Cancel"
+                        onClick={cancelConfirmHandler}
+                    />
+                    <GlobalIndigoTextButton
+                        text="Confirm"
+                        onClick={proceedConfirmHandler}
+                    />
                 </DialogActions>
             </Dialog>
         </SlideDown>
     );
-};
+}
 
 export default Generate;
