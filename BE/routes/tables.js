@@ -25,6 +25,17 @@ route.get("/", auth, async (req, res) => {
 route.post("/create", auth, async (req, res) => {
     const table_name = req.body.table_name;
 
+    // check if table already exists and length of table name is greater than 0
+    if (
+        (await tables_model.findOne({ table_name: table_name })) ||
+        table_name.length === 0
+    ) {
+        return res.status(400).json({
+            success: false,
+            message: "Table already exists or table name is empty",
+        });
+    }
+
     const table = new tables_model({
         table_name: "Table " + table_name,
     });
@@ -58,8 +69,6 @@ route.put("/update/:table_name", auth, async (req, res) => {
         res.send(err);
     }
 });
-
-    
 
 // delete a table
 route.delete("/delete/:table_name", auth, async (req, res) => {
