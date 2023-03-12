@@ -29,6 +29,10 @@ function CreateUserModal(props) {
         setOpenCreateModal(false);
     };
 
+    const formStateResetHandler = () => {
+        setTableName('');
+    }
+
     const confirmCreateHandler = () => {
         fetch(`${process.env.REACT_APP_BACKEND_URL}/tables/create`, {
             method: 'POST',
@@ -44,6 +48,7 @@ function CreateUserModal(props) {
             .then(data => {
                 console.log(data);
                 setOpenCreateModal(false);
+                formStateResetHandler();
             }
             ).catch((error) => {
                 console.log(error);
@@ -79,7 +84,7 @@ function CreateUserModal(props) {
                             <Grid2 item xs={12} sm={12} md={12} lg={12} lx={12}>
                                 <Grid2 container spacing={1}>
                                     <Grid2 item xs={12} sm={12} md={12} lg={12} lx={12}>
-                                        <TextField inputProps={{maxLength:7}} id='outlined-textarea' color='warning' type='text' label='User Name' placeholder='Enter User Name' variant='filled' fullWidth onChange={(e) => setTableName(e.target.value)} />
+                                        <TextField inputProps={{maxLength:7}} id='outlined-textarea' color='warning' type='text' label='User Name' placeholder='Enter User Name' value={tableName} variant='filled' fullWidth onChange={(e) => setTableName(e.target.value)} />
                                     </Grid2>
                                 </Grid2>
                             </Grid2>

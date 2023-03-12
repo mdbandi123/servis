@@ -37,6 +37,11 @@ function CreateCategModal(props) {
         setOpenCreateCategModal(false);
     };
 
+    const formStateResetHandler = () => {
+        setCategoryImage(null);
+        setCategoryName('');
+    }
+
     const confirmCategCreateHandler = () => {
         if (category_image) {
             const formData = new FormData();
@@ -67,7 +72,7 @@ function CreateCategModal(props) {
                     .then((data) => {
                         console.log(data);
                         setOpenCreateCategModal(false);
-                        setCategoryImage(null);
+                        formStateResetHandler();
                     })
                     .catch((error) => console.error(error));
             })
@@ -90,7 +95,7 @@ function CreateCategModal(props) {
                 .then((data) => {
                     console.log(data);
                     setOpenCreateCategModal(false);
-                    setCategoryImage(null);
+                    formStateResetHandler();
                 })
                 .catch((error) => console.error(error));
         }
@@ -158,7 +163,7 @@ function CreateCategModal(props) {
                             <Grid2 item xs={12} sm={12} md={12} lg={12} lx={12}>
                                 <Stack spacing={1}>
                                     <Box>
-                                        <TextField id='outlined-textarea' color='warning' type='text' label='Name' placeholder='Enter Category Name' variant='filled' onChange={(e)=>{
+                                        <TextField id='outlined-textarea' color='warning' type='text' label='Name' placeholder='Enter Category Name' value={category_name} variant='filled' onChange={(e)=>{
                                             setCategoryName(e.target.value);
                                         }} fullWidth />
                                     </Box>

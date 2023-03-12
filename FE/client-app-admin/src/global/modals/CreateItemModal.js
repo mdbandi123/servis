@@ -54,6 +54,13 @@ function CreateItemModal() {
         setOpenCreateItemModal(false);
     };
 
+    const formStateResetHandler = () => {
+        setItemName('');
+        setItemPrice('');
+        setItemImage(null);
+        setItemCategory('');
+    }
+
     const confirmItemCreateHandler = async () => {
         if (itemImage) {
             const formData = new FormData();
@@ -86,6 +93,7 @@ function CreateItemModal() {
                     .then((data) => {
                         console.log(data);
                         setOpenCreateItemModal(false);
+                        formStateResetHandler();
                     })
                     .catch((error) => console.error(error));
             })
@@ -110,6 +118,7 @@ function CreateItemModal() {
                 .then((data) => {
                     console.log(data);
                     setOpenCreateItemModal(false);
+                    formStateResetHandler();
                 })
                 .catch((error) => console.error(error));
         }
@@ -177,13 +186,13 @@ function CreateItemModal() {
                             <Grid2 item xs={12} sm={12} md={6} lg={6} lx={6}>
                                 <Stack spacing={1}>
                                     <Box>
-                                        <TextField id='outlined-textarea' color='warning' type='text' label='Name' placeholder='Enter Food Name' onChange={(e) => setItemName(e.target.value)} variant='filled' fullWidth />
+                                        <TextField id='outlined-textarea' color='warning' type='text' label='Name' placeholder='Enter Food Name' value={itemName} onChange={(e) => setItemName(e.target.value)} variant='filled' fullWidth />
                                     </Box>
                                     <Box>
-                                        <TextField id='outlined-textarea' color='warning' type='number' label='Price' placeholder='Enter Food Price' onChange={(e) => setItemPrice(e.target.value)} variant='filled' fullWidth />
+                                        <TextField id='outlined-textarea' color='warning' type='number' label='Price' placeholder='Enter Food Price' value={itemPrice} onChange={(e) => setItemPrice(e.target.value)} variant='filled' fullWidth />
                                     </Box>
                                     <Box>
-                                        <TextField id='filled-select-currency' color='warning' label='Category' helperText='Select Category' variant='filled' onChange={(e) => {setItemCategory(e.target.value)}} fullWidth select>
+                                        <TextField id='filled-select-currency' color='warning' label='Category' helperText='Select Category' variant='filled' value={itemCategory} onChange={(e) => {setItemCategory(e.target.value)}} fullWidth select>
                                             {CategoryData.map((selectCateg) => (
                                                 <MenuItem key={ selectCateg.category_name } value={ selectCateg.category_name }>
                                                     { selectCateg.category_name }
