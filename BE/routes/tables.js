@@ -25,15 +25,12 @@ route.get("/", auth, async (req, res) => {
 route.post("/create", auth, async (req, res) => {
     const table_name = req.body.table_name;
 
-    // check if table already exists and length of table name is greater than 0
-    if (
-        (await tables_model.findOne({ table_name: table_name })) ||
-        table_name.length === 0
-    ) {
-        return res.status(400).json({
+    if (!table_name) {
+        res.status(400).json({
             success: false,
-            message: "Table already exists or table name is empty",
+            message: "Table name is required",
         });
+        return;
     }
 
     const table = new tables_model({
