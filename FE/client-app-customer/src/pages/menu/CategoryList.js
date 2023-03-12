@@ -11,10 +11,11 @@ import ExtensionOffIcon from '@mui/icons-material/ExtensionOff';
 
 import GlobalBlackHeader6 from '../../global/typographies/headers/BlackHeader6';
 import GlobalBlackHeader4 from '../../global/typographies/headers/BlackHeader4';
-import GlobalPinkHeader6 from '../../global/typographies/headers/PinkHeader6';
+import GlobalOrangeHeader6 from '../../global/typographies/headers/OrangeHeader6';
 import GlobalGreyBody2 from '../../global/typographies/bodies/GreyBody2';
-import GlobalBlueContainedButton from '../../global/buttons/contains/BlueContainedButton';
+import GlobalTealContainedButton from '../../global/buttons/contains/TealContainedButton';
 import GlobalBlackHeader5 from '../../global/typographies/headers/BlackHeader5';
+import FadeIn from '../../global/animation/FadeIn';
 
 function CategoryList() {
     const navigate = useNavigate();
@@ -25,7 +26,7 @@ function CategoryList() {
 
     React.useEffect(() => {
         fetch(`${process.env.REACT_APP_BACKEND_URL}/menu_items/items/${category_name}`)
-         .then((response) => response.json())
+            .then((response) => response.json())
             .then((data) => {
                 if (data.success) {
                     // console.log(data.items);
@@ -34,10 +35,10 @@ function CategoryList() {
                     console.log(data.error);
                 }
             }
-        ).catch((error) => {
-            console.log(error);
-        });
-    },[])
+            ).catch((error) => {
+                console.log(error);
+            });
+    }, [])
 
     const addToCart = (item_id) => {
         console.log(item_id);
@@ -102,11 +103,15 @@ function CategoryList() {
 
     const addBtn = {
         width: '100%'
-    }
+    };
+
+    const categoryNamePriceContainer = {
+        height: 90
+    };
 
     if (StartersData.length === 0) {
         return (
-            <React.Fragment>
+            <FadeIn>
                 <Box sx={pageContainer}>
                     <Stack sx={headerPage} direction='row' alignItems='center' alignContent='center' spacing={1}>
                         <IconButton onClick={() => navigate('/')}>
@@ -126,12 +131,12 @@ function CategoryList() {
                         </Grid2>
                     </Grid2>
                 </Box>
-            </React.Fragment>
+            </FadeIn>
         );
     };
 
     return (
-        <React.Fragment>
+        <FadeIn>
             <Box sx={pageContainer}>
                 <Stack sx={headerPage} direction='row' alignItems='center' alignContent='center' spacing={1}>
                     <IconButton onClick={() => navigate('/')}>
@@ -148,12 +153,12 @@ function CategoryList() {
                                         <CardMedia component='img' height='140' image={`${process.env.REACT_APP_BACKEND_URL}${startersList.image}`} alt={startersList.name} />
                                         <CardContent sx={cardContent}>
                                             <Stack direction='column' spacing={2}>
-                                                <Box sx={{height: 90}}>
+                                                <Box sx={categoryNamePriceContainer}>
                                                     <GlobalBlackHeader6 sx={itemNamePrice} text={startersList.name} />
-                                                    <GlobalPinkHeader6 sx={itemNamePrice} text={'₱' + startersList.price.$numberDecimal} />
+                                                    <GlobalOrangeHeader6 sx={itemNamePrice} text={'₱' + startersList.price.$numberDecimal} />
                                                 </Box>
                                                 <Box >
-                                                    <GlobalBlueContainedButton text='Add' sx={ addBtn } startIcon={<AddRoundedIcon />} onClick={() => addToCart(startersList._id)}/>
+                                                    <GlobalTealContainedButton text='Add' sx={addBtn} startIcon={<AddRoundedIcon />} onClick={() => addToCart(startersList._id)} />
                                                 </Box>
                                             </Stack>
                                         </CardContent>
@@ -164,7 +169,7 @@ function CategoryList() {
                     </Grid2>
                 </Grid2>
             </Box>
-        </React.Fragment>
+        </FadeIn>
     );
 }
 

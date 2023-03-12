@@ -1,27 +1,27 @@
 import React from 'react';
 
 import Grid2 from '@mui/material/Unstable_Grid2/Grid2';
-import { Box } from '@mui/material';
 import { grey } from '@mui/material/colors';
 import HourglassDisabledRoundedIcon from '@mui/icons-material/HourglassDisabledRounded';
 
 import GlobalBlackHeader5 from '../../global/typographies/headers/BlackHeader5';
 import GlobalGreyBody2 from '../../global/typographies/bodies/GreyBody2';
+import FadeIn from '../../global/animation/FadeIn';
 
 function Fallback() {
-    const pageContainer = {
-        pb: 8,
-        pr: 1,
-        pl: 1,
-        pt: 2,
+    const fullScreenDisplay = {
+        position: 'fixed',
+        width: '100vw',
+        height: '100vh',
+        display: 'flex',
     };
 
     const centerAlignment = {
-        pt: 3,
         textAlign: 'center',
         justifyContent: 'center',
         alignItems: 'center',
-        display: 'flex'
+        display: 'flex',
+        height: '100vh',
     };
 
     const sessionExpiredIcon = {
@@ -30,21 +30,15 @@ function Fallback() {
     };
 
     return (
-        <React.Fragment>
-            <Box sx={pageContainer}>
-                <Grid2 container sx={centerAlignment} spacing={1}>
-                    <Grid2 item xs={12} sm={12} md={12} lg={12} lx={12}>
-                        <HourglassDisabledRoundedIcon sx={sessionExpiredIcon} />
-                    </Grid2>
-                    <Grid2 item xs={12} sm={12} md={12} lg={12} lx={12}>
-                        <GlobalBlackHeader5 text='Your Session is Invalid or Expired' />
-                    </Grid2>
-                    <Grid2 item xs={12} sm={12} md={12} lg={12} lx={12}>
-                        <GlobalGreyBody2 text={`Try scanning a new QR Code to access again.`} />
-                    </Grid2>
+        <FadeIn>
+            <Grid2 container sx={[fullScreenDisplay, centerAlignment]}>
+                <Grid2 item xs={12} sm={12} md={12} lg={12} lx={12}>
+                    <HourglassDisabledRoundedIcon sx={sessionExpiredIcon} />
+                    <GlobalBlackHeader5 text='Your Session is Invalid or Expired' />
+                    <GlobalGreyBody2 text={`Try scanning a new QR Code to access again.`} />
                 </Grid2>
-            </Box>
-        </React.Fragment>
+            </Grid2>
+        </FadeIn>
     );
 }
 

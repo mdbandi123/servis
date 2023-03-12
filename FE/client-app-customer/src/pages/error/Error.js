@@ -18,7 +18,6 @@ function Error() {
         width: '100vw',
     };
 
-
     const searchIcon = {
         fontSize: '6em',
         color: grey[600]

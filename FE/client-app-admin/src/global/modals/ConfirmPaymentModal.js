@@ -8,12 +8,12 @@ import CloseIcon from '@mui/icons-material/Close';
 
 import GlobalGreyBody1 from '../typographies/bodies/GreyBody1';
 import GlobalBlackHeader5 from '../typographies/headers/BlackHeader5';
-import GlobalBlueTextButton from '../buttons/text/BlueTextButton';
-import GlobalRedTextButton from '../buttons/text/RedTextButton';
-import GlobalBlueContainedButton from '../buttons/contains/BlueContainedButton';
+import GlobalIndigoTextButton from '../buttons/text/IndigoTextButton';
+import GlobalOrangeTextButton from '../buttons/text/OrangeTextButton';
+import GlobalTealContainedButton from '../buttons/contains/TealContainedButton';
 
 const Transition = React.forwardRef(function Transition(props, ref) {
-    return <Slide direction='up' ref={ref} {...props} />;
+    return <Slide direction='up' ref={ ref } {...props} />;
 });
 
 function ConfirmPaymentModal(props) {
@@ -44,24 +44,24 @@ function ConfirmPaymentModal(props) {
 
     return (
         <React.Fragment>
-            <GlobalBlueContainedButton text='Paid' onClick={confirmPaymentHandler} />
-            <Dialog keepMounted maxWidth='sm' fullWidth open={openConfirmPaymentModal} TransitionComponent={Transition} onClose={cancelConfirmPaymentHandler} aria-describedby='alert-dialog-slide-description'>
-                <DialogTitle sx={dialogAlignment}>
-                    <GlobalBlackHeader5 text='Message Confirmation' />
+            <GlobalTealContainedButton text={ `Confirm Payment` } onClick={ confirmPaymentHandler } />
+            <Dialog keepMounted maxWidth='sm' fullWidth open={ openConfirmPaymentModal } TransitionComponent={ Transition } onClose={ cancelConfirmPaymentHandler } aria-describedby='alert-dialog-slide-description'>
+                <DialogTitle sx={ dialogAlignment }>
+                    <GlobalBlackHeader5 text={ `Message Confirmation` } />
                 </DialogTitle>
-                <Box sx={closeIconButton}>
+                <Box sx={ closeIconButton } >
                     <IconButton>
-                        <CloseIcon onClick={cancelConfirmPaymentHandler} />
+                        <CloseIcon onClick={ cancelConfirmPaymentHandler } />
                     </IconButton>
                 </Box>
                 <DialogContent >
                     <DialogContentText id='alert-dialog-slide-description' >
-                        <GlobalGreyBody1 text={props.context} />
+                        <GlobalGreyBody1 text={ props.context } />
                     </DialogContentText>
                 </DialogContent>
                 <DialogActions>
-                    <GlobalRedTextButton text='Cancel' onClick={cancelConfirmPaymentHandler} />
-                    <GlobalBlueTextButton text='Confirm' onClick={confirmConfirmPaymentHandler} />
+                    <GlobalOrangeTextButton text={ `Cancel` } onClick={ cancelConfirmPaymentHandler } />
+                    <GlobalIndigoTextButton text={ `Confirm` } onClick={ confirmConfirmPaymentHandler } />
                 </DialogActions>
             </Dialog>
         </React.Fragment>

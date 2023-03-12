@@ -12,9 +12,9 @@ import InsertPhotoIcon from '@mui/icons-material/InsertPhoto';
 
 import GlobalGreyBody1 from '../typographies/bodies/GreyBody1';
 import GlobalBlackHeader5 from '../typographies/headers/BlackHeader5';
-import GlobalRedTextButton from '../buttons/text/RedTextButton';
-import GlobalBlueTextButton from '../buttons/text/BlueTextButton';
-import GlobalBlueContainedButton from '../buttons/contains/BlueContainedButton';
+import GlobalOrangeTextButton from '../buttons/text/OrangeTextButton';
+import GlobalIndigoTextButton from '../buttons/text/IndigoTextButton';
+import GlobalTealContainedButton from '../buttons/contains/TealContainedButton';
 
 import { AdapterMoment } from '@mui/x-date-pickers/AdapterMoment';
 import { LocalizationProvider } from '@mui/x-date-pickers/LocalizationProvider';
@@ -46,16 +46,16 @@ function GenerateDatePickerModal(props) {
             const response = await fetch(
                 `${process.env.REACT_APP_BACKEND_URL}/order_items/archive-csv?start_date=${start_date}&end_date=${end_date}`,
                 {
-                    method: "GET",
+                    method: 'GET',
                 }
             );
-    
+
             const data = await response.blob();
             console.log(data);
             const url = window.URL.createObjectURL(data);
-            const link = document.createElement("a");
+            const link = document.createElement('a');
             link.href = url;
-            link.setAttribute("download", `archive_${start_date}_${end_date}.csv`);
+            link.setAttribute('download', `archive_${start_date}_${end_date}.csv`);
             document.body.appendChild(link);
             link.click();
         } catch (error) {
@@ -67,8 +67,8 @@ function GenerateDatePickerModal(props) {
     };
 
     function convertUTCDateToLocalDate(date) {
-        var newDate = new Date(date.getTime() - date.getTimezoneOffset()*60*1000);
-        return newDate;   
+        var newDate = new Date(date.getTime() - date.getTimezoneOffset() * 60 * 1000);
+        return newDate;
     }
 
     const closeIconButton = {
@@ -95,7 +95,7 @@ function GenerateDatePickerModal(props) {
 
     return (
         <React.Fragment>
-            <GlobalBlueContainedButton text='Generate' onClick={GenerateReportHandler} />
+            <GlobalTealContainedButton text='Generate' onClick={GenerateReportHandler} />
             <Dialog keepMounted maxWidth='sm' fullWidth open={openGenerateReportModal} TransitionComponent={Transition} onClose={cancelGenerateReportHandler} aria-describedby='alert-dialog-slide-description'>
                 <DialogTitle sx={dialogAlignment}>
                     <GlobalBlackHeader5 text='Set Date Range To Generate Report' />
@@ -107,23 +107,23 @@ function GenerateDatePickerModal(props) {
                 </Box>
                 <DialogContent >
                     <DialogContentText id='alert-dialog-slide-description'>
-                        <Stack direction='row' justifyContent="space-between">
+                        <Stack direction='row' justifyContent='space-between'>
                             <Box>
                                 <LocalizationProvider dateAdapter={AdapterMoment}>
-                                    <DatePicker sx={textField} label="Start" slotProps={{ textField: { helperText: 'MM / DD / YYYY' } }} onChange={(e) => setStartDate(new Date(e._d))}/>
+                                    <DatePicker sx={textField} label='Start' slotProps={{ textField: { helperText: 'MM / DD / YYYY' } }} onChange={(e) => setStartDate(new Date(e._d))} />
                                 </LocalizationProvider>
                             </Box>
                             <Box>
                                 <LocalizationProvider dateAdapter={AdapterMoment}>
-                                    <DatePicker sx={textField} label="End" slotProps={{ textField: { helperText: 'MM / DD / YYYY' }}} onChange={(e) => setEndDate(new Date(e._d))} />
+                                    <DatePicker sx={textField} label='End' slotProps={{ textField: { helperText: 'MM / DD / YYYY' } }} onChange={(e) => setEndDate(new Date(e._d))} />
                                 </LocalizationProvider>
                             </Box>
                         </Stack>
                     </DialogContentText>
                 </DialogContent>
                 <DialogActions>
-                    <GlobalRedTextButton text='Cancel' onClick={cancelGenerateReportHandler} />
-                    <GlobalBlueTextButton text='Generate' onClick={confirmGenerateReportHandler} />
+                    <GlobalOrangeTextButton text='Cancel' onClick={cancelGenerateReportHandler} />
+                    <GlobalIndigoTextButton text='Generate' onClick={confirmGenerateReportHandler} />
                 </DialogActions>
             </Dialog>
         </React.Fragment>

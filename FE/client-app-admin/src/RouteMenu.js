@@ -9,6 +9,8 @@ import CategoryItems from './pages/items/categoryItems/CategoryItems';
 import Generate from './pages/generate/Generate';
 import Settings from './pages/settings/Settings';
 import Loading from './pages/loading/Loading';
+import SignUp from './pages/signup/SignUp';
+import ForgotPassword from './pages/forgot-password/ForgotPassword';
 import Login from './pages/signin/SignIn'
 import Logout from './SignOut'
 
@@ -33,19 +35,21 @@ const RouteMenu = () => {
 
     return (
         <Routes>
-            <Route element={<PrivateRoute user={user} />}>
-                <Route exact element={<Navbar />}>
-                    <Route path='/' exact element={<OrderList user={user}/>} />
-                    <Route path='/payment' exact element={<Payment />} />
-                    <Route path='/archive' exact element={<Archive />} />
-                    <Route path='/fooditems' exact element={<FoodItems />} />
-                    <Route path='/categoryitems' exact element={<CategoryItems />} />
-                    <Route path='/generate' exact element={<Generate />} />
-                    <Route path='/settings' exact element={<Settings />} />
-                    <Route path='/logout' element={<Logout/>} />
+            <Route element={ <PrivateRoute user={user} /> } >
+                <Route exact element={ <Navbar /> }>
+                    <Route path='/' exact element={<OrderList user={ user } />} />
+                    <Route path='/payment' exact element={ <Payment /> } />
+                    <Route path='/archive' exact element={ <Archive /> } />
+                    <Route path='/fooditems' exact element={ <FoodItems /> } />
+                    <Route path='/categoryitems' exact element={ <CategoryItems /> } />
+                    <Route path='/generate' exact element={ <Generate /> } />
+                    <Route path='/settings' exact element={ <Settings /> } />
+                    <Route path='/logout' element={ <Logout/> } />
                 </Route>
             </Route>
-            <Route path='/login' exact element={<Login/>} />
+            <Route path='/signup' exact element={ <SignUp/> } />
+            <Route path='/login' exact element={ <Login/> } />
+            <Route path='/forgotpassword' exact element={ <ForgotPassword/> } />
         </Routes>
     )
 }

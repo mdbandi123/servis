@@ -6,18 +6,17 @@ import { Box, Slide } from '@mui/material';
 import { IconButton, Button } from '@mui/material/';
 import { Dialog, DialogActions, DialogContent, DialogContentText, DialogTitle } from '@mui/material/';
 import { Stack, TextField, MenuItem } from '@mui/material/';
-import { grey, indigo } from '@mui/material/colors';
+import { grey, teal } from '@mui/material/colors';
 import CloseIcon from '@mui/icons-material/Close';
 import FileUploadIcon from '@mui/icons-material/FileUpload';
 import InsertPhotoIcon from '@mui/icons-material/InsertPhoto';
-import { CardMedia } from "@mui/material/";
+import { CardMedia } from '@mui/material/';
 
 import GlobalGreyBody1 from '../../global/typographies/bodies/GreyBody1';
 import GlobalBlackHeader5 from '../../global/typographies/headers/BlackHeader5';
-import GlobalRedTextButton from '../../global/buttons/text/RedTextButton';
-import GlobalBlueTextButton from '../../global/buttons/text/BlueTextButton';
-import GlobalBlueContainedButton from '../../global/buttons/contains/BlueContainedButton';
-import { UserList } from '../../pages/generate/data/UserList';
+import GlobalOrangeTextButton from '../../global/buttons/text/OrangeTextButton';
+import GlobalIndigoTextButton from '../../global/buttons/text/IndigoTextButton';
+import GlobalTealContainedButton from '../../global/buttons/contains/TealContainedButton';
 
 const Transition = React.forwardRef(function Transition(props, ref) {
     return <Slide direction='up' ref={ref} {...props} />;
@@ -35,9 +34,9 @@ function CreateItemModal() {
 
     React.useEffect(() => {
         fetch(`${process.env.REACT_APP_BACKEND_URL}/menu/categories`, {
-            method: "GET",
+            method: 'GET',
             headers: {
-                "Content-Type": "application/json",
+                'Content-Type': 'application/json',
             },
         })
             .then((response) => response.json())
@@ -58,23 +57,23 @@ function CreateItemModal() {
     const confirmItemCreateHandler = async () => {
         if (itemImage) {
             const formData = new FormData();
-            formData.append("file", itemImage);  
+            formData.append('file', itemImage);  
 
             fetch(`${process.env.REACT_APP_BACKEND_URL}/upload`, {
-            method: "POST",
+            method: 'POST',
             headers: {
-                "Authorization": user.Aa
+                'Authorization': user.Aa
             },
             body: formData,
             })
             .then((response) => response.json())
             .then((data) => {
-                console.log("File uploaded successfully");
+                console.log('File uploaded successfully');
                 fetch(`${process.env.REACT_APP_BACKEND_URL}/menu_items/item`, {
-                    method: "POST",
+                    method: 'POST',
                     headers: {
-                        "Content-Type": "application/json",
-                        "Authorization": user.Aa
+                        'Content-Type': 'application/json',
+                        'Authorization': user.Aa
                     },
                     body: JSON.stringify({
                         name: itemName,
@@ -91,14 +90,14 @@ function CreateItemModal() {
                     .catch((error) => console.error(error));
             })
             .catch((error) => {
-                console.error("Error uploading file:", error);
+                console.error('Error uploading file:', error);
             });
         } else {
             fetch(`${process.env.REACT_APP_BACKEND_URL}/menu_items/item`, {
-                method: "POST",
+                method: 'POST',
                 headers: {
-                    "Content-Type": "application/json",
-                    "Authorization": user.Aa
+                    'Content-Type': 'application/json',
+                    'Authorization': user.Aa
                 },
                 body: JSON.stringify({
                     name: itemName,
@@ -140,16 +139,16 @@ function CreateItemModal() {
     };
 
     const uploadButton = {
-        backgroundColor: indigo[800],
+        backgroundColor: teal[400],
         '&:hover': {
-            backgroundColor: indigo[900],
+            backgroundColor: teal[500],
             transition: '0.5s'
         }
     }
 
     return (
         <React.Fragment>
-            <GlobalBlueContainedButton text='Create' onClick={ ItemCreateHandler } />
+            <GlobalTealContainedButton text='Create' onClick={ ItemCreateHandler } />
             <Dialog keepMounted maxWidth='sm' fullWidth open={ openCreateItemModal } TransitionComponent={ Transition } onClose={ cancelItemCreateHandler } aria-describedby='alert-dialog-slide-description'>
                 <DialogTitle sx={ dialogAlignment }>
                     <GlobalBlackHeader5 text='Create New Item' />
@@ -178,13 +177,13 @@ function CreateItemModal() {
                             <Grid2 item xs={12} sm={12} md={6} lg={6} lx={6}>
                                 <Stack spacing={1}>
                                     <Box>
-                                        <TextField id='outlined-textarea' color="warning" type='text' label='Name' placeholder='Enter Food Name' onChange={(e) => setItemName(e.target.value)} variant='filled' fullWidth />
+                                        <TextField id='outlined-textarea' color='warning' type='text' label='Name' placeholder='Enter Food Name' onChange={(e) => setItemName(e.target.value)} variant='filled' fullWidth />
                                     </Box>
                                     <Box>
-                                        <TextField id='outlined-textarea' color="warning" type='number' label='Price' placeholder='Enter Food Price' onChange={(e) => setItemPrice(e.target.value)} variant='filled' fullWidth />
+                                        <TextField id='outlined-textarea' color='warning' type='number' label='Price' placeholder='Enter Food Price' onChange={(e) => setItemPrice(e.target.value)} variant='filled' fullWidth />
                                     </Box>
                                     <Box>
-                                        <TextField id='filled-select-currency' color="warning" label='Category' helperText='Select Category' variant='filled' onChange={(e) => {setItemCategory(e.target.value)}} fullWidth select>
+                                        <TextField id='filled-select-currency' color='warning' label='Category' helperText='Select Category' variant='filled' onChange={(e) => {setItemCategory(e.target.value)}} fullWidth select>
                                             {CategoryData.map((selectCateg) => (
                                                 <MenuItem key={ selectCateg.category_name } value={ selectCateg.category_name }>
                                                     { selectCateg.category_name }
@@ -198,8 +197,8 @@ function CreateItemModal() {
                     </DialogContentText>
                 </DialogContent>
                 <DialogActions>
-                    <GlobalRedTextButton text='Cancel' onClick={ cancelItemCreateHandler } />
-                    <GlobalBlueTextButton text='Create' onClick={ confirmItemCreateHandler } />
+                    <GlobalOrangeTextButton text='Cancel' onClick={ cancelItemCreateHandler } />
+                    <GlobalIndigoTextButton text='Create' onClick={ confirmItemCreateHandler } />
                 </DialogActions>
             </Dialog>
         </React.Fragment>

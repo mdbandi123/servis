@@ -1,6 +1,5 @@
 import * as React from 'react';
 import {useState} from 'react';
-import { PaymentMethodList } from './data/PaymentMethodList';
 import store from '../../store/store';
 
 import Grid2 from '@mui/material/Unstable_Grid2/Grid2';
@@ -14,10 +13,11 @@ import GlobalBlackBody1 from '../../global/typographies/bodies/BlackBody1';
 import ConfirmPaymentModal from '../../global/modals/ConfirmPaymentModal';
 import GlobalGreyBody1 from '../../global/typographies/bodies/GreyBody1';
 import GlobalBlackHeader6 from '../../global/typographies/headers/BlackHeader6';
-import GlobalPinkHeader6 from '../../global/typographies/headers/PinkHeader6';
+import GlobalOrangeHeader6 from '../../global/typographies/headers/OrangeHeader6';
 import GlobalBlackHeader4 from '../../global/typographies/headers/BlackHeader4';
 import GlobalGreyBody2 from '../../global/typographies/bodies/GreyBody2';
 import GlobalBlackHeader5 from '../../global/typographies/headers/BlackHeader5';
+import FadeIn from '../../global/animation/FadeIn';
 
 function createData(name, price, quantity, total) {
     return { name, price, quantity, total };
@@ -156,7 +156,7 @@ function Payment() {
 
     if (rowItem.length === 0) {
         return (
-            <React.Fragment>
+            <FadeIn>
                 <Box sx={pageContainer}>
                     <Box sx={headerPage}>
                         <GlobalBlackHeader4 text='Receipt' />
@@ -191,7 +191,7 @@ function Payment() {
                                     <TableCell align='left' colSpan={4}>
                                         <Box>
                                             <GlobalBlackHeader6 sx={totalMessage} text='Total:' />
-                                            <GlobalPinkHeader6 sx={totalAmount} text='$0' />
+                                            <GlobalOrangeHeader6 sx={totalAmount} text='₱0' />
                                         </Box>
                                     </TableCell>
                                 </TableRow>
@@ -204,12 +204,12 @@ function Payment() {
                         </Grid2>
                     </Grid2>
                 </Box>
-            </React.Fragment>
+            </FadeIn>
         );
     }
     
     return (
-        <React.Fragment>
+        <FadeIn>
             <Box sx={pageContainer}>
                 <Box sx={headerPage}>
                     <GlobalBlackHeader4 text='Receipt' />
@@ -239,7 +239,7 @@ function Payment() {
                                 <TableCell align='left' colSpan={4}>
                                     <Box>
                                         <GlobalBlackHeader6 sx={totalMessage} text='Total:' />
-                                        <GlobalPinkHeader6 sx={totalAmount} text={
+                                        <GlobalOrangeHeader6 sx={totalAmount} text={
                                             '₱' +
                                             (rowItem.reduce((acc, item) => {
                                                 return acc + (item.item_price.$numberDecimal * item.quantity)
@@ -257,7 +257,7 @@ function Payment() {
                     </Grid2>
                 </Grid2>
             </Box>
-        </React.Fragment>
+        </FadeIn>
     );
 }
 

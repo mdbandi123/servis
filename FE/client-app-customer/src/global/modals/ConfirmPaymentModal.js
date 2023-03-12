@@ -6,9 +6,9 @@ import { Dialog, DialogActions, DialogContent, DialogContentText, DialogTitle, S
 
 import GlobalGreyBody1 from '../typographies/bodies/GreyBody1';
 import GlobalBlackHeader5 from '../typographies/headers/BlackHeader5';
-import GlobalBlueTextButton from '../buttons/text/BlueTextButton';
-import GlobalRedTextButton from '../buttons/text/RedTextButton';
-import GlobalBlueContainedButton from '../buttons/contains/BlueContainedButton';
+import GlobalIndigoTextButton from '../buttons/text/IndigoTextButton';
+import GlobalOrangeTextButton from '../buttons/text/OrangeTextButton';
+import GlobalTealContainedButton from '../buttons/contains/TealContainedButton';
 
 const Transition = React.forwardRef(function Transition(props, ref) {
     return <Slide direction='up' ref={ref} {...props} />;
@@ -55,7 +55,7 @@ function ConfirmPaymentModal(props) {
 
     return (
         <React.Fragment>
-            <GlobalBlueContainedButton text={props.text} variant={props.variant} sx={props.sx} onClick={ confirmHandler } />
+            <GlobalTealContainedButton text={props.text} variant={props.variant} sx={props.sx} onClick={ confirmHandler } />
             <Dialog keepMounted maxWidth='sm' fullWidth open={ openConfirmModal } TransitionComponent={ Transition } onClose={ cancelConfirmHandler } aria-describedby='alert-dialog-slide-description'>
                 <DialogTitle sx={ dialogAlignment }>
                     <GlobalBlackHeader5 text='Message Confirmation' />
@@ -66,8 +66,8 @@ function ConfirmPaymentModal(props) {
                     </DialogContentText>
                 </DialogContent>
                 <DialogActions>
-                    <GlobalRedTextButton text='Cancel' onClick={ cancelConfirmHandler } />
-                    <GlobalBlueTextButton text='Confirm' onClick={ proceedConfirmHandler } />
+                    <GlobalOrangeTextButton text='Cancel' onClick={ cancelConfirmHandler } />
+                    <GlobalIndigoTextButton text='Confirm' onClick={ proceedConfirmHandler } />
                 </DialogActions>
             </Dialog>
         </React.Fragment>

@@ -8,8 +8,8 @@ import { TextField } from '@mui/material/';
 import CloseIcon from '@mui/icons-material/Close';
 
 import GlobalBlackHeader5 from '../../global/typographies/headers/BlackHeader5';
-import GlobalRedTextButton from '../../global/buttons/text/RedTextButton';
-import GlobalBlueTextButton from '../../global/buttons/text/BlueTextButton';
+import GlobalOrangeTextButton from '../../global/buttons/text/OrangeTextButton';
+import GlobalIndigoTextButton from '../../global/buttons/text/IndigoTextButton';
 
 const Transition = React.forwardRef(function Transition(props, ref) {
     return <Slide direction='up' ref={ref} {...props} />;
@@ -30,21 +30,21 @@ function CreateUserModal(props) {
     };
 
     const confirmCreateHandler = () => {
-            fetch(`${process.env.REACT_APP_BACKEND_URL}/tables/create`, {
-                method: 'POST',
-                headers: {
-                    "Content-Type": "application/json",
-                    "Authorization": user.Aa,
-                },
-                body: JSON.stringify({
-                    table_name: tableName,
-                })
+        fetch(`${process.env.REACT_APP_BACKEND_URL}/tables/create`, {
+            method: 'POST',
+            headers: {
+                "Content-Type": "application/json",
+                "Authorization": user.Aa,
+            },
+            body: JSON.stringify({
+                table_name: tableName,
             })
-                .then(response => response.json())
-                .then(data => {
-                    console.log(data);
-                    setOpenCreateModal(false);
-                }
+        })
+            .then(response => response.json())
+            .then(data => {
+                console.log(data);
+                setOpenCreateModal(false);
+            }
             ).catch((error) => {
                 console.log(error);
             });
@@ -79,7 +79,7 @@ function CreateUserModal(props) {
                             <Grid2 item xs={12} sm={12} md={12} lg={12} lx={12}>
                                 <Grid2 container spacing={1}>
                                     <Grid2 item xs={12} sm={12} md={12} lg={12} lx={12}>
-                                        <TextField id='outlined-textarea' color='warning' type='text' label='User Name' placeholder='Enter User Name' variant='filled' fullWidth onChange={(e) => setTableName(e.target.value)}/>
+                                        <TextField id='outlined-textarea' color='warning' type='text' label='User Name' placeholder='Enter User Name' variant='filled' fullWidth onChange={(e) => setTableName(e.target.value)} />
                                     </Grid2>
                                 </Grid2>
                             </Grid2>
@@ -87,8 +87,8 @@ function CreateUserModal(props) {
                     </DialogContentText>
                 </DialogContent>
                 <DialogActions>
-                    <GlobalRedTextButton text='Cancel' onClick={cancelCreateHandler} />
-                    <GlobalBlueTextButton text='Create' onClick={confirmCreateHandler} />
+                    <GlobalOrangeTextButton text='Cancel' onClick={cancelCreateHandler} />
+                    <GlobalIndigoTextButton text='Create' onClick={confirmCreateHandler} />
                 </DialogActions>
             </Dialog>
         </React.Fragment>

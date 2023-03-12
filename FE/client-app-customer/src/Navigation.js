@@ -4,7 +4,7 @@ import { Outlet, useNavigate } from 'react-router-dom';
 import PropTypes from 'prop-types';
 
 import { useScrollTrigger, Stack, Box, Paper, Avatar } from '@mui/material/';
-import { BottomNavigation, BottomNavigationAction, AppBar,Toolbar } from '@mui/material/';
+import { BottomNavigation, BottomNavigationAction, AppBar, Toolbar } from '@mui/material/';
 import { teal, orange, grey } from '@mui/material/colors';
 import AssignmentIcon from '@mui/icons-material/Assignment';
 import ShoppingCartIcon from '@mui/icons-material/ShoppingCart';
@@ -12,7 +12,7 @@ import PaymentIcon from '@mui/icons-material/Payment';
 import PendingActionsIcon from '@mui/icons-material/PendingActions';
 
 import GlobalWhiteHeader6 from './global/typographies/headers/WhiteHeader6';
-import GlobalPinkBadge from './global/badges/PinkBadge';
+import GlobalTealBadge from './global/badges/TealBadge';
 
 import store from './store/store';
 
@@ -37,10 +37,10 @@ ElevationScroll.propTypes = {
 };
 
 export default function Navigation(props) {
-    const [value, setValue] = useState(0);
+    const [value, setValue] = useState('menu');
     const navigate = useNavigate();
 
-    const table_number = store((state) => state.table_number); 
+    const table_number = store((state) => state.table_number);
 
     const navigation = {
         position: 'fixed',
@@ -51,13 +51,23 @@ export default function Navigation(props) {
     };
 
     const avatar = {
-        bgcolor: grey[700]
+        bgcolor: grey[500]
     };
+
+    const navigationSelector = {
+        '&.Mui-selected': {
+            color: orange[700]
+        }
+    };
+
+    const appBar = {
+        backgroundColor: orange[700]
+    }
 
     return (
         <React.Fragment>
             <ElevationScroll {...props}>
-                <AppBar sx={{backgroundColor: orange[700]}}>
+                <AppBar sx={appBar}>
                     <Toolbar>
                         <Stack direction='row' alignItems='center' spacing={1}>
                             <Box>
@@ -65,21 +75,21 @@ export default function Navigation(props) {
                             </Box>
                             <Box>
                                 <GlobalWhiteHeader6 text={`${table_number}`} />
-                            </Box>
-                        </Stack>
-                    </Toolbar>
-                </AppBar>
-            </ElevationScroll>
+                            </Box >
+                        </Stack >
+                    </Toolbar >
+                </AppBar >
+            </ElevationScroll >
             <Toolbar />
             <Outlet/>
             <Paper sx={navigation} elevation={10}>
                 <BottomNavigation showLabels value={value} onChange={(event, value) => setValue(value)} >
-                    <BottomNavigationAction sx={{'&.Mui-selected':{color: orange[700]}}} onClick={() => navigate('/')} label='Menu' value='menu' icon={<AssignmentIcon />} />
-                    <BottomNavigationAction sx={{ '&.Mui-selected': { color: orange[700] } }} onClick={() => navigate('/cart')} label='Cart' value='cart' icon={<GlobalPinkBadge badgeContent='10' max='9' overlap='circular'><ShoppingCartIcon /> </GlobalPinkBadge>} />
-                    <BottomNavigationAction sx={{ '&.Mui-selected': { color: orange[700] } }} onClick={() => navigate('/pending')} label='Pending' value='pending' icon={<GlobalPinkBadge badgeContent='10' max='9' overlap='circular'><PendingActionsIcon /></GlobalPinkBadge>} />
-                    <BottomNavigationAction sx={{ '&.Mui-selected': { color: orange[700] } }} onClick={() => navigate('/payment')} label='Payment' value='payment' icon={<PaymentIcon />} />
+                    <BottomNavigationAction sx={ navigationSelector } onClick={() => navigate('/')} label='Menu' value='menu' icon={<AssignmentIcon />} />
+                    <BottomNavigationAction sx={ navigationSelector } onClick={() => navigate('/cart')} label='Cart' value='cart' icon={<GlobalTealBadge badgeContent='10' max='9' overlap='circular'><ShoppingCartIcon /> </GlobalTealBadge>} />
+                    <BottomNavigationAction sx={ navigationSelector } onClick={() => navigate('/pending')} label='Pending' value='pending' icon={<GlobalTealBadge badgeContent='10' max='9' overlap='circular'><PendingActionsIcon /></GlobalTealBadge>} />
+                    <BottomNavigationAction sx={ navigationSelector } onClick={() => navigate('/payment')} label='Payment' value='payment' icon={<PaymentIcon />} />
                 </BottomNavigation>
             </Paper>
-        </React.Fragment>
+        </React.Fragment >
     );
 }

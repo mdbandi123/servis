@@ -10,8 +10,8 @@ import CloseIcon from '@mui/icons-material/Close';
 import EditIcon from '@mui/icons-material/Edit';
 
 import GlobalBlackHeader5 from '../typographies/headers/BlackHeader5';
-import GlobalRedTextButton from '../buttons/text/RedTextButton';
-import GlobalBlueTextButton from '../buttons/text/BlueTextButton';
+import GlobalOrangeTextButton from '../buttons/text/OrangeTextButton';
+import GlobalIndigoTextButton from '../buttons/text/IndigoTextButton';
 
 const Transition = React.forwardRef(function Transition(props, ref) {
     return <Slide direction='up' ref={ref} {...props} />;
@@ -32,7 +32,7 @@ function UpdateUserModal(props) {
     };
 
     const confirmItemUpdateHandler = () => {
-    fetch(`${process.env.REACT_APP_BACKEND_URL}/tables/update/${props.tableName}`, {
+        fetch(`${process.env.REACT_APP_BACKEND_URL}/tables/update/${props.tableName}`, {
             method: 'PUT',
             headers: {
                 'Content-Type': 'application/json',
@@ -83,8 +83,8 @@ function UpdateUserModal(props) {
                     </DialogContentText>
                 </DialogContent>
                 <DialogActions>
-                    <GlobalRedTextButton text='Cancel' onClick={cancelItemUpdateHandler} />
-                    <GlobalBlueTextButton text='Update' onClick={confirmItemUpdateHandler} />
+                    <GlobalOrangeTextButton text='Cancel' onClick={cancelItemUpdateHandler} />
+                    <GlobalIndigoTextButton text='Update' onClick={confirmItemUpdateHandler} />
                 </DialogActions>
             </Dialog>
         </React.Fragment>

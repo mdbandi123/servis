@@ -4,20 +4,21 @@ import QRCode from 'qrcode.react';
 import ReactToPrint from 'react-to-print';
 
 import Grid2 from '@mui/material/Unstable_Grid2/Grid2';
-import { Avatar, Card, MenuItem, TextField, Stack, Box } from '@mui/material';
+import { Card, MenuItem, TextField, Stack, Box } from '@mui/material';
 import { Dialog, DialogActions, DialogContent, DialogContentText, DialogTitle, Slide } from '@mui/material/';
-
+import { grey } from '@mui/material/colors';
 import AccountCircleIcon from '@mui/icons-material/AccountCircle';
+import QrCodeIcon from '@mui/icons-material/QrCode';
 
 import GlobalGreyBody1 from '../../global/typographies/bodies/GreyBody1';
 import GlobalGreyBody3 from '../../global/typographies/bodies/GreyBody3';
 import GlobalBlackBody1 from '../../global/typographies/bodies/BlackBody1';
-import GlobalBlueTextButton from '../../global/buttons/text/BlueTextButton';
-import GlobalRedTextButton from '../../global/buttons/text/RedTextButton';
-import GlobalPurpleHeader4 from '../../global/typographies/headers/PurpleHeader4';
+import GlobalIndigoTextButton from '../../global/buttons/text/IndigoTextButton';
+import GlobalOrangeTextButton from '../../global/buttons/text/OrangeTextButton';
+import GlobalIndigoHeader4 from '../../global/typographies/headers/IndigoHeader4';
 import GlobalBlackHeader5 from '../../global/typographies/headers/BlackHeader5';
-import GlobalBlueContainedButton from '../../global/buttons/contains/BlueContainedButton';
-import { grey } from '@mui/material/colors';
+import GlobalTealContainedButton from '../../global/buttons/contains/TealContainedButton';
+import SlideDown from '../../animation/SlideDown';
 
 const Transition = React.forwardRef(function Transition(props, ref) {
     return <Slide direction='up' ref={ref} {...props} />;
@@ -105,15 +106,17 @@ function Generate() {
                     <QRCode value={props.url} sx={styles.qrCode} />
                 </Box>
                 <Box>
-                    <GlobalGreyBody3 text='Scan this QR Code to access online ordering on your device.' />
+                    <GlobalGreyBody3 text='Scan this QR Code to access Smart Menu.' />
                 </Box>
             </Stack>
-            <Box pt={2}>
+            <Stack direction='column' spacing={1} sx={styles.qrCodeContainer}>
+                <Box pt={2}>
                     <ReactToPrint
-                    trigger={() => <GlobalBlueContainedButton text='Print' />}
-                    content={() => componentRef.current}
+                        trigger={() => <GlobalTealContainedButton text='Print' />}
+                        content={() => componentRef.current}
                     />
                 </Box>
+            </Stack>
           </React.Fragment>
         );
       };
@@ -148,12 +151,17 @@ function Generate() {
     const userTableIcon = {
         color: grey[800],
         fontSize: '2.5em'
+    };
+
+    const QrIcon = {
+        fontSize: '8em',
+        color: grey[500]
     }
 
     return (
-        <React.Fragment>
+        <SlideDown>
             <Box sx={pageTitleContainer}>
-                <GlobalPurpleHeader4 text='Generate' />
+                <GlobalIndigoHeader4 text='Generate' />
             </Box>
             <Grid2 container spacing={3}>
                 <Grid2 item xs={12} sm={12} md={5} lg={5} lx={5}>
@@ -179,7 +187,7 @@ function Generate() {
                                 </TextField>
                             </Box>
                             <Box sx={ qrBtnContainer }>
-                                <GlobalBlueContainedButton sx={qrBtnContainer} text='Generate' variant='{props.variant}' onClick={confirmHandler} />
+                                <GlobalTealContainedButton sx={qrBtnContainer} text='Generate' onClick={confirmHandler} />
                             </Box>
                         </Stack>
                     </Card>
@@ -187,13 +195,36 @@ function Generate() {
                 <Grid2 item xs={12} sm={12} md={7} lg={7} lx={7}>
                     <Card sx={[qrCardContainer, qrCardResult]}>
                         <Box sx={qrHeader}>
-                            {url && table && <>
+                            {url && table ? <>
                                 <Stack direction='column' spacing={3}>
                                     <Box>
                                         <GlobalBlackHeader5 text='Generated QR Code:' />
                                     </Box>
                                     <Box>
                                         <QRCodePrinter table={table} url={url} />
+                                    </Box>
+                                </Stack>
+                            </> : 
+                            <>
+                                <Stack direction='column' spacing={3}>
+                                    <Box>
+                                        <GlobalBlackHeader5 text='Generated QR Code:' />
+                                    </Box>
+                                    <Box>
+                                        <Stack direction='column' spacing={1} sx={styles.qrCodeContainer}>
+                                            <Box>
+                                                <GlobalBlackBody1 text='No QR code generate' />
+                                            </Box>
+                                            <Box>
+                                                <QrCodeIcon sx={ QrIcon } />
+                                            </Box>
+                                            <Box>
+                                                <GlobalGreyBody3 text='Please select user and generate QR code' />
+                                            </Box>
+                                            <Box pt={2}>
+                                                <GlobalTealContainedButton text='Print' disabled={true} />
+                                            </Box>
+                                        </Stack>
                                     </Box>
                                 </Stack>
                             </>}
@@ -211,11 +242,11 @@ function Generate() {
                     </DialogContentText>
                 </DialogContent>
                 <DialogActions>
-                    <GlobalRedTextButton text='Cancel' onClick={cancelConfirmHandler} />
-                    <GlobalBlueTextButton text='Confirm' onClick={proceedConfirmHandler} />
+                    <GlobalOrangeTextButton text='Cancel' onClick={cancelConfirmHandler} />
+                    <GlobalIndigoTextButton text='Confirm' onClick={proceedConfirmHandler} />
                 </DialogActions>
             </Dialog>
-        </React.Fragment>
+        </SlideDown>
     );
 };
 

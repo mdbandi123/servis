@@ -1,23 +1,21 @@
 import React from 'react';
 import { useStore } from '../../store/store';
 
-import { grey, teal } from '@mui/material/colors';
-import Box from '@mui/material/Box';
+import { grey, teal, orange } from '@mui/material/colors';
+import { Box, Card, CardContent, Badge } from '@mui/material/';
 import Grid2 from '@mui/material/Unstable_Grid2/Grid2';
-import Card from '@mui/material/Card';
-import CardContent from '@mui/material/CardContent';
 import AccountCircleIcon from '@mui/icons-material/AccountCircle';
 import PersonOffTwoToneIcon from '@mui/icons-material/PersonOffTwoTone';
 
-import GlobalPurpleHeader4 from '../../global/typographies/headers/PurpleHeader4';
+import GlobalIndigoHeader4 from '../../global/typographies/headers/IndigoHeader4';
 import GlobalBlackHeader5 from '../../global/typographies/headers/BlackHeader5';
 import GlobalBlackHeader3 from '../../global/typographies/headers/BlackHeader3';
 import GlobalBlackBody1 from '../../global/typographies/bodies/BlackBody1';
 import GlobalGreyBody2 from '../../global/typographies/bodies/GreyBody2';
 import GlobalGreyBody3 from '../../global/typographies/bodies/GreyBody3';
 import ViewPaymentModal from '../../global/modals/ViewPaymentModal';
-import GlobalBlueContainedButton from '../../global/buttons/contains/BlueContainedButton';
-import { Badge } from '@mui/material';
+import GlobalTealContainedButton from '../../global/buttons/contains/TealContainedButton';
+import SlideDown from '../../animation/SlideDown';
 
 function Payment(props) {
     const { setOrderedItems, user } = useStore();
@@ -75,13 +73,23 @@ function Payment(props) {
             color: teal[400],
             backgroundColor: teal[400],
         }
-    }
+    };
+
+    const userIcon = {
+        color: grey[800],
+        fontSize: '2.5em'
+    };
+
+
+    const paymentCard = {
+        borderBottom: `4px solid ` + orange[700]
+    };
 
     if (PaymentData.length === 0) {
         return (
-            <React.Fragment>
+            <SlideDown>
                 <Box sx={ pageTitleContainer }>
-                    <GlobalPurpleHeader4 text='Payment' />
+                    <GlobalIndigoHeader4 text='Payment' />
                 </Box>
                 <Grid2 container sx={ centerAlignment } spacing={1}>
                     <Grid2 item xs={12} sm={12} md={12} lg={12} lx={12}>
@@ -94,16 +102,17 @@ function Payment(props) {
                         <GlobalGreyBody2 text={`We couldn't find any Users. Try to create Users`} />
                     </Grid2>
                     <Grid2 item xs={12} sm={12} md={12} lg={12} lx={12}>
-                        <GlobalBlueContainedButton text='Create' />
+                        <GlobalTealContainedButton text='Create' />
                     </Grid2>
                 </Grid2>
-            </React.Fragment>
+            </SlideDown>
         );
     };
+
     return (
-        <React.Fragment>
+        <SlideDown>
             <Box sx={ pageTitleContainer }>
-                <GlobalPurpleHeader4 text='Payment' />
+                <GlobalIndigoHeader4 text='Payment' />
             </Box>
             <Grid2 container spacing={3}>
             {PaymentData.sort((a, b) => b.billed_out - a.billed_out).map((paymentList) => {
@@ -115,14 +124,14 @@ function Payment(props) {
                 const minute = date.getMinutes();
 
                 return (
-                <Grid2 item xs={12} sm={6} md={6} lg={4} lx={4}>
-                    <Card sx={{ borderBottom: `4px solid ` + paymentList.userTableColor }}>
+                <Grid2 item xs={12} sm={6} md={6} lg={4} lx={4} justifyContent='space-around' >
+                    <Card sx={ paymentCard }>
                     <ViewPaymentModal
                         title={paymentList.table_number}
                         userId={paymentList.order_id}
                         orderDate={[month + "/" + day + "/" + year]}
                         orderTime={[hour + ":" + minute]}
-                        sx={{ color: grey[800], fontSize: "3em" }}
+                        sx={ userIcon }
                         ordered_items={paymentList.ordered_items}
                     >
                         <CardContent>
@@ -141,19 +150,19 @@ function Payment(props) {
                         </Grid2>
                         <Grid2 container sx={userTableCardInfo}>
                             <Grid2 item xs={12} sm={12} md={4} lg={4} lx={4}>
-                            <GlobalGreyBody3 text="DATE OF ORDER" />
-                            <GlobalBlackBody1 text={[month + "/" + day + "/" + year]} />
+                            <GlobalGreyBody3 text={ `DATE OF ORDER` } />
+                            <GlobalBlackBody1 text={ `${ month }/${ day }/${ year }` } />
                             </Grid2>
                             <Grid2 item xs={12} sm={12} md={4} lg={4} lx={4}>
-                            <GlobalGreyBody3 text="TOTAL ORDERS" />
+                            <GlobalGreyBody3 text={ `TOTAL ORDERS` } />
                             <GlobalBlackBody1 text={ 
                                 paymentList.ordered_items.reduce((sum, item) => sum + item.quantity, 0)
                              } />
                             </Grid2>
                             <Grid2 item xs={12} sm={12} md={4} lg={4} lx={4}>
-                            <GlobalGreyBody3 text="TOTAL AMOUNT" />
+                            <GlobalGreyBody3 text={ `TOTAL AMOUNT` } />
                             <GlobalBlackBody1 text={
-                                paymentList.ordered_items.reduce((sum, item) => sum + item.quantity * item.item_price.$numberDecimal, 0)
+                                `₱${paymentList.ordered_items.reduce((sum, item) => sum + item.quantity * item.item_price.$numberDecimal, 0)}`
                             } />
                             </Grid2>
                         </Grid2>
@@ -164,7 +173,7 @@ function Payment(props) {
                 );
             })}
             </Grid2>
-        </React.Fragment>
+        </SlideDown>
     );
 };
 

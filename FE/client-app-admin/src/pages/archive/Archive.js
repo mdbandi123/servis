@@ -1,21 +1,46 @@
 import * as React from 'react';
-import { archiveHeadCellsList } from './datas/ArchiveCellsListData';
 
 import PropTypes from 'prop-types';
 import { useStore } from '../../store/store';
-import { alpha } from '@mui/material/styles';
-import { Box, Toolbar, Stack } from '@mui/material/';
+import { Box, Stack } from '@mui/material/';
 import { Table, TableBody, TableCell, TableContainer, TableHead, TablePagination, TableRow } from '@mui/material/';
 import { FormControlLabel, Paper } from '@mui/material/';
-import { purple, pink } from '@mui/material/colors';
-import Typography from '@mui/material/Typography';
+import { indigo } from '@mui/material/colors';
 import FindInPageTwoToneIcon from '@mui/icons-material/FindInPageTwoTone';
 
-import GlobalPurpleHeader4 from '../../global/typographies/headers/PurpleHeader4';
-import GlobalPinkSwitch from '../../global/switches/PinkSwitch';
+import GlobalIndigoHeader4 from '../../global/typographies/headers/IndigoHeader4';
+import GlobalTealSwitch from '../../global/switches/TealSwitch';
 import GlobalBlackHeader5 from '../../global/typographies/headers/BlackHeader5';
-import GlobalBlueContainedButton from '../../global/buttons/contains/BlueContainedButton';
+import GlobalTealContainedButton from '../../global/buttons/contains/TealContainedButton';
 import GenerateDatePickerModal from '../../global/modals/GenerateDatePickerModal';
+import SlideDown from '../../animation/SlideDown';
+
+const archiveHeadCellsList = [
+    {
+        id: 'orderId',
+        dataAlignment: false,
+        disablePadding: true,
+        label: 'ORDER ID'
+    },
+    {
+        id: 'orderName',
+        dataAlignment: false,
+        disablePadding: false,
+        label: 'NAME'
+    },
+    {
+        id: 'category',
+        dataAlignment: false,
+        disablePadding: false,
+        label: 'CATEGORY'
+    },
+    {
+        id: 'timeDate',
+        dataAlignment: false,
+        disablePadding: false,
+        label: 'TIME AND DATE'
+    }
+];
 
 function descendingComparator(a, b, orderBy) {
     if (b[orderBy] < a[orderBy]) {
@@ -48,7 +73,7 @@ function EnhancedTableHead(props) {
 
     const tableHeadTitleSort = {
         fontWeight: 'bold',
-        color: purple[900]
+        color: indigo[900]
     };
 
     return (
@@ -56,7 +81,7 @@ function EnhancedTableHead(props) {
             <TableRow >
                 <TableCell padding='checkbox'/>
                 {archiveHeadCellsList.map((archiveHeadItem) => (
-                    <TableCell sx={tableHeadTitleSort} key={ archiveHeadItem.id } align={ archiveHeadItem.dataAlignment ? 'right' : 'left' } padding={ archiveHeadItem.disablePadding ? 'none' : 'normal' } sortDirection={ orderBy === archiveHeadItem.id ? order : false } >
+                    <TableCell sx={ tableHeadTitleSort } key={ archiveHeadItem.id } align={ archiveHeadItem.dataAlignment ? 'right' : 'left' } padding={ archiveHeadItem.disablePadding ? 'none' : 'normal' } sortDirection={ orderBy === archiveHeadItem.id ? order : false } >
                         { archiveHeadItem.label }
                     </TableCell>
                 ))}
@@ -169,12 +194,12 @@ export default function EnhancedTable() {
 
     if (rows.length === 0) {
         return (
-            <React.Fragment>
+            <SlideDown>
                 <Box sx={ pageTitleContainer }>
-                    <GlobalPurpleHeader4 text='Archive' />
+                    <GlobalIndigoHeader4 text='Archive' />
                 </Box>
                 <Box mb={3}>
-                    <GlobalBlueContainedButton text='Generate' />
+                    <GlobalTealContainedButton text='Generate' disabled={ true } />
                 </Box>
                 <Box sx={ tableContainerWidth }>
                     <Paper sx={ archiveTablePaper }>
@@ -182,23 +207,23 @@ export default function EnhancedTable() {
                             <Table sx={ archiveTable } aria-labelledby='tableTitle' size={ dense ? 'small' : 'medium' } >
                                 <EnhancedTableHead numSelected={ selected.length } order={ order } orderBy={ orderBy } onSelectAllClick={ handleSelectAllClick } onRequestSort={ handleRequestSort } />
                             </Table>
-                            <Stack direction='row' sx={ centerAlignment } spacing={1}>
+                            <Stack direction='row' sx={ centerAlignment } spacing={1} >
                                 <FindInPageTwoToneIcon sx={ noDataIcon } />
                                 <GlobalBlackHeader5 text='No Data Found' />
                             </Stack>
                         </TableContainer>
-                        <TablePagination rowsPerPageOptions={[5, 10, 15, 20, 25, 30]} component='div' count={ rows.length } rowsPerPage={ rowsPerPage } page={ page } onPageChange={ handleChangePage } onRowsPerPageChange={ handleChangeRowsPerPage } />
+                        <TablePagination rowsPerPageOptions={ [5, 10, 15, 20, 25, 30] } component='div' count={ rows.length } rowsPerPage={ rowsPerPage } page={ page } onPageChange={ handleChangePage } onRowsPerPageChange={ handleChangeRowsPerPage } />
                     </Paper>
-                    <FormControlLabel control={ <GlobalPinkSwitch disabled /> } label='Dense padding' />
+                    <FormControlLabel control={<GlobalTealSwitch disabled /> } label='Dense padding' />
                 </Box>
-            </React.Fragment>
+            </SlideDown>
         );
     };
 
     return (
-        <React.Fragment>
+        <SlideDown>
             <Box sx={ pageTitleContainer }>
-                <GlobalPurpleHeader4 text='Archive' />
+                <GlobalIndigoHeader4 text='Archive' />
             </Box>
             <Box mb={3}>
                 <GenerateDatePickerModal />
@@ -222,7 +247,7 @@ export default function EnhancedTable() {
                                                 <TableCell align='left'>{row.time_ordered}</TableCell>
                                             </TableRow>
                                         );
-                                    })};
+                                    })}
                                 {emptyRows > 0 && (
                                     <TableRow style={{ height: (dense ? 33 : 53) * emptyRows }}>
                                         <TableCell colSpan={6} />
@@ -231,10 +256,10 @@ export default function EnhancedTable() {
                             </TableBody>
                         </Table>
                     </TableContainer>
-                    <TablePagination rowsPerPageOptions={[5, 10, 15, 20, 25, 30]} component='div' count={ rows.length } rowsPerPage={ rowsPerPage } page={ page } onPageChange={ handleChangePage } onRowsPerPageChange={ handleChangeRowsPerPage } />
+                    <TablePagination rowsPerPageOptions={[5, 10, 15, 20, 25, 30]} component='div' count={ rows.length } rowsPerPage={ rowsPerPage }page={ page } onPageChange={ handleChangePage } onRowsPerPageChange={ handleChangeRowsPerPage } />
                 </Paper>
-                <FormControlLabel control={ <GlobalPinkSwitch checked={ dense } onChange={ handleChangeDense } /> } label='Dense padding' />
+                <FormControlLabel control={ <GlobalTealSwitch checked={ dense } onChange={ handleChangeDense } /> } label='Dense padding' />
             </Box>
-        </React.Fragment>
+        </SlideDown>
     );
 };

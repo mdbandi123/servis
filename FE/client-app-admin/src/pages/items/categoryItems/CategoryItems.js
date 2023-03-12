@@ -1,28 +1,29 @@
-import * as React from "react";
-import { useStore } from "../../../store/store";
+import * as React from 'react';
+import { useStore } from '../../../store/store';
 
-import Box from "@mui/material/Box";
-import Grid2 from "@mui/material/Unstable_Grid2/Grid2";
-import { CardActions, CardMedia, CardContent, Card } from "@mui/material/";
-import FolderOffTwoToneIcon from "@mui/icons-material/FolderOffTwoTone";
+import Box from '@mui/material/Box';
+import Grid2 from '@mui/material/Unstable_Grid2/Grid2';
+import { CardActions, CardMedia, CardContent, Card } from '@mui/material/';
+import FolderOffTwoToneIcon from '@mui/icons-material/FolderOffTwoTone';
 
-import GlobalPurpleHeader4 from "../../../global/typographies/headers/PurpleHeader4";
-import GlobalBlackHeader6 from "../../../global/typographies/headers/BlackHeader6";
-import GlobalBlackHeader3 from "../../../global/typographies/headers/BlackHeader3";
-import GlobalGreyBody2 from "../../../global/typographies/bodies/GreyBody2";
-import DeleteItemModal from "../../../global/modals/DeleteItemModal";
-import CreateCategModal from "../../../global/modals/CreateCategModal";
-import UpdateCategModal from "../../../global/modals/UpdateCategModal";
-import GlobalPurpleHeader6 from "../../../global/typographies/headers/PurpleHeader6";
+import GlobalIndigoHeader4 from '../../../global/typographies/headers/IndigoHeader4';
+import GlobalBlackHeader6 from '../../../global/typographies/headers/BlackHeader6';
+import GlobalBlackHeader3 from '../../../global/typographies/headers/BlackHeader3';
+import GlobalGreyBody2 from '../../../global/typographies/bodies/GreyBody2';
+import DeleteItemModal from '../../../global/modals/DeleteItemModal';
+import CreateCategModal from '../../../global/modals/CreateCategModal';
+import UpdateCategModal from '../../../global/modals/UpdateCategModal';
+import GlobalIndigoHeader6 from '../../../global/typographies/headers/IndigoHeader6';
+import SlideDown from '../../../animation/SlideDown';
 
 function CategoryItems() {
     const {CategoryData, setCategoryItems} = useStore();
 
     React.useEffect(() => {
         fetch(`${process.env.REACT_APP_BACKEND_URL}/menu/categories`, {
-            method: "GET",
+            method: 'GET',
             headers: {
-                "Content-Type": "application/json",
+                'Content-Type': 'application/json',
             },
         })
             .then((response) => response.json())
@@ -35,11 +36,11 @@ function CategoryItems() {
     const pageTitleContainer = {
         mb: 3,
         textAlign: {
-            xs: "center",
-            sm: "center",
-            md: "left",
-            lg: "left",
-            lx: "left",
+            xs: 'center',
+            sm: 'center',
+            md: 'left',
+            lg: 'left',
+            lx: 'left',
         },
     };
 
@@ -48,21 +49,21 @@ function CategoryItems() {
     };
 
     const centerAlignment = {
-        textAlign: "center",
-        justifyContent: "center",
-        alignItems: "center",
-        display: "flex",
+        textAlign: 'center',
+        justifyContent: 'center',
+        alignItems: 'center',
+        display: 'flex',
     };
 
     const noItemIcon = {
-        fontSize: "8em",
+        fontSize: '8em',
     };
 
     if (CategoryData.length === 0) {
         return (
-            <React.Fragment>
+            <SlideDown>
                 <Box sx={pageTitleContainer}>
-                    <GlobalPurpleHeader4 text="Category Items" />
+                    <GlobalIndigoHeader4 text={ `Category Items` } />
                 </Box>
                 <Box mb={3}>
                     <CreateCategModal />
@@ -72,7 +73,7 @@ function CategoryItems() {
                         <FolderOffTwoToneIcon sx={noItemIcon} />
                     </Grid2>
                     <Grid2 item xs={12} sm={12} md={12} lg={12} lx={12}>
-                        <GlobalBlackHeader3 text="No Category Item Found" />
+                        <GlobalBlackHeader3 text={ `No Category Item Found` } />
                     </Grid2>
                     <Grid2 item xs={12} sm={12} md={12} lg={12} lx={12}>
                         <GlobalGreyBody2
@@ -80,14 +81,14 @@ function CategoryItems() {
                         />
                     </Grid2>
                 </Grid2>
-            </React.Fragment>
+            </SlideDown>
         );
     }
 
     return (
-        <React.Fragment>
+        <SlideDown>
             <Box sx={pageTitleContainer}>
-                <GlobalPurpleHeader4 text="Category Items" />
+                <GlobalIndigoHeader4 text={ `Category Items` } />
             </Box>
             <Box mb={3}>
                 <CreateCategModal/>
@@ -101,20 +102,20 @@ function CategoryItems() {
                         >
                          
                             <CardMedia
-                                component="img"
+                                component='img'
                                 alt={categItemList.category_name}
-                                height="140"
+                                height='140'
                                 image={`${process.env.REACT_APP_BACKEND_URL}${categItemList.category_image}`}
                             />
                             <CardContent>
-                                <GlobalPurpleHeader6
+                                <GlobalIndigoHeader6
                                     text={categItemList.category_name}
                                 />
                             </CardContent>
                             <CardActions>
                                 <UpdateCategModal
                                     title={
-                                        "Update " + categItemList.category_name
+                                        'Update ' + categItemList.category_name
                                     }
                                     value={categItemList.category_name}
                                     image={categItemList.category_image}
@@ -124,9 +125,9 @@ function CategoryItems() {
                                 />
                                 <DeleteItemModal
                                     context={
-                                        "If you delete this category will be permanently gone. Are you sure you want to delete " +
+                                        'If you delete this category will be permanently gone. Are you sure you want to delete ' +
                                         categItemList.category_name +
-                                        "?"}
+                                        '?'}
                                     category_id={categItemList._id}
                                 />
                             </CardActions>
@@ -134,7 +135,7 @@ function CategoryItems() {
                     </Grid2>
                 ))}
             </Grid2>
-        </React.Fragment>
+        </SlideDown>
     );
 }
 

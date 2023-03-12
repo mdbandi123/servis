@@ -7,13 +7,13 @@ import { IconButton, Button } from '@mui/material/';
 import { Dialog, DialogActions, DialogContent, DialogContentText, DialogTitle } from '@mui/material/';
 import { Stack, TextField } from '@mui/material/';
 import { CardMedia, Card } from '@mui/material/';
-import { grey, indigo } from '@mui/material/colors';
+import { teal } from '@mui/material/colors';
 import CloseIcon from '@mui/icons-material/Close';
 import FileUploadIcon from '@mui/icons-material/FileUpload';
 
 import GlobalBlackHeader5 from '../typographies/headers/BlackHeader5';
-import GlobalRedTextButton from '../buttons/text/RedTextButton';
-import GlobalBlueTextButton from '../buttons/text/BlueTextButton';
+import GlobalOrangeTextButton from '../buttons/text/OrangeTextButton';
+import GlobalIndigoTextButton from '../buttons/text/IndigoTextButton';
 
 const Transition = React.forwardRef(function Transition(props, ref) {
     return <Slide direction='up' ref={ref} {...props} />;
@@ -111,16 +111,16 @@ function UpdateCategModal(props) {
     };
 
     const uploadButton = {
-        backgroundColor: indigo[800],
+        backgroundColor: teal[400],
         '&:hover': {
-            backgroundColor: indigo[900],
+            backgroundColor: teal[500],
             transition: '0.5s'
         }
     }
 
     return (
         <React.Fragment>
-            <GlobalBlueTextButton text='Update' onClick={ CategCreateHandler } />
+            <GlobalIndigoTextButton text='Update' onClick={ CategCreateHandler } />
             <Dialog keepMounted maxWidth='sm' fullWidth open={ openCreateCategModal } TransitionComponent={ Transition } onClose={ cancelCategCreateHandler } aria-describedby='alert-dialog-slide-description'>
                 <DialogTitle sx={ dialogAlignment }>
                     <GlobalBlackHeader5 text={ props.title } />
@@ -158,8 +158,8 @@ function UpdateCategModal(props) {
                     </DialogContentText>
                 </DialogContent>
                 <DialogActions>
-                    <GlobalRedTextButton text='Cancel' onClick={ cancelCategCreateHandler } />
-                    <GlobalBlueTextButton text='Update' onClick={ confirmCategCreateHandler } />
+                    <GlobalOrangeTextButton text='Cancel' onClick={ cancelCategCreateHandler } />
+                    <GlobalIndigoTextButton text='Update' onClick={ confirmCategCreateHandler } />
                 </DialogActions>
             </Dialog>
         </React.Fragment>

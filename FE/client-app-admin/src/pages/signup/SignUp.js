@@ -1,17 +1,21 @@
 import React from 'react';
+import { useNavigate } from 'react-router-dom';
 
 import Grid2 from '@mui/material/Unstable_Grid2/Grid2';
-import { Box, Stack } from '@mui/material/';
+import { Box, Stack, Tooltip } from '@mui/material/';
 import { IconButton } from '@mui/material/';
 import { FormControl, InputAdornment, InputLabel, FilledInput, TextField } from '@mui/material/';
+import { teal } from '@mui/material/colors';
 import { Visibility, VisibilityOff } from '@mui/icons-material/';
 
-import GlobalBlueContainedButton from '../../global/buttons/contains/BlueContainedButton';
+import GlobalTealContainedButton from '../../global/buttons/contains/TealContainedButton';
 import GlobalBlackHeader6 from '../../global/typographies/headers/BlackHeader6';
-import GlobalBlueHeader6 from '../../global/typographies/headers/BlueHeader6';
-import GlobalPurpleHeader2 from '../../global/typographies/headers/PurpleHeader2';
+import GlobalTealHeader6 from '../../global/typographies/headers/TealHeader6';
+import GlobalIndigoHeader2 from '../../global/typographies/headers/IndigoHeader2';
+import FadeIn from '../../animation/FadeIn';
 
-function SignIn() {
+function SignUp() {
+    const navigate = useNavigate();
     const [showPassword, setShowPassword] = React.useState(false);
     const handleClickShowPassword = () => setShowPassword((show) => !show);
 
@@ -27,7 +31,7 @@ function SignIn() {
         width: '100vw',
         height: '100vh',
         display: 'flex',
-        backgroundColor: '#506AD8D9'
+        backgroundColor: teal[500]
     };
 
     const centerAlignment = {
@@ -54,61 +58,54 @@ function SignIn() {
         display: 'flex'
     };
 
+    const hyperLink = {
+        cursor: 'pointer'
+    };
+
     return (
-        <React.Fragment>
+        <FadeIn>
             <Grid2 sx={ [fullScreenDisplay, centerAlignment] } container>
                 <Grid2 sx={ [registrationFormContainer] } xs={12} sm={12} md={8} lg={8} lx={8} item>
                     <Stack component='form' spacing={3}>
                         <Stack>
-                            <GlobalPurpleHeader2 text='Create your Account' />
+                            <GlobalIndigoHeader2 text='Create your Account' />
                         </Stack>
                         <Stack spacing={2}>
-                            <Grid2 spacing={2} container>
-                                <Grid2 xs={12} sm={12} md={6} lg={6} lx={6} item>
-                                    <Box>
-                                        <TextField id='outlined-textarea' color='primary' type='text' label='First Name' placeholder='Enter your First Name' variant='filled' fullWidth />
-                                    </Box>
-                                </Grid2>
-                                <Grid2 xs={12} sm={12} md={6} lg={6} lx={6} item>
-                                    <Box>
-                                        <TextField id='outlined-textarea' color='primary' type='text' label='Last Name' placeholder='Enter your Last Name' variant='filled' fullWidth />
-                                    </Box>
-                                </Grid2>
-                            </Grid2>
                             <Box>
-                                <TextField id='outlined-textarea' color='primary' type='text' label='Business Name' placeholder='Enter your Business Name' variant='filled' fullWidth />
-                            </Box>
-                            <Box>
-                                <TextField id='outlined-textarea' color='primary' type='email' label='Email' placeholder='Enter your Email' variant='filled' fullWidth />
+                                <TextField id='outlined-textarea' color='warning' type='email' label='Email' placeholder='Enter your Email' variant='filled' fullWidth />
                             </Box>
                             <Box>
                                 <FormControl variant='filled' fullWidth>
-                                    <InputLabel htmlFor='filled-adornment-password'>Password</InputLabel>
-                                    <FilledInput color='primary' placeholder='Enter your password' id='filled-adornment-password' type={showPassword ? 'text' : 'password'}
+                                    <InputLabel color='warning' htmlFor='filled-adornment-password'>Password</InputLabel>
+                                    <FilledInput color='warning' placeholder='Enter your password' id='filled-adornment-password' type={showPassword ? 'text' : 'password'}
                                         endAdornment={
                                             <InputAdornment position='end'>
-                                                <IconButton aria-label='toggle password visibility' onClick={ handleClickShowPassword } onMouseDown={ handleMouseDownPassword } edge='end'>
-                                                    { showPassword ? <VisibilityOff /> : <Visibility /> }
-                                                </IconButton>
+                                                <Tooltip title={showPassword ? 'Hide Password' : 'Show Password'}>
+                                                    <IconButton aria-label='toggle password visibility' onClick={ handleClickShowPassword } onMouseDown={ handleMouseDownPassword } edge='end'>
+                                                        { showPassword ? <VisibilityOff /> : <Visibility /> }
+                                                    </IconButton>
+                                                </Tooltip>
                                             </InputAdornment>
                                         } />
                                 </FormControl>
                             </Box>
                             <Box>
                                 <FormControl variant='filled' fullWidth>
-                                    <InputLabel htmlFor='filled-adornment-password'>Confirm Password</InputLabel>
-                                    <FilledInput color='primary' placeholder='Confirm your password' id='filled-adornment-password' type={ showConfirmPassword ? 'text' : 'password' }
+                                    <InputLabel color='warning' htmlFor='filled-adornment-password'>Confirm Password</InputLabel>
+                                    <FilledInput color='warning' placeholder='Confirm your password' id='filled-adornment-password' type={ showConfirmPassword ? 'text' : 'password' }
                                         endAdornment={
                                             <InputAdornment position='end'>
-                                                <IconButton aria-label='toggle password visibility' onClick={ handleClickShowConfirmPassword } onMouseDown={ handleMouseDownPassword } edge='end'>
-                                                    { showConfirmPassword ? <VisibilityOff /> : <Visibility /> }
-                                                </IconButton>
+                                                <Tooltip title={showPassword ? 'Hide Password' : 'Show Password'}>
+                                                    <IconButton aria-label='toggle password visibility' onClick={ handleClickShowConfirmPassword } onMouseDown={ handleMouseDownPassword } edge='end'>
+                                                        { showConfirmPassword ? <VisibilityOff /> : <Visibility /> }
+                                                    </IconButton>
+                                                </Tooltip>
                                             </InputAdornment>
                                         } />
                                 </FormControl>
                             </Box>
                             <Box>
-                                <GlobalBlueContainedButton text='Sign In' />
+                                <GlobalTealContainedButton text='Sign In' />
                             </Box>
                             <Grid2 sx={ centerTypography } spacing={1} container>
                                 <Grid2 item>
@@ -117,8 +114,8 @@ function SignIn() {
                                     </Box>
                                 </Grid2>
                                 <Grid2 item>
-                                    <Box>
-                                        <GlobalBlueHeader6 text='Login Here' />
+                                    <Box onClick={() => navigate('/login')} sx={ hyperLink }>
+                                        <GlobalTealHeader6 text={ `Sign Up` } />
                                     </Box>
                                 </Grid2>
                             </Grid2>
@@ -126,8 +123,8 @@ function SignIn() {
                     </Stack>
                 </Grid2>
             </Grid2>
-        </React.Fragment>
+        </FadeIn>
     );
 };
 
-export default SignIn;
+export default SignUp;

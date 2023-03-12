@@ -6,7 +6,7 @@ import { Box, Slide } from '@mui/material';
 import { IconButton, Button } from '@mui/material/';
 import { Dialog, DialogActions, DialogContent, DialogContentText, DialogTitle } from '@mui/material/';
 import { Stack, TextField } from '@mui/material/';
-import { grey, indigo } from '@mui/material/colors';
+import { grey, teal } from '@mui/material/colors';
 import CloseIcon from '@mui/icons-material/Close';
 import FileUploadIcon from '@mui/icons-material/FileUpload';
 import InsertPhotoIcon from '@mui/icons-material/InsertPhoto';
@@ -14,9 +14,9 @@ import { CardMedia } from "@mui/material/";
 
 import GlobalGreyBody1 from '../typographies/bodies/GreyBody1';
 import GlobalBlackHeader5 from '../typographies/headers/BlackHeader5';
-import GlobalRedTextButton from '../buttons/text/RedTextButton';
-import GlobalBlueTextButton from '../buttons/text/BlueTextButton';
-import GlobalBlueContainedButton from '../buttons/contains/BlueContainedButton';
+import GlobalOrangeTextButton from '../buttons/text/OrangeTextButton';
+import GlobalIndigoTextButton from '../buttons/text/IndigoTextButton';
+import GlobalTealContainedButton from '../buttons/contains/TealContainedButton';
 
 const Transition = React.forwardRef(function Transition(props, ref) {
     return <Slide direction='up' ref={ref} {...props} />;
@@ -120,16 +120,16 @@ function CreateCategModal(props) {
     };
 
     const uploadButton = {
-        backgroundColor: indigo[800],
+        backgroundColor: teal[400],
         '&:hover': {
-            backgroundColor: indigo[900],
+            backgroundColor: teal[500],
             transition: '0.5s'
         }
     }
 
     return (
         <React.Fragment>
-            <GlobalBlueContainedButton text='Create' onClick={ CategCreateHandler } />
+            <GlobalTealContainedButton text='Create' onClick={ CategCreateHandler } />
             <Dialog keepMounted maxWidth='sm' fullWidth open={ openCreateCategModal } TransitionComponent={ Transition } onClose={ cancelCategCreateHandler } aria-describedby='alert-dialog-slide-description'>
                 <DialogTitle sx={ dialogAlignment }>
                     <GlobalBlackHeader5 text='Create New Category' />
@@ -168,8 +168,8 @@ function CreateCategModal(props) {
                     </DialogContentText>
                 </DialogContent>
                 <DialogActions>
-                    <GlobalRedTextButton text='Cancel' onClick={ cancelCategCreateHandler } />
-                    <GlobalBlueTextButton text='Create' onClick={ confirmCategCreateHandler } />
+                    <GlobalOrangeTextButton text='Cancel' onClick={ cancelCategCreateHandler } />
+                    <GlobalIndigoTextButton text='Create' onClick={ confirmCategCreateHandler } />
                 </DialogActions>
             </Dialog>
         </React.Fragment>

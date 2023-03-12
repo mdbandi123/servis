@@ -26,8 +26,9 @@ import SettingsIcon from '@mui/icons-material/Settings';
 import LogoutIcon from '@mui/icons-material/Logout';
 
 import GlobalWhiteHeader5 from './global/typographies/headers/WhiteHeader5';
-import GlobalPinkBadge from './global/badges/PinkBadge';
+import GlobalTealBadge from './global/badges/TealBadge';
 import { Stack } from '@mui/system';
+import Tooltip from '@mui/material/Tooltip';
 
 const drawerWidth = 220;
 
@@ -107,9 +108,9 @@ function Navbar() {
 
     React.useEffect(() => {
         fetch(`${process.env.REACT_APP_BACKEND_URL}/orders`, {
-            method: "GET",
+            method: 'GET',
             headers: {
-                "Authorization": user.Aa
+                'Authorization': user.Aa
             },
         })
             .then((response) => response.json())
@@ -124,7 +125,7 @@ function Navbar() {
     const location = useLocation();
     const path = location.pathname;
 
-    const [openAccordion, setOpenAccordion] = React.useState(false);
+    const [openAccordion, setOpenAccordion] = React.useState(true);
     const handleClick = () => {
         setOpenAccordion(!openAccordion);
     };
@@ -224,87 +225,103 @@ function Navbar() {
         right: '2%'
     };
 
+    const adminIcon = {
+        fontSize: '2em'
+    }
+
     return (
         <Box sx={ menuFlexbox }>
             <CssBaseline />
             <AppBar position='fixed' open={ open } >
                 <Toolbar>
-                    <IconButton sx={ menuIcon } color='inherit' aria-label='open drawer' onClick={ handleDrawerOpen } edge='start'>
-                        <MenuIcon />
-                    </IconButton>
-                    <Stack direction='row' spacing={2} alignItems="center">
+                    <Tooltip title={`Open Drawer`} placement='right-start'>
+                        <IconButton sx={ menuIcon } color='inherit' aria-label='open drawer' onClick={ handleDrawerOpen } edge='start'>
+                            <MenuIcon />
+                        </IconButton>
+                    </Tooltip>
+                    <Stack direction='row' spacing={2} alignItems='center'>
                         <Box>
-                            <AccountCircleIcon sx={{fontSize: '2em'}} />
+                            <AccountCircleIcon sx={ adminIcon } />
                         </Box>
                         <Box>
-                            <GlobalWhiteHeader5 text='Admin Interface' />
+                            <GlobalWhiteHeader5 text={ `Admin Interface` } />
                         </Box>
                     </Stack>
                 </Toolbar>
             </AppBar>
             <Drawer variant='permanent' open={ open }>
                 <DrawerHeader>
-                    <IconButton onClick={ handleDrawerClose } sx={ drawerCloseIcon } >
-                        { theme.direction === 'rtl' ? <ChevronRightIcon /> : <ChevronLeftIcon /> }
-                    </IconButton>
+                    <Tooltip title={ `Close Drawer` } placement='right-start'>
+                        <IconButton onClick={ handleDrawerClose } sx={ drawerCloseIcon } >
+                            { theme.direction === 'rtl' ? <ChevronRightIcon /> : <ChevronLeftIcon /> }
+                        </IconButton>
+                    </Tooltip>
                 </DrawerHeader>
                 <Divider />
                 <List>
                     {menuList1.map((item, index) => (
                         <ListItem disablePadding sx={ listItemContainer } key={ item.title } component={ Link } to={ item.path } button selected={ item.path === path } >
-                            <ListItemButton sx={ listItemButtonContainer } >
-                                <ListItemIcon sx={ [centerMenuIcons, changeIconsColor] } >
-                                    { index === 0 && <GlobalPinkBadge badgeContent={
-                                            ordered_items.map((item) => (
-                                                item.ordered_items.filter((item) => item.status !== "served"))).flat().length
-                                    } max={9}> <MenuBookIcon /> </GlobalPinkBadge>}
-                                    { index === 1 && <GlobalPinkBadge badgeContent={
-                                        ordered_items.filter((item) => item.billed_out === true).length
-                                    } max={9}> <PaymentIcon /> </GlobalPinkBadge>}
-                                    { index === 2 && <ArchiveIcon /> }
-                                </ListItemIcon>
-                                <ListItemText sx={ closeItemText } primary={ item.title } />
-                            </ListItemButton>
+                            <Tooltip title={ item.title } placement='right-start' >
+                                <ListItemButton sx={ listItemButtonContainer } >
+                                    <ListItemIcon sx={ [centerMenuIcons, changeIconsColor] } >
+                                        { index === 0 && <GlobalTealBadge badgeContent={
+                                                ordered_items.map((item) => (
+                                                    item.ordered_items.filter((item) => item.status !== 'served'))).flat().length
+                                        } max={9}> <MenuBookIcon /> </GlobalTealBadge> }
+                                        { index === 1 && <GlobalTealBadge badgeContent={
+                                            ordered_items.filter((item) => item.billed_out === true).length
+                                        } max={9}> <PaymentIcon /> </GlobalTealBadge> }
+                                        { index === 2 && <ArchiveIcon /> }
+                                    </ListItemIcon>
+                                    <ListItemText sx={ closeItemText } primary={ item.title } />
+                                </ListItemButton>
+                            </Tooltip>
                         </ListItem>
                     ))}
                 </List>
                 <Divider />
                 <List>
                     <ListItem disablePadding sx={ listItemContainer }>
-                        <ListItemButton onClick={ handleClick } sx={ listItemButtonContainer } >
-                            <ListItemIcon sx={ [centerMenuIcons, changeIconsColor] } >
-                                <ShoppingCartIcon />
-                            </ListItemIcon>
-                            <ListItemText sx={ closeItemText } primary='Items'/>
-                            <Box sx={ accordionExpand } >
-                                { openAccordion ? <ExpandLess sx={closeItemText} /> : <ExpandMore sx={closeItemText}/> }
-                            </Box>
-                        </ListItemButton>
+                        <Tooltip title={ `Items` } placement='right-start'>
+                            <ListItemButton onClick={ handleClick } sx={ listItemButtonContainer } >
+                                <ListItemIcon sx={ [centerMenuIcons, changeIconsColor] } >
+                                    <ShoppingCartIcon />
+                                </ListItemIcon>
+                                <ListItemText sx={ closeItemText } primary='Items'/>
+                                <Box sx={ accordionExpand } >
+                                    { openAccordion ? <ExpandLess sx={ closeItemText } /> : <ExpandMore sx={ closeItemText } /> }
+                                </Box>
+                            </ListItemButton>
+                        </Tooltip>
                     </ListItem>
                     {accordionList.map((item, index) => (
                         <Collapse in={ openAccordion } timeout='auto' unmountOnExit>
                             <ListItem disablePadding sx={ listItemContainer } key={ item.title } component={ Link } to={ item.path } button selected={ item.path === path } >
                                 <List component='div' disablePadding>
-                                    <ListItemButton sx={ accordionItemButtonContainer } >
-                                        <ListItemIcon sx={ changeIconsColor } >
-                                            { index === 0 && <InsertDriveFileIcon /> }
-                                            { index === 1 && <CategoryIcon /> }
-                                        </ListItemIcon>
-                                        <ListItemText primary={ item.title } />
-                                    </ListItemButton>
+                                    <Tooltip title={ item.title } placement='right-start'>
+                                        <ListItemButton sx={ accordionItemButtonContainer } >
+                                            <ListItemIcon sx={ changeIconsColor } >
+                                                { index === 0 && <InsertDriveFileIcon /> }
+                                                { index === 1 && <CategoryIcon /> }
+                                            </ListItemIcon>
+                                            <ListItemText primary={ item.title } />
+                                        </ListItemButton>
+                                    </Tooltip>
                                 </List>
                             </ListItem>
                         </Collapse>
                     ))}
                     {menuList2.map((item, index) => (
                         <ListItem disablePadding sx={ listItemContainer } key={ item.title } component={ Link } to={ item.path } button selected={ item.path === path } >
-                            <ListItemButton sx={ listItemButtonContainer } >
-                                <ListItemIcon sx={ [centerMenuIcons, changeIconsColor] } >
-                                    { index === 0 && <QrCodeIcon /> }
-                                    { index === 1 && <SettingsIcon /> }
-                                </ListItemIcon>
-                                <ListItemText sx={ closeItemText } primary={ item.title } />
-                            </ListItemButton>
+                            <Tooltip title={ item.title } placement='right-start'>
+                                <ListItemButton sx={ listItemButtonContainer } >
+                                    <ListItemIcon sx={ [centerMenuIcons, changeIconsColor] } >
+                                        { index === 0 && <QrCodeIcon /> }
+                                        { index === 1 && <SettingsIcon /> }
+                                    </ListItemIcon>
+                                    <ListItemText sx={ closeItemText } primary={ item.title } />
+                                </ListItemButton>
+                            </Tooltip>
                         </ListItem>
                     ))}
                 </List>
@@ -312,12 +329,14 @@ function Navbar() {
                 <List>
                     {menulist3.map((item, index) => (
                         <ListItem disablePadding sx={ listItemContainer } key={ item.title } component={ Link } to={ item.path } button selected={ item.path === path } >
-                            <ListItemButton sx={ listItemButtonContainer } >
-                                <ListItemIcon sx={ [centerMenuIcons, changeIconsColor] } >
-                                    { index === 0 && <LogoutIcon /> }
-                                </ListItemIcon>
-                                <ListItemText sx={ closeItemText } primary={ item.title } />
-                            </ListItemButton>
+                            <Tooltip title={item.title} placement='right-start'>
+                                <ListItemButton sx={ listItemButtonContainer } >
+                                    <ListItemIcon sx={ [centerMenuIcons, changeIconsColor] } >
+                                        { index === 0 && <LogoutIcon /> }
+                                    </ListItemIcon>
+                                    <ListItemText sx={ closeItemText } primary={ item.title } />
+                                </ListItemButton>
+                            </Tooltip>
                         </ListItem>
                     ))}
                 </List>

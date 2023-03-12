@@ -1,4 +1,5 @@
 import * as React from 'react';
+import { useStore } from '../../store/store.js';
 
 import { styled } from '@mui/material/styles';
 import { Box, Stack } from '@mui/material/';
@@ -6,26 +7,24 @@ import Grid2 from '@mui/material/Unstable_Grid2/Grid2';
 import MuiDrawer from '@mui/material/Drawer';
 import { List, ListItem, ListItemButton, ListItemIcon, ListItemText } from '@mui/material/';
 import { AppBar, Divider, Card, CardContent, Typography, CssBaseline } from '@mui/material';
-import { indigo, teal, grey } from '@mui/material/colors';
+import { teal, grey, orange } from '@mui/material/colors';
 import AccountCircleIcon from '@mui/icons-material/AccountCircle';
-import LocalDiningIcon from '@mui/icons-material/LocalDining';
 import ChevronLeftIcon from '@mui/icons-material/ChevronLeft';
 import ChevronRightIcon from '@mui/icons-material/ChevronRight';
 import PersonOffTwoToneIcon from '@mui/icons-material/PersonOffTwoTone';
 
 import GlobalGreyCaption1 from '../../global/typographies/captions/GreyCaption1';
 import GlobalGreyCaption2 from '../../global/typographies/captions/GreyCaption2';
-import GlobalPurpleHeader4 from '../../global/typographies/headers/PurpleHeader4';
+import GlobalIndigoHeader4 from '../../global/typographies/headers/IndigoHeader4';
 import GlobalBlackBody1 from '../../global/typographies/bodies/BlackBody1';
 import GlobalBlackBody2 from '../../global/typographies/bodies/BlackBody2';
 import GlobalGreyBody2 from '../../global/typographies/bodies/GreyBody2';
-import GlobalPinkBadge from '../../global/badges/PinkBadge';
+import GlobalTealBadge from '../../global/badges/TealBadge';
 import ViewOrderModal from '../../global/modals/ViewOrderModal';
 import GlobalBlackHeader3 from '../../global/typographies/headers/BlackHeader3';
-import GlobalBlueContainedButton from '../../global/buttons/contains/BlueContainedButton';
+import GlobalTealContainedButton from '../../global/buttons/contains/TealContainedButton';
 import GlobalBlackHeader6 from '../../global/typographies/headers/BlackHeader6';
-
-import {useStore} from '../../store/store.js';
+import SlideDown from '../../animation/SlideDown';
 
 const drawerWidth = 240;
 
@@ -67,7 +66,7 @@ const Drawer = styled(MuiDrawer, { shouldForwardProp: (prop) => prop !== 'open' 
     })
 );
 
-function OrderList(props) {
+function OrderList() {
     const { setOrderedItems, user } = useStore.getState();
     const orderListNotification = useStore.getState().orderedItems || [];
 
@@ -77,15 +76,15 @@ function OrderList(props) {
     
     React.useEffect(() => {
         fetch(`${process.env.REACT_APP_BACKEND_URL}/orders`, {
-            method: "GET",
+            method: 'GET',
             headers: {
-                "Content-Type": "application/json",
-                "Authorization": user.Aa
+                'Content-Type': 'application/json',
+                'Authorization': user.Aa
             },
         })
             .then((response) => response.json())
             .then((data) => {
-                // console.log("data.orders",data.orders);
+                // console.log('data.orders',data.orders);
                 setOrderedItems(data.orders)
             })
             .catch((error) => console.error(error));
@@ -160,7 +159,7 @@ function OrderList(props) {
     };
 
     const userTableIcon = {
-        fontSize: '2.6em',
+        fontSize: '2.5em',
         color: grey[800]
     };
 
@@ -171,10 +170,6 @@ function OrderList(props) {
         height: 150,
         flexGrow: 1,
         mr: 1
-    };
-
-    const orderNumberIcon = {
-        color: indigo[900]
     };
 
     const centerAlignment = {
@@ -192,29 +187,40 @@ function OrderList(props) {
         fontSize: '1.4em'
     };
 
+    const userIconNotification = {
+        fontSize: '2em',
+        color: grey[800]
+    };
+
+    const orderListCardContainer = {
+        borderBottom: `4px solid ` + orange[700]
+    };
+
     if (orderListNotification.length === 0){
         return (
         <React.Fragment>
             <Box sx={ displayFlexContainer }>
+                <SlideDown>
                 <Box component='main'>
                     <Box sx={ pageTitleContainer }>
-                        <GlobalPurpleHeader4 text='Orders List' />
+                        <GlobalIndigoHeader4 text='Orders List' />
                     </Box>
-                        <Grid2 container sx={centerAlignment} spacing={1}>
-                            <Grid2 item xs={12} sm={12} md={12} lg={12} lx={12}>
-                                <PersonOffTwoToneIcon sx={noItemIcon} />
-                            </Grid2>
-                            <Grid2 item xs={12} sm={12} md={12} lg={12} lx={12}>
-                                <GlobalBlackHeader3 text='No Running Orders' />
-                            </Grid2>
-                            <Grid2 item xs={12} sm={12} md={12} lg={12} lx={12}>
-                                <GlobalGreyBody2 text={`We were unable to find any Orders. Please wait for customers' orders.`} />
-                            </Grid2>
-                            <Grid2 item xs={12} sm={12} md={12} lg={12} lx={12}>
-                                <GlobalBlueContainedButton text='Create' />
-                            </Grid2>
+                    <Grid2 container sx={centerAlignment} spacing={1}>
+                        <Grid2 item xs={12} sm={12} md={12} lg={12} lx={12}>
+                            <PersonOffTwoToneIcon sx={noItemIcon} />
                         </Grid2>
+                        <Grid2 item xs={12} sm={12} md={12} lg={12} lx={12}>
+                            <GlobalBlackHeader3 text='No Running Orders' />
+                        </Grid2>
+                        <Grid2 item xs={12} sm={12} md={12} lg={12} lx={12}>
+                            <GlobalGreyBody2 text={`We were unable to find any Orders. Please wait for customers' orders.`} />
+                        </Grid2>
+                        <Grid2 item xs={12} sm={12} md={12} lg={12} lx={12}>
+                            <GlobalTealContainedButton text='Create' />
+                        </Grid2>
+                    </Grid2>
                     </Box>
+                </SlideDown>
                 <CssBaseline />
                 <Drawer variant='permanent' open={ openNotificationAppBar } anchor='right' >
                     <AppBar position='sticky' sx={ notificationAppBar }>
@@ -230,33 +236,6 @@ function OrderList(props) {
                     </List>
                     </AppBar>
                     <Divider />
-                    {/* {orderListNotification.map((notificationItem) => (
-                        <ListItem disablePadding sx={ notificationListItem } >
-                            <ViewOrderModal orders={notificationItem} title={ notificationItem.userName } userId={ notificationItem.userNameId } sx={{ color: grey[800], fontSize: '2em' }}>
-                            <ListItemButton sx={ notificationItemButton } >
-                                <ListItemIcon sx={ notificationItemIcon } >
-                                        <AccountCircleIcon sx={ [notificationUserPhoto, { color: notificationItem.profileTheme }] } />
-                                </ListItemIcon>
-                                <Stack direction='column' justifyContent='flex-start' spacing={-1} >
-                                    <Stack direction='row'>
-                                        <Box>
-                                            <ListItemText sx={ notificationOrderContent } primary={ <GlobalBlackBody1 sx={ notificationUserName } text={ notificationItem.userName } /> } />
-                                        </Box>
-                                    </Stack>
-                                    <Stack direction='row'>
-                                        <Box>
-                                            <ListItemText sx={ notificationOrderContent } primary={ <GlobalBlackBody2 text={ notificationItem.userOrder } /> } />
-                                        </Box>
-                                    </Stack>
-                                    <Box alignItems='flex-end' >
-                                        <ListItemText sx={ notificationOrderContent } primary={ <GlobalGreyCaption2 text={ [notificationItem.dateOrder.getMonth() + '-', notificationItem.dateOrder.getDate() + '-', notificationItem.dateOrder.getFullYear() + ' | ' + notificationItem.dateOrder.getHours() + ':' + notificationItem.dateOrder.getMinutes() + ':' + notificationItem.dateOrder.getSeconds()] } /> } />
-                                    </Box>
-                                </Stack>
-                            </ListItemButton>
-                            </ViewOrderModal>
-                            <Divider />
-                        </ListItem>
-                    ))} */}
                 </Drawer>
             </Box>
         </React.Fragment>
@@ -266,48 +245,52 @@ function OrderList(props) {
     return (
         <React.Fragment>
             <Box sx={ displayFlexContainer }>
-                <Box component='main'>
-                    <Box sx={ pageTitleContainer }>
-                        <GlobalPurpleHeader4 text='Orders List' />
-                    </Box>
-                    <Grid2 container spacing={1} alignItems='baseline' >
-                        {orderListNotification.map((notificationItem) => (
-                            <Grid2 sx={ orderListCard } item xs={12} sm={6} md={6} lg={4} lx={4}>
-                                {console.log(notificationItem)}
-                            <Card sx={[{ borderBottom: `4px solid ` + notificationItem.profileTheme }]} >
-                                    <ViewOrderModal orders={notificationItem} title={ notificationItem.table_number } userId={ notificationItem.order_id } sx={{ color: grey[800], fontSize: '2em' }}>
-                                <CardContent>
-                                    <Grid2 container spacing={1}>
-                                        <Grid2 item> 
-                                            <AccountCircleIcon sx={ userTableIcon } />
-                                        </Grid2>
-                                        <Grid2 item xs={12} sm container>
-                                            <Grid2 item xs container direction='column' spacing={2}>
-                                                <Grid2 item xs>
-                                                    <Stack direction='row' alignItems='center' spacing={2}>
-                                                        <GlobalBlackHeader6 sx={orderListUsername} text={ notificationItem.table_number } />
-                                                        <GlobalPinkBadge badgeContent={
-                                                            notificationItem.ordered_items.filter((orderedItem) => orderedItem.status !== 'served').length
-                                                        } max={9}>
-                                                            <LocalDiningIcon sx={ orderNumberIcon } />
-                                                        </GlobalPinkBadge>
-                                                    </Stack>
-                                                    <GlobalGreyCaption2  text={ notificationItem.order_id } />
-                                                </Grid2>
-                                                <Grid2 item>
-                                                    <GlobalGreyCaption1 text={ [new Date(notificationItem.session_start).getMonth() + '-', new Date(notificationItem.session_start).getDate() + '-', new Date(notificationItem.session_start).getFullYear() + ' | ' + new Date(notificationItem.session_start).getHours() + ':' + new Date(notificationItem.session_start).getMinutes() + ':' + new Date(notificationItem.session_start).getSeconds()] } />
-                                                </Grid2>
+                <SlideDown>
+                    <Box component='main'>
+                        <Box sx={ pageTitleContainer }>
+                            <GlobalIndigoHeader4 text='Orders List' />
+                        </Box>
+                        <Grid2 container spacing={1} alignItems='baseline' >
+                            {orderListNotification.map((notificationItem) => (
+                                <Grid2 sx={ orderListCard } item xs={12} sm={6} md={6} lg={4} lx={4}>
+                                    {console.log(notificationItem)}
+                                <Card sx={ orderListCardContainer } >
+                                        <ViewOrderModal orders={notificationItem} title={ notificationItem.table_number } userId={ notificationItem.order_id } sx={ userTableIcon }>
+                                    <CardContent>
+                                        <Grid2 container spacing={1}>
+                                            <Grid2 item>
+                                                <GlobalTealBadge 
+                                                    badgeContent={ notificationItem.ordered_items.filter((orderedItem) => 
+                                                        orderedItem.status !== 'served').length
+                                                    }
+                                                    overlap='circular'
+                                                    max={9}>
+                                                    <AccountCircleIcon sx={ userTableIcon } />
+                                                </GlobalTealBadge>
                                             </Grid2>
-                                            <Grid2 item />
+                                            <Grid2 item xs={12} sm container>
+                                                <Grid2 item xs container direction='column' spacing={2}>
+                                                    <Grid2 item xs>
+                                                        <Stack direction='row' alignItems='center' spacing={2}>
+                                                            <GlobalBlackHeader6 sx={orderListUsername} text={ notificationItem.table_number } />
+                                                        </Stack>
+                                                        <GlobalGreyCaption2  text={ notificationItem.order_id } />
+                                                    </Grid2>
+                                                    <Grid2 item>
+                                                        <GlobalGreyCaption1 text={ [new Date(notificationItem.session_start).getMonth() + '-', new Date(notificationItem.session_start).getDate() + '-', new Date(notificationItem.session_start).getFullYear() + ' | ' + new Date(notificationItem.session_start).getHours() + ':' + new Date(notificationItem.session_start).getMinutes() + ':' + new Date(notificationItem.session_start).getSeconds()] } />
+                                                    </Grid2>
+                                                </Grid2>
+                                                <Grid2 item />
+                                            </Grid2>
                                         </Grid2>
-                                    </Grid2>
-                                </CardContent>
-                                </ViewOrderModal>
-                            </Card>
-                            </Grid2>
-                        ))}
-                    </Grid2>
-                </Box>
+                                    </CardContent>
+                                    </ViewOrderModal>
+                                </Card>
+                                </Grid2>
+                            ))}
+                        </Grid2>
+                    </Box>
+                </SlideDown>
                 <CssBaseline />
                 <Drawer variant='permanent' open={ openNotificationAppBar } anchor='right' >
                     <AppBar position='sticky' sx={ notificationAppBar }>
@@ -315,12 +298,12 @@ function OrderList(props) {
                         <ListItem disablePadding sx={ notificationListItem } >
                             <ListItemButton onClick={ handleClick } sx={[ notificationItemButton]} >
                                     <ListItemIcon sx={ notificationItemIcon } >
-                                        <GlobalPinkBadge badgeContent={
+                                        <GlobalTealBadge badgeContent={
                                             orderListNotification.map((item) => (
-                                                item.ordered_items.filter((item) => item.status !== "served"))).flat().length
+                                                item.ordered_items.filter((item) => item.status !== 'served'))).flat().length
                                         }>
                                             { openNotificationAppBar ? <ChevronRightIcon sx={ notificationOpenHandler } /> : <ChevronLeftIcon sx={ notificationOpenHandler } />}
-                                        </GlobalPinkBadge>
+                                        </GlobalTealBadge>
                                     </ListItemIcon>
                                 <ListItemText sx={ notificationTitle } disableTypography  primary={ <Typography sx={ notificationTitleText } variant='body1' >Notification</Typography> } />
                             </ListItemButton>
@@ -329,15 +312,15 @@ function OrderList(props) {
                     </AppBar>
                     <Divider />
                     {orderListNotification.map((notificationItem) => (
-                        notificationItem.ordered_items.filter((item) => item.status !== "served").map((filteredItem) => (
+                        notificationItem.ordered_items.filter((item) => item.status !== 'served').map((filteredItem) => (
                         <ListItem disablePadding sx={notificationListItem}>
-                            <ViewOrderModal orders={notificationItem} title={ notificationItem.table_number } userId={ notificationItem.order_id } sx={{ color: notificationItem.profileTheme, fontSize: '2em' }}>
+                            <ViewOrderModal orders={notificationItem} title={ notificationItem.table_number } userId={ notificationItem.order_id } sx={ userIconNotification }>
                             <ListItemButton sx={notificationItemButton}>
                             <ListItemIcon sx={notificationItemIcon}>
                                 <AccountCircleIcon sx={[notificationUserPhoto]} />
                             </ListItemIcon>
-                            <Stack direction="column" justifyContent="flex-start" spacing={-1}>
-                                <Stack direction="row">
+                            <Stack direction='column' justifyContent='flex-start' spacing={-1}>
+                                <Stack direction='row'>
                                 <Box>
                                     <ListItemText
                                     sx={notificationOrderContent}
@@ -347,7 +330,7 @@ function OrderList(props) {
                                     />
                                 </Box>
                                 </Stack>
-                                <Stack direction="row">
+                                <Stack direction='row'>
                                 <Box>
                                     <ListItemText
                                     sx={notificationOrderContent}
@@ -355,20 +338,20 @@ function OrderList(props) {
                                     />
                                 </Box>
                                 </Stack>
-                                <Box alignItems="flex-end">
+                                <Box alignItems='flex-end'>
                                 <ListItemText
                                     sx={notificationOrderContent}
                                     primary={
                                     <GlobalGreyCaption2
                                         text={[
-                                        new Date(filteredItem.time_ordered).getMonth() + "-",
-                                        new Date(filteredItem.time_ordered).getDate() + "-",
+                                        new Date(filteredItem.time_ordered).getMonth() + '-',
+                                        new Date(filteredItem.time_ordered).getDate() + '-',
                                         new Date(filteredItem.time_ordered).getFullYear() +
-                                            " | " +
+                                            ' | ' +
                                             new Date(filteredItem.time_ordered).getHours() +
-                                            ":" +
+                                            ':' +
                                             new Date(filteredItem.time_ordered).getMinutes() +
-                                            ":" +
+                                            ':' +
                                             new Date(filteredItem.time_ordered).getSeconds(),
                                         ]}
                                     />

@@ -5,9 +5,9 @@ import { Dialog, DialogActions, DialogContent, DialogContentText, DialogTitle, S
 
 import GlobalGreyBody1 from '../typographies/bodies/GreyBody1';
 import GlobalBlackHeader5 from '../typographies/headers/BlackHeader5';
-import GlobalBlueTextButton from '../buttons/text/BlueTextButton';
-import GlobalRedTextButton from '../buttons/text/RedTextButton';
-import GlobalBlueContainedButton from '../../global/buttons/contains/BlueContainedButton';
+import GlobalIndigoTextButton from '../buttons/text/IndigoTextButton';
+import GlobalOrangeTextButton from '../buttons/text/OrangeTextButton';
+import GlobalTealContainedButton from '../../global/buttons/contains/TealContainedButton';
 
 const Transition = React.forwardRef(function Transition(props, ref) {
     return <Slide direction='up' ref={ref} {...props} />;
@@ -54,7 +54,7 @@ function ConfirmOrderModal(props) {
 
     return (
         <React.Fragment>
-            <GlobalBlueContainedButton text={props.text} variant={props.variant} sx={props.sx} onClick={confirmHandler} disabled={props.disabled} />
+            <GlobalTealContainedButton text={props.text} variant={props.variant} sx={props.sx} onClick={confirmHandler} disabled={props.disabled} />
             <Dialog keepMounted maxWidth='sm' fullWidth open={ openConfirmModal } TransitionComponent={ Transition } onClose={ cancelConfirmHandler } aria-describedby='alert-dialog-slide-description'>
                 <DialogTitle sx={ dialogAlignment }>
                     <GlobalBlackHeader5 text='Message Confirmation' />
@@ -65,8 +65,8 @@ function ConfirmOrderModal(props) {
                     </DialogContentText>
                 </DialogContent>
                 <DialogActions>
-                    <GlobalRedTextButton text='Cancel' onClick={ cancelConfirmHandler } />
-                    <GlobalBlueTextButton text='Confirm' onClick={ proceedConfirmHandler } />
+                    <GlobalOrangeTextButton text='Cancel' onClick={ cancelConfirmHandler } />
+                    <GlobalIndigoTextButton text='Confirm' onClick={ proceedConfirmHandler } />
                 </DialogActions>
             </Dialog>
         </React.Fragment>

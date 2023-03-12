@@ -5,16 +5,14 @@ import Grid2 from '@mui/material/Unstable_Grid2/Grid2';
 import { Box, Slide, Stack, Card, CardActionArea, Paper, IconButton } from '@mui/material';
 import { Dialog, DialogActions, DialogContent, DialogContentText, DialogTitle, ListItem, Avatar, ListItemAvatar } from '@mui/material/';
 import { DragDropContext, Draggable, Droppable } from 'react-beautiful-dnd';
-import { purple, blue, grey, red, green, yellow, orange, teal } from '@mui/material/colors';
+import { grey, red, green, orange, teal } from '@mui/material/colors';
 import CloseIcon from '@mui/icons-material/Close';
-import CalendarMonthIcon from '@mui/icons-material/CalendarMonth';
-import AccessTimeFilledIcon from '@mui/icons-material/AccessTimeFilled';
 import AccountCircleIcon from '@mui/icons-material/AccountCircle';
 import FindInPageTwoToneIcon from '@mui/icons-material/FindInPageTwoTone';
 
 import GlobalBlackBody1 from '../typographies/bodies/BlackBody1';
 import GlobalBlackHeader5 from '../typographies/headers/BlackHeader5';
-import GlobalRedTextButton from '../buttons/text/RedTextButton';
+import GlobalOrangeTextButton from '../buttons/text/OrangeTextButton';
 import GlobalBlackHeader6 from '../typographies/headers/BlackHeader6';
 import GlobalBlackBody2 from '../typographies/bodies/BlackBody2';
 import GlobalGreyBody2 from '../typographies/bodies/GreyBody2';
@@ -38,12 +36,12 @@ const onDragEnd = (result, columns, setColumns, user) => {
         
         // Make a request to update the status of the item in the order
         const item = removed;
-        console.log("item",item);
+        console.log('item',item);
         fetch(`${process.env.REACT_APP_BACKEND_URL}/order_items/status`, {
-            method: "PUT",
+            method: 'PUT',
             headers: {
-                "Content-Type": "application/json",
-                "Authorization": user.Aa,
+                'Content-Type': 'application/json',
+                'Authorization': user.Aa,
             },
             body: JSON.stringify({
                 order_id: item.order_id,
@@ -53,7 +51,7 @@ const onDragEnd = (result, columns, setColumns, user) => {
         })
             .then((response) => {
                 if (!response.ok) {
-                    throw new Error("Failed to update item status");
+                    throw new Error('Failed to update item status');
                 }
                 return response.json();
             })
@@ -61,7 +59,7 @@ const onDragEnd = (result, columns, setColumns, user) => {
                 console.log(data);
             })
             .catch((error) => {
-                console.error("Error updating item status:", error);
+                console.error('Error updating item status:', error);
                 // Put the item back to its original column
                 sourceItems.splice(source.index, 0, removed);
                 setColumns({
@@ -103,11 +101,11 @@ function ViewOrderModal(props) {
     const {user} = useStore();
 
     const userOrders = [
-        { _id: '1', status: "pending", item_name: 'Pork Tonkatsu', item_image: `https://media.istockphoto.com/id/1364936307/photo/pork-tonkatsu.jpg?s=1024x1024&w=is&k=20&c=SSTaoCgZKHms3gm17F0NS9M0w_r9AQaKLKu_kEwzLtA=` },
-        { _id: '2', status: "preparing", item_name: 'Fried Chicken', item_image: `https://media.istockphoto.com/id/1364936307/photo/pork-tonkatsu.jpg?s=1024x1024&w=is&k=20&c=SSTaoCgZKHms3gm17F0NS9M0w_r9AQaKLKu_kEwzLtA=` },
-        { _id: '3', status: "served", item_name: 'Mango Pudding', item_image: `https://media.istockphoto.com/id/1364936307/photo/pork-tonkatsu.jpg?s=1024x1024&w=is&k=20&c=SSTaoCgZKHms3gm17F0NS9M0w_r9AQaKLKu_kEwzLtA=`, },
-        { _id: '4', status: "pending", item_name: 'Pork Tonkatsu', item_image: `https://media.istockphoto.com/id/1364936307/photo/pork-tonkatsu.jpg?s=1024x1024&w=is&k=20&c=SSTaoCgZKHms3gm17F0NS9M0w_r9AQaKLKu_kEwzLtA=`, },
-        { _id: '5', status: "pending", item_name: 'Pork Tonkatsu', item_image: `https://media.istockphoto.com/id/1364936307/photo/pork-tonkatsu.jpg?s=1024x1024&w=is&k=20&c=SSTaoCgZKHms3gm17F0NS9M0w_r9AQaKLKu_kEwzLtA=`, }
+        { _id: '1', status: 'pending', item_name: 'Pork Tonkatsu', item_image: `https://media.istockphoto.com/id/1364936307/photo/pork-tonkatsu.jpg?s=1024x1024&w=is&k=20&c=SSTaoCgZKHms3gm17F0NS9M0w_r9AQaKLKu_kEwzLtA=` },
+        { _id: '2', status: 'preparing', item_name: 'Fried Chicken', item_image: `https://media.istockphoto.com/id/1364936307/photo/pork-tonkatsu.jpg?s=1024x1024&w=is&k=20&c=SSTaoCgZKHms3gm17F0NS9M0w_r9AQaKLKu_kEwzLtA=` },
+        { _id: '3', status: 'served', item_name: 'Mango Pudding', item_image: `https://media.istockphoto.com/id/1364936307/photo/pork-tonkatsu.jpg?s=1024x1024&w=is&k=20&c=SSTaoCgZKHms3gm17F0NS9M0w_r9AQaKLKu_kEwzLtA=`, },
+        { _id: '4', status: 'pending', item_name: 'Pork Tonkatsu', item_image: `https://media.istockphoto.com/id/1364936307/photo/pork-tonkatsu.jpg?s=1024x1024&w=is&k=20&c=SSTaoCgZKHms3gm17F0NS9M0w_r9AQaKLKu_kEwzLtA=`, },
+        { _id: '5', status: 'pending', item_name: 'Pork Tonkatsu', item_image: `https://media.istockphoto.com/id/1364936307/photo/pork-tonkatsu.jpg?s=1024x1024&w=is&k=20&c=SSTaoCgZKHms3gm17F0NS9M0w_r9AQaKLKu_kEwzLtA=`, }
     ];
 
     const initialUserOrderStatus = {
@@ -133,7 +131,7 @@ function ViewOrderModal(props) {
 
 
     React.useEffect(() => {
-        console.log("props order",props.orders);
+        console.log('props order',props.orders);
                 const userOrderStatus = {
                     pending: {
                         name: 'Pending',
@@ -174,10 +172,6 @@ function ViewOrderModal(props) {
     const dialogAlignment = {
         alignItems: 'center',
         display: 'flex'
-    };
-
-    const dateAndTimeIcon = {
-        color: purple[900],
     };
 
     const userOrderStatusContainer = {
@@ -253,8 +247,14 @@ function ViewOrderModal(props) {
                 <CardActionArea onClick={viewOrderHandler}>{props.children}</CardActionArea>
                 <Dialog keepMounted fullWidth maxWidth='xl' open={openViewOrderModal} TransitionComponent={Transition} onClose={cancelViewModalHandler} aria-describedby='alert-dialog-slide-description'>
                     <DialogTitle sx={dialogAlignment}>
-                        <AccountCircleIcon sx={props.sx} />
-                        <GlobalBlackHeader5 text={props.title + ' (' + props.userId + ')'} />
+                        <Stack direction='row' spacing={1} alignItems='center'>
+                            <Box>
+                                <AccountCircleIcon sx={props.sx} />
+                            </Box>
+                            <Box>
+                                <GlobalBlackHeader5 text={props.title + ' (' + props.userId + ')'} />
+                            </Box>
+                        </Stack>
                     </DialogTitle>
                     <Box sx={closeIconButton}>
                         <IconButton >
@@ -341,7 +341,7 @@ function ViewOrderModal(props) {
                         </DialogContentText>
                     </DialogContent>
                     <DialogActions>
-                        <GlobalRedTextButton text='Close' onClick={cancelViewModalHandler} />
+                        <GlobalOrangeTextButton text='Close' onClick={cancelViewModalHandler} />
                     </DialogActions>
                 </Dialog>
             </React.Fragment>
@@ -430,7 +430,7 @@ function ViewOrderModal(props) {
                     </DialogContentText>
                 </DialogContent>
                 <DialogActions>
-                    <GlobalRedTextButton text='Close' onClick={ cancelViewModalHandler } />
+                    <GlobalOrangeTextButton text='Close' onClick={ cancelViewModalHandler } />
                 </DialogActions>
             </Dialog>
         </React.Fragment>

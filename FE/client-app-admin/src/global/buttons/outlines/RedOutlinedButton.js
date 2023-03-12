@@ -10,7 +10,12 @@ const CustomOutlinedButton = styled(Button)(({ theme }) => ({
 
 function GlobalRedOutlinedButton(props) {
     return (
-        <CustomOutlinedButton variant='outlined' onClick={ props.onClick } >{props.text}</CustomOutlinedButton>
+        <CustomOutlinedButton 
+            variant='outlined' 
+            onClick={ props.onClick }
+            >
+            { props.text }
+        </CustomOutlinedButton>
     );
 };
 

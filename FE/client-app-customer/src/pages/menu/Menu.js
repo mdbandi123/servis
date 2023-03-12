@@ -1,21 +1,21 @@
-import React, { useEffect } from 'react';
+import React from 'react';
+import store from '../../store/store';
+
 import Grid2 from '@mui/material/Unstable_Grid2/Grid2';
 import { useNavigate } from 'react-router-dom';
-import { Box } from '@mui/material';
 import { grey } from '@mui/material/colors';
-import { Card, CardActionArea, CardMedia, CardContent } from '@mui/material';
+import { Card, CardActionArea, CardMedia, CardContent, Box } from '@mui/material';
 import ExtensionOffIcon from '@mui/icons-material/ExtensionOff';
 
 import GlobalBlackHeader6 from '../../global/typographies/headers/BlackHeader6';
 import GlobalBlackHeader5 from '../../global/typographies/headers/BlackHeader5';
 import GlobalBlackHeader4 from '../../global/typographies/headers/BlackHeader4';
 import GlobalGreyBody2 from '../../global/typographies/bodies/GreyBody2';
-
-import store from '../../store/store';
+import FadeIn from '../../global/animation/FadeIn';
 
 function Menu() {
-    const {setCategoryItems} = store.getState();
-    const CategoryData= store((state) => state.CategoryData);
+    const { setCategoryItems } = store.getState();
+    const CategoryData = store((state) => state.CategoryData);
 
     React.useEffect(() => {
         fetch(`${process.env.REACT_APP_BACKEND_URL}/menu/categories`, {
@@ -71,24 +71,26 @@ function Menu() {
 
     if (CategoryData.length === 0) {
         return (
-            <Box sx={pageContainer}>
-                <Grid2 container sx={centerAlignment} spacing={1}>
-                    <Grid2 item xs={12} sm={12} md={12} lg={12} lx={12}>
-                        <ExtensionOffIcon sx={noItemIcon} />
+            <FadeIn>
+                <Box sx={pageContainer}>
+                    <Grid2 container sx={centerAlignment} spacing={1}>
+                        <Grid2 item xs={12} sm={12} md={12} lg={12} lx={12}>
+                            <ExtensionOffIcon sx={noItemIcon} />
+                        </Grid2>
+                        <Grid2 item xs={12} sm={12} md={12} lg={12} lx={12}>
+                            <GlobalBlackHeader5 text='No Category Found' />
+                        </Grid2>
+                        <Grid2 item xs={12} sm={12} md={12} lg={12} lx={12}>
+                            <GlobalGreyBody2 text={`We couldn't find any Category. Admin might not have created Category yet.`} />
+                        </Grid2>
                     </Grid2>
-                    <Grid2 item xs={12} sm={12} md={12} lg={12} lx={12}>
-                        <GlobalBlackHeader5 text='No Category Found' />
-                    </Grid2>
-                    <Grid2 item xs={12} sm={12} md={12} lg={12} lx={12}>
-                        <GlobalGreyBody2 text={`We couldn't find any Category. Admin might not have created Category yet.`} />
-                    </Grid2>
-                </Grid2>
-            </Box>
+                </Box>
+            </FadeIn>
         );
     };
 
     return (
-        <React.Fragment>
+        <FadeIn>
             <Box sx={pageContainer}>
                 <Box sx={headerPage}>
                     <GlobalBlackHeader4 text='Categories' />
@@ -112,7 +114,7 @@ function Menu() {
                     </Grid2>
                 </Grid2>
             </Box>
-        </React.Fragment>
+        </FadeIn>
     );
 }
 

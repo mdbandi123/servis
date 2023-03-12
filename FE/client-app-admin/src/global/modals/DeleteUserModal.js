@@ -11,8 +11,8 @@ import DeleteIcon from '@mui/icons-material/Delete';
 
 import GlobalGreyBody1 from '../typographies/bodies/GreyBody1';
 import GlobalBlackHeader5 from '../typographies/headers/BlackHeader5';
-import GlobalBlueTextButton from '../buttons/text/BlueTextButton';
-import GlobalRedTextButton from '../buttons/text/RedTextButton';
+import GlobalIndigoTextButton from '../buttons/text/IndigoTextButton';
+import GlobalOrangeTextButton from '../buttons/text/OrangeTextButton';
 
 const Transition = React.forwardRef(function Transition(props, ref) {
     return <Slide direction='up' ref={ref} {...props} />;
@@ -85,8 +85,8 @@ function DeleteUserModal(props) {
                     </DialogContentText>
                 </DialogContent>
                 <DialogActions>
-                    <GlobalRedTextButton text='Cancel' onClick={cancelDeleteHandler} />
-                    <GlobalBlueTextButton text='Confirm' onClick={confirmDeleteHandler} />
+                    <GlobalOrangeTextButton text='Cancel' onClick={cancelDeleteHandler} />
+                    <GlobalIndigoTextButton text='Confirm' onClick={confirmDeleteHandler} />
                 </DialogActions>
             </Dialog>
         </React.Fragment>
