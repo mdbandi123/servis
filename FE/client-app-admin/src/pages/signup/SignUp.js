@@ -49,7 +49,8 @@ function SignUp() {
             await firebase
                 .auth()
                 .createUserWithEmailAndPassword(email, password);
-            // handle success
+
+            await firebase.auth().signOut();
         } catch (error) {
             // handle error
         }
