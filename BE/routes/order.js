@@ -139,7 +139,16 @@ route.put("/session/:order_id", auth, async (req, res) => {
         return res.status(400).send({ error: "Session already ended" });
     }
 
+    const order_table = await orders.findOne({
+        order_id: order_id,
+    });
+
     try {
+        await tables.updateOne(
+            { table_number: order_table.table_number },
+            { $set: { in_use: false } }
+        );
+
         await orders.findOneAndUpdate(
             { order_id: order_id },
             { session_end: new Date(), is_paid: true }

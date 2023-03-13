@@ -41,7 +41,10 @@ function Generate() {
 
     const { setTableData } = useStore();
 
-    const tableData = useStore((state) => state.tableData) || [];
+    let tableData = useStore((state) => state.tableData) || [];
+
+    //filter table data to only those not in use
+    tableData = tableData.filter((table) => table.in_use === false);
 
     React.useEffect(() => {
         fetch(`${process.env.REACT_APP_BACKEND_URL}/tables/`, {
