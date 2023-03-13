@@ -1,7 +1,8 @@
 const express = require("express");
-const auth = require('../middlewares/auth');
+const auth = require("../middlewares/auth");
 
 const orders = require("../models/order").order_model;
+const tables = require("../models/tables").tables_model;
 
 const bodyParser = require("body-parser");
 const qr = require("qr-image");
@@ -18,8 +19,8 @@ route.get("/", auth, async (req, res) => {
                 .status(404)
                 .json({ success: false, message: "Orders not found" });
         }
-        const updatedOrders = order.map(order => {
-            const updatedOrderedItems = order.ordered_items.map(item => {
+        const updatedOrders = order.map((order) => {
+            const updatedOrderedItems = order.ordered_items.map((item) => {
                 item.order_id = order.order_id;
                 return item;
             });
@@ -32,8 +33,6 @@ route.get("/", auth, async (req, res) => {
     }
 });
 
-
-
 // check if the order_id is existing and is_paid is false
 route.get("/:order_id", async (req, res) => {
     const order_id = req.params.order_id;
@@ -41,7 +40,7 @@ route.get("/:order_id", async (req, res) => {
     const order_session = await orders.findOne({
         order_id: order_id,
         is_paid: false,
-        billed_out: false
+        billed_out: false,
     });
 
     if (!order_session) {
@@ -58,26 +57,23 @@ route.get("/:order_id", async (req, res) => {
     });
 });
 
-
 // creates a new order session for the table and returns a QR code (body payload: table_number)
 route.post("/create/:table_number", auth, async (req, res) => {
     const order_id = createOrderId();
     const table_number = req.params.table_number;
 
-    //make sure that the table_number is not in use and is_paid is false
-    const table_in_use = await orders.findOne({
+    //make sure that the table_number is not in use.
+    const table_in_use = await tables.findOne({
         table_number: table_number,
-        is_paid: false,
+        in_use: true,
     });
 
-    console.log(table_in_use);
-
     if (table_in_use) {
-        return res
-            .status(200)
-            .send({ 
+        return res.status(200).send({
             message: "order exists",
-            url: "https://customer.servis-sm.com/?order_id=" + table_in_use.order_id
+            url:
+                "https://customer.servis-sm.com/?order_id=" +
+                table_in_use.order_id,
         });
     }
 
@@ -88,11 +84,16 @@ route.post("/create/:table_number", auth, async (req, res) => {
     });
 
     try {
+        await tables.updateOne(
+            { table_number: table_number },
+            { $set: { in_use: true } }
+        );
+
         await order_session.save();
 
         res.status(200).send({
             message: "Order session created",
-            url: "https://customer.servis-sm.com/?order_id=" + order_id
+            url: "https://customer.servis-sm.com/?order_id=" + order_id,
         });
     } catch (err) {
         res.status(500).send({ error: "Error creating order session" });
@@ -123,7 +124,6 @@ route.put("/billed_out/:order_id", async (req, res) => {
         res.status(500).send({ error: "Error billing out" });
     }
 });
-
 
 // ends the session for the table (body payload: order_id)
 route.put("/session/:order_id", auth, async (req, res) => {

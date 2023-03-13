@@ -307,9 +307,9 @@ function ViewPaymentModal(props) {
                     >
                         <Box pl={2} pb={2}>
                             <DialogActions>
-                                <GlobalTealContainedButton
-                                    text="Confirm Payment"
-                                    disabled={false}
+                                <ConfirmPaymentModal
+                                    orderId={props.orderId}
+                                    context={`Are you sure do you want to mark as Paid the ${props.title} (${props.userId})?`}
                                 />
                             </DialogActions>
                         </Box>
