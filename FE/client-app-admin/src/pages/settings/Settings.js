@@ -93,11 +93,11 @@ function Settings() {
     return (
         <SlideDown>
             <Box sx={pageTitleContainer}>
-                <GlobalIndigoHeader4 text='Settings' />
+                <GlobalIndigoHeader4 text='Table Users' />
             </Box>
             <Card sx={settingsContainer}>
                 <Box sx={qrHeader}>
-                    <GlobalBlackHeader5 text='Table Users' />
+                    <GlobalBlackHeader5 text='Users List' />
                 </Box>
                 <Grid2 container >
                      <Grid2 item xs={12} sm={12} md={6} lg={4} lx={4}>
