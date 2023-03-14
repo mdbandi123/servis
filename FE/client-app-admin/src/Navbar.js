@@ -29,7 +29,7 @@ import ShoppingCartIcon from "@mui/icons-material/ShoppingCart";
 import CategoryIcon from "@mui/icons-material/Category";
 import InsertDriveFileIcon from "@mui/icons-material/InsertDriveFile";
 import QrCodeIcon from "@mui/icons-material/QrCode";
-import SettingsIcon from "@mui/icons-material/Settings";
+import PeopleAltRoundedIcon from '@mui/icons-material/PeopleAltRounded';
 import LogoutIcon from "@mui/icons-material/Logout";
 
 import GlobalWhiteHeader5 from "./global/typographies/headers/WhiteHeader5";
@@ -153,8 +153,8 @@ function Navbar() {
     ];
 
     const menuList2 = [
+        { title: "Table Users", path: "/tableusers" },
         { title: "Generate", path: "/generate" },
-        { title: "Settings", path: "/settings" },
     ];
 
     const menulist3 = [{ title: "Signout", path: "/logout" }];
@@ -420,8 +420,8 @@ function Navbar() {
                                     <ListItemIcon
                                         sx={[centerMenuIcons, changeIconsColor]}
                                     >
-                                        {index === 0 && <QrCodeIcon />}
-                                        {index === 1 && <SettingsIcon />}
+                                        {index === 1 && <QrCodeIcon />}
+                                        {index === 0 && <PeopleAltRoundedIcon />}
                                     </ListItemIcon>
                                     <ListItemText
                                         sx={closeItemText}

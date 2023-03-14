@@ -216,7 +216,7 @@ function CategoryList() {
                                                 </Box>
                                                 <Box>
                                                     <GlobalTealContainedButton
-                                                        text="Add to cart"
+                                                        text="Add"
                                                         sx={addBtn}
                                                         startIcon={
                                                             <AddRoundedIcon />

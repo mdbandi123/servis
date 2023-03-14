@@ -43,7 +43,7 @@ const RouteMenu = () => {
                     <Route path='/fooditems' exact element={ <FoodItems /> } />
                     <Route path='/categoryitems' exact element={ <CategoryItems /> } />
                     <Route path='/generate' exact element={ <Generate /> } />
-                    <Route path='/settings' exact element={ <Settings /> } />
+                    <Route path='/tableusers' exact element={ <Settings /> } />
                     <Route path='/logout' element={ <Logout/> } />
                 </Route>
             </Route>
