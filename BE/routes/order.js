@@ -64,16 +64,13 @@ route.post("/create/:table_number", auth, async (req, res) => {
 
     //make sure that the table_number is not in use.
     const table_in_use = await tables.findOne({
-        table_number: table_number,
+        table_name: table_number,
         in_use: true,
     });
 
     if (table_in_use) {
         return res.status(200).send({
             message: "order exists",
-            url:
-                "https://customer.servis-sm.com/?order_id=" +
-                table_in_use.order_id,
         });
     }
 
@@ -85,7 +82,7 @@ route.post("/create/:table_number", auth, async (req, res) => {
 
     try {
         await tables.updateOne(
-            { table_number: table_number },
+            { table_name: table_number },
             { $set: { in_use: true } }
         );
 
@@ -145,7 +142,7 @@ route.put("/session/:order_id", auth, async (req, res) => {
 
     try {
         await tables.updateOne(
-            { table_number: order_table.table_number },
+            { table_name: order_table.table_number },
             { $set: { in_use: false } }
         );
 
