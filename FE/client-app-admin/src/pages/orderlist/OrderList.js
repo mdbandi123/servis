@@ -1,6 +1,7 @@
 import * as React from "react";
 import { useStore } from "../../store/store.js";
 
+import { motion, AnimatePresence } from 'framer-motion';
 import { styled } from "@mui/material/styles";
 import { Box, Stack } from "@mui/material/";
 import Grid2 from "@mui/material/Unstable_Grid2/Grid2";
@@ -347,6 +348,8 @@ function OrderList() {
                                         lx={4}
                                     >
                                         {console.log(notificationItem)}
+                                        <AnimatePresence>
+                                        <motion.div layout key={notificationItem.order_id} initial={{ opacity: 0, scale: 0 }} animate={{ opacity: 1, scale: 1, transition: { duration: 0.5 } }} exit={{ opacity: 0, scale: 0, transition: { duration: 0.5 } }}>
                                         <Card sx={orderListCardContainer}>
                                             <ViewOrderModal
                                                 orders={notificationItem}
@@ -456,6 +459,8 @@ function OrderList() {
                                                 </CardContent>
                                             </ViewOrderModal>
                                         </Card>
+                                        </motion.div>
+                                        </AnimatePresence>
                                     </Grid2>
                                 ))}
                         </Grid2>
@@ -520,6 +525,8 @@ function OrderList() {
                         notificationItem.ordered_items
                             .filter((item) => item.status !== "served")
                             .map((filteredItem) => (
+                                <AnimatePresence>
+                                <motion.div layout key={notificationItem.order_id} initial={{ opacity: 0, scale: 0 }} animate={{ opacity: 1, scale: 1, transition: { duration: 0.5 } }} exit={{ opacity: 0, scale: 0, transition: { duration: 0.5 } }}>
                                 <ListItem
                                     disablePadding
                                     sx={notificationListItem}
@@ -619,6 +626,8 @@ function OrderList() {
                                     </ViewOrderModal>
                                     <Divider />
                                 </ListItem>
+                                </motion.div>
+                                </AnimatePresence>
                             ))
                     )}
                 </Drawer>

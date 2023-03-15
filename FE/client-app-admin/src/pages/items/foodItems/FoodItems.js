@@ -1,9 +1,11 @@
 import * as React from 'react';
 import { useStore } from '../../../store/store';
 
-import Box from '@mui/material/Box';
+import { motion, AnimatePresence } from 'framer-motion';
+import { Box, Stack, TextField } from '@mui/material/';
 import Grid2 from '@mui/material/Unstable_Grid2/Grid2';
 import { CardActions, CardMedia, CardContent, Card } from '@mui/material/';
+import { grey } from '@mui/material/colors';
 import FolderOffTwoToneIcon from '@mui/icons-material/FolderOffTwoTone';
 
 import GlobalIndigoHeader4 from '../../../global/typographies/headers/IndigoHeader4';
@@ -17,7 +19,8 @@ import UpdateItemModal from '../../../global/modals/UpdateItemModal';
 import SlideDown from '../../../animation/SlideDown';
 
 function FoodItems() {
-    const {menuItems, setMenuItems} = useStore();
+    const { menuItems, setMenuItems } = useStore();
+    const [search, setSearch] = React.useState('');
 
     console.log(menuItems);
 
@@ -55,21 +58,32 @@ function FoodItems() {
         fontSize: '8em',
     };
 
+    const searchBar = {
+        backgroundColor: grey[50]
+    }
+
     if (menuItems.length === 0) {
         return (
             <SlideDown>
                 <Box sx={pageTitleContainer}>
-                    <GlobalIndigoHeader4 text={ `Food Items` } />
+                    <GlobalIndigoHeader4 text={`Food Items`} />
                 </Box>
                 <Box mb={3}>
-                    <CreateItemModal />
+                    <Stack direction='row' spacing={1}>
+                        <Box>
+                            <CreateItemModal />
+                        </Box>
+                        <Box sx={searchBar}>
+                            <TextField id="outlined-basic" color='warning' label="Search Food Name" variant="outlined" size="small" onChange={(e) => setSearch(e.target.value)} />
+                        </Box>
+                    </Stack>
                 </Box>
                 <Grid2 container sx={centerAlignment} spacing={1}>
                     <Grid2 item xs={12} sm={12} md={12} lg={12} lx={12}>
                         <FolderOffTwoToneIcon sx={noItemIcon} />
                     </Grid2>
                     <Grid2 item xs={12} sm={12} md={12} lg={12} lx={12}>
-                        <GlobalBlackHeader3 text={ `No Food Item Found` } />
+                        <GlobalBlackHeader3 text={`No Food Item Found`} />
                     </Grid2>
                     <Grid2 item xs={12} sm={12} md={12} lg={12} lx={12}>
                         <GlobalGreyBody2
@@ -84,53 +98,66 @@ function FoodItems() {
     return (
         <SlideDown>
             <Box sx={pageTitleContainer}>
-                <GlobalIndigoHeader4 text={ `Food Items` } />
+                <GlobalIndigoHeader4 text={`Food Items`} />
             </Box>
             <Box mb={3}>
-                <CreateItemModal />
+                <Stack direction='row' spacing={1}>
+                    <Box>
+                        <CreateItemModal />
+                    </Box>
+                    <Box sx={searchBar}>
+                        <TextField id="outlined-basic" color='warning' label="Search Food Name" variant="outlined" size="small" onChange={(e) => setSearch(e.target.value)} />
+                    </Box>
+                </Stack>
             </Box>
             <Grid2 container spacing={3}>
-                {menuItems.map((foodItemList) => (
+                {menuItems.filter((foodItemList) => {
+                    return search.toLowerCase() === '' ? foodItemList : foodItemList.name.toLowerCase().includes(search);
+                }).map((foodItemList) => (
                     <Grid2 item xs={12} sm={6} md={4} lg={3} lx={2.4}>
-                        <Card sx={foodItemCardContainer} key={foodItemList._id}>
-                            <CardMedia
-                                component='img'
-                                alt={foodItemList.name}
-                                height='140'
-                                image={`${process.env.REACT_APP_BACKEND_URL}${foodItemList.image}`}
-                            />
-                            <CardContent>
-                                <GlobalIndigoHeader6 text={foodItemList.name} />
-                                <GlobalGreyBody2
-                                    text={foodItemList.category_name}
-                                />
-                                <GlobalBlackHeader6
-                                    text={`₱${foodItemList.price.$numberDecimal}`}
-                                />
-                            </CardContent>
-                            <CardActions>
-                                <UpdateItemModal
-                                    title={'Update ' + foodItemList.name}
-                                    id={foodItemList._id}
-                                    image={foodItemList.image}
-                                    alt={foodItemList.name}
-                                    valueName={foodItemList.name}
-                                    valuePrice={
-                                        foodItemList.price.$numberDecimal
-                                    }
-                                    valueCateg={foodItemList.category_name}
-                                    availability={foodItemList.is_available}
-                                />
-                                <DeleteItemModal
-                                    context={
-                                        'If you delete this item will be permanently gone. Are you sure you want to delete ' +
-                                        foodItemList.name +
-                                        '?'
-                                    }
-                                    item_id={foodItemList._id}
-                                />
-                            </CardActions>
-                        </Card>
+                        <AnimatePresence>
+                            <motion.div layout key={foodItemList._id} initial={{ opacity: 0, scale: 0 }} animate={{ opacity: 1, scale: 1, transition: { duration: 0.3 } }} exit={{ opacity: 0, scale: 0, transition: { duration: 0.3 } }}>
+                                <Card sx={foodItemCardContainer} key={foodItemList._id}>
+                                    <CardMedia
+                                        component='img'
+                                        alt={foodItemList.name}
+                                        height='140'
+                                        image={`${process.env.REACT_APP_BACKEND_URL}${foodItemList.image}`}
+                                    />
+                                    <CardContent>
+                                        <GlobalIndigoHeader6 text={foodItemList.name} />
+                                        <GlobalGreyBody2
+                                            text={foodItemList.category_name}
+                                        />
+                                        <GlobalBlackHeader6
+                                            text={`₱${foodItemList.price.$numberDecimal}`}
+                                        />
+                                    </CardContent>
+                                    <CardActions>
+                                        <UpdateItemModal
+                                            title={'Update ' + foodItemList.name}
+                                            id={foodItemList._id}
+                                            image={foodItemList.image}
+                                            alt={foodItemList.name}
+                                            valueName={foodItemList.name}
+                                            valuePrice={
+                                                foodItemList.price.$numberDecimal
+                                            }
+                                            valueCateg={foodItemList.category_name}
+                                            availability={foodItemList.is_available}
+                                        />
+                                        <DeleteItemModal
+                                            context={
+                                                'If you delete this item will be permanently gone. Are you sure you want to delete ' +
+                                                foodItemList.name +
+                                                '?'
+                                            }
+                                            item_id={foodItemList._id}
+                                        />
+                                    </CardActions>
+                                </Card>
+                            </motion.div>
+                        </AnimatePresence>
                     </Grid2>
                 ))}
             </Grid2>
