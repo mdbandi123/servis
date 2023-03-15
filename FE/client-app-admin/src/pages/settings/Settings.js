@@ -1,6 +1,7 @@
 import React from 'react';
 import { useStore } from '../../store/store';
 
+import { motion, AnimatePresence } from 'framer-motion';
 import Grid2 from '@mui/material/Unstable_Grid2/Grid2';
 import { Card, CardContent, Box, IconButton, Tooltip } from '@mui/material';
 import { teal, grey } from '@mui/material/colors';
@@ -123,40 +124,44 @@ function Settings() {
                     </Grid2>
                     {UserList.map((userList) => (
                     <Grid2 item xs={12} sm={12} md={6} lg={4} lx={4}>
-                        <Card sx={userTableCard}>
-                            <CardContent sx={cardActionArea2}>
-                                <Grid2 container justifyContent='center' alignItems='center'>
-                                    <Grid2 item xs={8} sm={8} md={8} lg={8} lx={8}>
-                                        <Grid2 container alignItems='center' spacing={2}>
-                                            <Grid2 item>
-                                                <AccountCircleIcon sx={tableUserIcon} />
+                        <AnimatePresence>
+                            <motion.div layout initial={{ opacity: 0, scale: 0 }} animate={{ opacity: 1, scale: 1, transition: { duration: 0.5 } }} exit={{ opacity: 0, scale: 0, transition: { duration: 0.5 } }}>
+                                <Card sx={userTableCard}>
+                                    <CardContent sx={cardActionArea2}>
+                                        <Grid2 container justifyContent='center' alignItems='center'>
+                                            <Grid2 item xs={8} sm={8} md={8} lg={8} lx={8}>
+                                                <Grid2 container alignItems='center' spacing={2}>
+                                                    <Grid2 item>
+                                                        <AccountCircleIcon sx={tableUserIcon} />
+                                                    </Grid2>
+                                                    <Grid2 item>
+                                                        <GlobalBlackBody1 sx={ tableName } text={userList.table_name} />
+                                                    </Grid2>
+                                                </Grid2>
                                             </Grid2>
-                                            <Grid2 item>
-                                                <GlobalBlackBody1 sx={ tableName } text={userList.table_name} />
+                                            <Grid2 item xs={4} sm={4} md={4} lg={4} lx={4}>
+                                                <Grid2 container justifyContent='flex-end'>
+                                                    <Grid2 item>
+                                                        <Tooltip title='Delete'>
+                                                            <IconButton>
+                                                                <DeleteUserModal tableName={userList.table_name} sx={actionIcon} context={`Are you sure do you want to delete Table ${userList.table_name}?`} message={`Delete Table ${userList.table_name}`} />
+                                                            </IconButton>
+                                                        </Tooltip>
+                                                    </Grid2>
+                                                    <Grid2 item>
+                                                        <Tooltip title='Edit'>
+                                                            <IconButton>
+                                                                <UpdateUserModal tableName={userList.table_name} sx={actionIcon} title={`Update Table ${userList.table_name}`} defaultName={userList.table_name} />
+                                                            </IconButton>
+                                                        </Tooltip>
+                                                    </Grid2>
+                                                </Grid2>
                                             </Grid2>
                                         </Grid2>
-                                    </Grid2>
-                                    <Grid2 item xs={4} sm={4} md={4} lg={4} lx={4}>
-                                        <Grid2 container justifyContent='flex-end'>
-                                            <Grid2 item>
-                                                <Tooltip title='Delete'>
-                                                    <IconButton>
-                                                        <DeleteUserModal tableName={userList.table_name} sx={actionIcon} context={`Are you sure do you want to delete Table ${userList.table_name}?`} message={`Delete Table ${userList.table_name}`} />
-                                                    </IconButton>
-                                                </Tooltip>
-                                            </Grid2>
-                                            <Grid2 item>
-                                                <Tooltip title='Edit'>
-                                                    <IconButton>
-                                                        <UpdateUserModal tableName={userList.table_name} sx={actionIcon} title={`Update Table ${userList.table_name}`} defaultName={userList.table_name} />
-                                                    </IconButton>
-                                                </Tooltip>
-                                            </Grid2>
-                                        </Grid2>
-                                    </Grid2>
-                                </Grid2>
-                            </CardContent>
-                        </Card>
+                                    </CardContent>
+                                </Card>
+                            </motion.div>
+                        </AnimatePresence>
                     </Grid2>
                     ))}
                 </Grid2>

@@ -1,6 +1,7 @@
 import React from "react";
 import { useStore } from "../../store/store";
 
+import { motion, AnimatePresence } from 'framer-motion';
 import { grey, teal, orange } from "@mui/material/colors";
 import { Box, Card, CardContent, Badge } from "@mui/material/";
 import Grid2 from "@mui/material/Unstable_Grid2/Grid2";
@@ -153,6 +154,8 @@ function Payment(props) {
                                 lx={4}
                                 justifyContent="space-around"
                             >
+                                <AnimatePresence>
+                                <motion.div layout key={paymentList.order_id} initial={{ opacity: 0, scale: 0 }} animate={{ opacity: 1, scale: 1, transition: { duration: 0.5 } }} exit={{ opacity: 0, scale: 0, transition: { duration: 0.5 } }}>
                                 <Card sx={paymentCard}>
                                     <ViewPaymentModal
                                         orderId={paymentList.order_id}
@@ -288,7 +291,9 @@ function Payment(props) {
                                         </CardContent>
                                     </ViewPaymentModal>
                                 </Card>
-                            </Grid2>
+                            </motion.div>
+                            </AnimatePresence>
+                        </Grid2>
                         );
                     }
                 )}

@@ -1,13 +1,13 @@
 import * as React from 'react';
 import { useStore } from '../../../store/store';
 
+import { motion, AnimatePresence } from 'framer-motion';
 import Box from '@mui/material/Box';
 import Grid2 from '@mui/material/Unstable_Grid2/Grid2';
 import { CardActions, CardMedia, CardContent, Card } from '@mui/material/';
 import FolderOffTwoToneIcon from '@mui/icons-material/FolderOffTwoTone';
 
 import GlobalIndigoHeader4 from '../../../global/typographies/headers/IndigoHeader4';
-import GlobalBlackHeader6 from '../../../global/typographies/headers/BlackHeader6';
 import GlobalBlackHeader3 from '../../../global/typographies/headers/BlackHeader3';
 import GlobalGreyBody2 from '../../../global/typographies/bodies/GreyBody2';
 import DeleteItemModal from '../../../global/modals/DeleteItemModal';
@@ -96,42 +96,46 @@ function CategoryItems() {
             <Grid2 container spacing={3}>
                 {CategoryData.map((categItemList) => (
                     <Grid2 item xs={12} sm={6} md={4} lg={3} lx={2.4}>
-                        <Card
-                            sx={foodItemCardContainer}
-                            key={categItemList._id}
-                        >
-                         
-                            <CardMedia
-                                component='img'
-                                alt={categItemList.category_name}
-                                height='140'
-                                image={`${process.env.REACT_APP_BACKEND_URL}${categItemList.category_image}`}
-                            />
-                            <CardContent>
-                                <GlobalIndigoHeader6
-                                    text={categItemList.category_name}
-                                />
-                            </CardContent>
-                            <CardActions>
-                                <UpdateCategModal
-                                    title={
-                                        'Update ' + categItemList.category_name
-                                    }
-                                    value={categItemList.category_name}
-                                    image={categItemList.category_image}
-                                    alt={categItemList.category_name}
-                                    category_id={categItemList._id}
-                                    category_name={categItemList.category_name}
-                                />
-                                <DeleteItemModal
-                                    context={
-                                        'If you delete this category will be permanently gone. Are you sure you want to delete ' +
-                                        categItemList.category_name +
-                                        '?'}
-                                    category_id={categItemList._id}
-                                />
-                            </CardActions>
-                        </Card>
+                        <AnimatePresence>
+                            <motion.div layout key={categItemList._id} initial={{ opacity: 0, scale: 0 }} animate={{ opacity: 1, scale: 1, transition: { duration: 0.5 } }} exit={{ opacity: 1, scale: 0, transition: { duration: 1} }}>
+                                <Card
+                                    sx={foodItemCardContainer}
+                                    key={categItemList._id}
+                                >
+                                
+                                    <CardMedia
+                                        component='img'
+                                        alt={categItemList.category_name}
+                                        height='140'
+                                        image={`${process.env.REACT_APP_BACKEND_URL}${categItemList.category_image}`}
+                                    />
+                                    <CardContent>
+                                        <GlobalIndigoHeader6
+                                            text={categItemList.category_name}
+                                        />
+                                    </CardContent>
+                                    <CardActions>
+                                        <UpdateCategModal
+                                            title={
+                                                'Update ' + categItemList.category_name
+                                            }
+                                            value={categItemList.category_name}
+                                            image={categItemList.category_image}
+                                            alt={categItemList.category_name}
+                                            category_id={categItemList._id}
+                                            category_name={categItemList.category_name}
+                                        />
+                                        <DeleteItemModal
+                                            context={
+                                                'If you delete this category will be permanently gone. Are you sure you want to delete ' +
+                                                categItemList.category_name +
+                                                '?'}
+                                            category_id={categItemList._id}
+                                        />
+                                    </CardActions>
+                                </Card>
+                            </motion.div>
+                        </AnimatePresence>
                     </Grid2>
                 ))}
             </Grid2>
