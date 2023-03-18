@@ -107,6 +107,12 @@ function ViewPaymentModal(props) {
         fontSize: "4em",
     };
 
+    const zebraStriped = {
+        '&:nth-of-type(odd)': {
+            backgroundColor: grey[300],
+        },
+    };
+
     if (props.ordered_items.length === 0) {
         return (
             <React.Fragment>
@@ -440,7 +446,7 @@ function ViewPaymentModal(props) {
                             </TableHead>
                             <TableBody sx={tableBodyContainer}>
                                 {props.ordered_items.map((item) => (
-                                    <TableRow sx={paymentTableRow}>
+                                    <TableRow sx={[paymentTableRow, zebraStriped]}>
                                         <TableCell align="left">
                                             {item.item_name}
                                         </TableCell>

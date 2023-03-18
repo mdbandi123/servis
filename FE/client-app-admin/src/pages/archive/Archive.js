@@ -5,7 +5,7 @@ import { useStore } from '../../store/store';
 import { Box, Stack } from '@mui/material/';
 import { Table, TableBody, TableCell, TableContainer, TableHead, TablePagination, TableRow } from '@mui/material/';
 import { FormControlLabel, Paper } from '@mui/material/';
-import { indigo } from '@mui/material/colors';
+import { indigo, grey } from '@mui/material/colors';
 import FindInPageTwoToneIcon from '@mui/icons-material/FindInPageTwoTone';
 
 import GlobalIndigoHeader4 from '../../global/typographies/headers/IndigoHeader4';
@@ -192,6 +192,12 @@ export default function EnhancedTable() {
         fontSize: '3em'
     };
 
+    const zebraStriped = {
+        '&:nth-of-type(odd)': {
+            backgroundColor: grey[200],
+        },
+    };
+
     if (rows.length === 0) {
         return (
             <SlideDown>
@@ -239,7 +245,7 @@ export default function EnhancedTable() {
                                         const labelId = `enhanced-table-checkbox-${index}`;
 
                                         return (
-                                            <TableRow hover role='checkbox' aria-checked={ isItemSelected } tabIndex={ -1 } key={ row.orderId } selected={ isItemSelected } >
+                                            <TableRow sx={ zebraStriped } hover role='checkbox' aria-checked={ isItemSelected } tabIndex={ -1 } key={ row.orderId } selected={ isItemSelected } >
                                                 <TableCell padding='checkbox'/>
                                                 <TableCell component='th' id={ labelId } scope='row' padding='none' sx={ uniqueId }>{row.order_id}</TableCell>
                                                 <TableCell align='left'>{row.item_name}</TableCell>

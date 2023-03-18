@@ -16,7 +16,7 @@ import UpdateUserModal from '../../global/modals/UpdateUserModal';
 import GlobalBlackBody1 from '../../global/typographies/bodies/BlackBody1';
 import SlideDown from '../../animation/SlideDown';
 
-function Settings() {
+function TableManagement() {
     const { user, setTableData } = useStore();
 
     const UserList = useStore(state => state.tableData) || [];
@@ -94,11 +94,11 @@ function Settings() {
     return (
         <SlideDown>
             <Box sx={pageTitleContainer}>
-                <GlobalIndigoHeader4 text='Table Users' />
+                <GlobalIndigoHeader4 text='Table Management' />
             </Box>
             <Card sx={settingsContainer}>
                 <Box sx={qrHeader}>
-                    <GlobalBlackHeader5 text='Users List' />
+                    <GlobalBlackHeader5 text='Tables List' />
                 </Box>
                 <Grid2 container >
                      <Grid2 item xs={12} sm={12} md={6} lg={4} lx={4}>
@@ -170,4 +170,4 @@ function Settings() {
     );
 };
 
-export default Settings;
+export default TableManagement;

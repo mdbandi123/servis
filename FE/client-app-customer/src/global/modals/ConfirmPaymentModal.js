@@ -55,7 +55,7 @@ function ConfirmPaymentModal(props) {
 
     return (
         <React.Fragment>
-            <GlobalTealContainedButton text={props.text} variant={props.variant} sx={props.sx} onClick={ confirmHandler } />
+            <GlobalTealContainedButton text={props.text} variant={props.variant} sx={props.sx} onClick={ confirmHandler } disabled={props.disabled} />
             <Dialog keepMounted maxWidth='sm' fullWidth open={ openConfirmModal } TransitionComponent={ Transition } onClose={ cancelConfirmHandler } aria-describedby='alert-dialog-slide-description'>
                 <DialogTitle sx={ dialogAlignment }>
                     <GlobalBlackHeader5 text='Message Confirmation' />
