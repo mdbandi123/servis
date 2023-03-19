@@ -33,6 +33,7 @@ import GlobalOrangeTextButton from "../buttons/text/OrangeTextButton";
 import GlobalBlackHeader6 from "../typographies/headers/BlackHeader6";
 import GlobalBlackBody2 from "../typographies/bodies/BlackBody2";
 import GlobalGreyBody2 from "../typographies/bodies/GreyBody2";
+import GlobalTealContainedButton from "../buttons/contains/TealContainedButton";
 
 const Transition = React.forwardRef(function Transition(props, ref) {
     return <Slide direction="up" ref={ref} {...props} />;
@@ -314,11 +315,6 @@ function ViewOrderModal(props) {
                             </Box>
                         </Stack>
                     </DialogTitle>
-                    <Box sx={closeIconButton}>
-                        <IconButton>
-                            <CloseIcon onClick={cancelViewModalHandler} />
-                        </IconButton>
-                    </Box>
                     <DialogContent>
                         <DialogContentText id="alert-dialog-slide-description">
                             <Grid2 container justifyContent="center">
@@ -615,7 +611,7 @@ function ViewOrderModal(props) {
                         </DialogContentText>
                     </DialogContent>
                     <DialogActions>
-                        <GlobalOrangeTextButton
+                        <GlobalTealContainedButton
                             text="Close"
                             onClick={cancelViewModalHandler}
                         />
@@ -644,11 +640,6 @@ function ViewOrderModal(props) {
                         text={props.title + " (" + props.userId + ")"}
                     />
                 </DialogTitle>
-                <Box sx={closeIconButton}>
-                    <IconButton>
-                        <CloseIcon onClick={cancelViewModalHandler} />
-                    </IconButton>
-                </Box>
                 <DialogContent>
                     <DialogContentText id="alert-dialog-slide-description">
                         <Grid2 container justifyContent="center">
@@ -911,7 +902,7 @@ function ViewOrderModal(props) {
                     </DialogContentText>
                 </DialogContent>
                 <DialogActions>
-                    <GlobalOrangeTextButton
+                    <GlobalTealContainedButton
                         text="Close"
                         onClick={cancelViewModalHandler}
                     />

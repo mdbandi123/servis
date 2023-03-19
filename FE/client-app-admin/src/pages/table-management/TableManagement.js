@@ -89,39 +89,17 @@ function TableManagement() {
     const tableName = {
         fontSize: '1em',
         fontWeight: 'bold'
-    }
+    };
 
     return (
         <SlideDown>
             <Box sx={pageTitleContainer}>
                 <GlobalIndigoHeader4 text='Table Management' />
             </Box>
-            <Card sx={settingsContainer}>
                 <Box sx={qrHeader}>
-                    <GlobalBlackHeader5 text='Tables List' />
+                    <CreateUserModal/>
                 </Box>
                 <Grid2 container >
-                     <Grid2 item xs={12} sm={12} md={6} lg={4} lx={4}>
-                        <Card sx={userTableCard}>
-                            <CreateUserModal>
-                                <CardContent sx={cardActionArea}>
-                                    <Grid2 container justifyContent='center' alignItems='center'>
-                                        <Grid2 item xs={12} sm={12} md={12} lg={12} lx={12}>
-                                            <Grid2 container justifyContent='center'>
-                                                <Grid2 item>
-                                                    <Tooltip title='Add User'>
-                                                        <IconButton>
-                                                            <AddCircleOutlineRoundedIcon sx={actionAddIcon} />
-                                                        </IconButton>
-                                                    </Tooltip>
-                                                </Grid2>
-                                            </Grid2>
-                                        </Grid2>
-                                    </Grid2>
-                                </CardContent>
-                            </CreateUserModal>
-                        </Card>
-                    </Grid2>
                     {UserList.map((userList) => (
                     <Grid2 item xs={12} sm={12} md={6} lg={4} lx={4}>
                         <AnimatePresence>
@@ -144,14 +122,21 @@ function TableManagement() {
                                                     <Grid2 item>
                                                         <Tooltip title='Delete'>
                                                             <IconButton>
-                                                                <DeleteUserModal tableName={userList.table_name} sx={actionIcon} context={`Are you sure do you want to delete Table ${userList.table_name}?`} message={`Delete Table ${userList.table_name}`} />
+                                                                <DeleteUserModal tableName={userList.table_name} sx={actionIcon} message={`Delete Table`} 
+                                                                    context={<> 
+                                                                        <Grid2 container>
+                                                                            Are you sure you want to delete
+                                                                            <GlobalBlackBody1 text={userList.table_name} sx={{ ml: 0.5, fontWeight: 'bold' }} />?
+                                                                        </Grid2> 
+                                                                    </>}
+                                                                />
                                                             </IconButton>
                                                         </Tooltip>
                                                     </Grid2>
                                                     <Grid2 item>
-                                                        <Tooltip title='Edit'>
+                                                        <Tooltip title='Update'>
                                                             <IconButton>
-                                                                <UpdateUserModal tableName={userList.table_name} sx={actionIcon} title={`Update Table ${userList.table_name}`} defaultName={userList.table_name} />
+                                                                <UpdateUserModal tableName={userList.table_name} sx={actionIcon} title={`Update Table: ${userList.table_name}`} defaultName={userList.table_name} update={userList.table_name} />
                                                             </IconButton>
                                                         </Tooltip>
                                                     </Grid2>
@@ -165,7 +150,7 @@ function TableManagement() {
                     </Grid2>
                     ))}
                 </Grid2>
-            </Card>
+
         </SlideDown>
     );
 };

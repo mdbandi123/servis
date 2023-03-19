@@ -9,15 +9,25 @@ import { Stack, TextField, FormControlLabel, MenuItem } from '@mui/material/';
 import { CardMedia, Card } from '@mui/material/';
 import CloseIcon from '@mui/icons-material/Close';
 import FileUploadIcon from '@mui/icons-material/FileUpload';
+import EditIcon from '@mui/icons-material/Edit';
+import Snackbar from '@mui/material/Snackbar';
+import MuiAlert from '@mui/material/Alert';
+import InsertPhotoIcon from '@mui/icons-material/InsertPhoto';
 
 import GlobalBlackHeader5 from '../typographies/headers/BlackHeader5';
 import GlobalOrangeTextButton from '../buttons/text/OrangeTextButton';
 import GlobalIndigoTextButton from '../buttons/text/IndigoTextButton';
 import GlobalTealSwitch from '../switches/TealSwitch';
 import { grey, teal } from '@mui/material/colors';
+import GlobalTealOutlinedButton from '../buttons/outlines/TealOutlinedButton';
+import GlobalTealContainedButton from '../buttons/contains/TealContainedButton';
 
 const Transition = React.forwardRef(function Transition(props, ref) {
     return <Slide direction='up' ref={ref} {...props} />;
+});
+
+const Alert = React.forwardRef(function Alert(props, ref) {
+    return <MuiAlert elevation={6} ref={ref} variant="filled" {...props} />;
 });
 
 function UpdateItemModal(props) {
@@ -28,6 +38,7 @@ function UpdateItemModal(props) {
     const [image, setImage] = React.useState(null);
     const [valueStatus, setValueStatus] = React.useState(props.availability);
     const [CategoryData, setCategoryData] = React.useState([]);
+    const [openAlert, setOpenAlert] = React.useState(false);
 
     const { user } = useStore();
 
@@ -45,6 +56,14 @@ function UpdateItemModal(props) {
             })
             .catch((error) => console.error(error));
     }, []);
+
+    const handleAlertClose = (event, reason) => {
+        if (reason === 'clickaway') {
+            return;
+        }
+
+        setOpenAlert(false);
+    };
 
     const ItemUpdateHandler = () => {
         setOpenUpdateItemModal(true);
@@ -119,6 +138,7 @@ function UpdateItemModal(props) {
                 })
                 .catch((error) => console.error(error));
         }
+        setOpenAlert(true);
     };
 
     const closeIconButton = {
@@ -151,9 +171,15 @@ function UpdateItemModal(props) {
         }
     }
 
+    const uploadImageIcon = {
+        fontSize: '15em',
+        color: grey[600]
+    };
+
     return (
         <React.Fragment>
-            <GlobalIndigoTextButton text={ `Update` } onClick={ItemUpdateHandler} />
+            <EditIcon onClick={ ItemUpdateHandler } sx={ props.sx } />
+            {/* <GlobalIndigoTextButton text={ `Update` } onClick={ItemUpdateHandler} /> */}
             <Dialog
                 keepMounted
                 maxWidth='sm'
@@ -166,11 +192,6 @@ function UpdateItemModal(props) {
                 <DialogTitle sx={dialogAlignment}>
                     <GlobalBlackHeader5 text={props.title} />
                 </DialogTitle>
-                <Box sx={closeIconButton}>
-                    <IconButton>
-                        <CloseIcon onClick={cancelItemUpdateHandler} />
-                    </IconButton>
-                </Box>
                 <DialogContent>
                     <DialogContentText id='alert-dialog-slide-description'>
                         <Grid2 container spacing={2}>
@@ -178,7 +199,15 @@ function UpdateItemModal(props) {
                                 <Stack spacing={2}>
                                     <Box>
                                         <Card>
-                                            <CardMedia component='img' alt={props.alt} height='280' image={image ? URL.createObjectURL(image) : `${process.env.REACT_APP_BACKEND_URL}${props.image}`} />
+                                            {props.image ? <CardMedia component='img' height='280' image={`${process.env.REACT_APP_BACKEND_URL}${props.image}`} />
+                                                : <><Grid2 container justifyContent='center' sx={{ backgroundColor: grey[400] }}>
+                                                    <Grid2 item>
+                                                        <InsertPhotoIcon sx={uploadImageIcon} />
+                                                    </Grid2>
+                                                </Grid2></>
+                                            }
+
+                                            {/* <CardMedia component='img' height='280' image={image ? URL.createObjectURL(image) : `${process.env.REACT_APP_BACKEND_URL}${props.image}`} /> */}
                                         </Card>
                                     </Box>
                                     <Box>
@@ -195,9 +224,15 @@ function UpdateItemModal(props) {
                                         <TextField id='outlined-textarea'  defaultValue={props.valueName}  color='warning' type='text' label='Name' placeholder='Enter Food Name' variant='filled' onChange={(e) => { setValueName(e.target.value); }} fullWidth />
                                     </Box>
                                     <Box>
-                                        <TextField id='outlined-textarea' defaultValue={props.valuePrice} color='warning' type='number'  label='Price' placeholder='Enter Food Price' variant='filled'
+                                        <TextField id='outlined-textarea' value={valuePrice} color='warning' type='number' label='Price' placeholder='Enter Food Price' variant='filled'
                                             onChange={(e) => {
-                                                setValuePrice(e.target.value);
+                                                const min = 1;
+
+                                                const value = Math.max(min, Math.min(Number(e.target.value)));
+
+                                                setValuePrice(value);
+
+                                                console.log(value);
                                             }}
                                             fullWidth
                                         />
@@ -218,7 +253,7 @@ function UpdateItemModal(props) {
                                         </TextField>
                                     </Box>
                                     <Box>
-                                        <FormControlLabel sx={disableItem} control={<GlobalTealSwitch checked={valueStatus}/>} onChange={(e) => { setValueStatus(e.target.checked); }} label='Enabled'
+                                        <FormControlLabel sx={disableItem} control={<GlobalTealSwitch checked={valueStatus}/>} onChange={(e) => { setValueStatus(e.target.checked); }} label='Available'
                                         />
                                     </Box>
                                 </Stack>
@@ -227,10 +262,15 @@ function UpdateItemModal(props) {
                     </DialogContentText>
                 </DialogContent>
                 <DialogActions>
-                    <GlobalOrangeTextButton text={ `Cancel` } onClick={cancelItemUpdateHandler} />
-                    <GlobalIndigoTextButton text={ `Update` } onClick={confirmItemUpdateHandler} />
+                    <GlobalTealOutlinedButton text={ `Cancel` } onClick={cancelItemUpdateHandler} />
+                    <GlobalTealContainedButton text={ `Update` } onClick={confirmItemUpdateHandler} disabled={!valueName || !valuePrice || !valueCateg} />
                 </DialogActions>
             </Dialog>
+            <Snackbar open={openAlert} autoHideDuration={6000} onClose={handleAlertClose} anchorOrigin={{ vertical: "bottom", horizontal: "right" }}>
+                <Alert onClose={handleAlertClose} severity="success" >
+                    Food Item Update Successfully!
+                </Alert>
+            </Snackbar>
         </React.Fragment>
     );
 }

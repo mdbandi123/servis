@@ -36,7 +36,7 @@ import GlobalBlackHeader5 from "../typographies/headers/BlackHeader5";
 import GlobalOrangeTextButton from "../buttons/text/OrangeTextButton";
 import GlobalGreyBody2 from "../typographies/bodies/GreyBody2";
 import GlobalBlackHeader4 from "../typographies/headers/BlackHeader4";
-import GlobalTealContainedButton from "../buttons/contains/TealContainedButton";
+import GlobalTealOutlinedButton from "../buttons/outlines/TealOutlinedButton";
 import ConfirmPaymentModal from "./ConfirmPaymentModal";
 
 const Transition = React.forwardRef(function Transition(props, ref) {
@@ -136,17 +136,12 @@ function ViewPaymentModal(props) {
                             <Box>
                                 <GlobalBlackHeader5
                                     text={
-                                        props.title + " (" + props.userId + ")"
+                                        props.title
                                     }
                                 />
                             </Box>
                         </Stack>
                     </DialogTitle>
-                    <Box sx={closeIconButton}>
-                        <IconButton>
-                            <CloseIcon onClick={cancelViewModalHandler} />
-                        </IconButton>
-                    </Box>
                     <DialogContent>
                         <DialogContentText id="alert-dialog-slide-description">
                             <Grid2 container justify="flex-start">
@@ -306,28 +301,16 @@ function ViewPaymentModal(props) {
                             </Table>
                         </TableContainer>
                     </DialogContent>
-                    <Stack
-                        direction="row"
-                        alignItems="center"
-                        justifyContent="space-between"
-                    >
-                        <Box pl={2} pb={2}>
-                            <DialogActions>
-                                <ConfirmPaymentModal
-                                    orderId={props.orderId}
-                                    context={`Are you sure do you want to mark as Paid the ${props.title} (${props.userId})?`}
-                                />
-                            </DialogActions>
-                        </Box>
-                        <Box>
-                            <DialogActions>
-                                <GlobalOrangeTextButton
-                                    text="Close"
-                                    onClick={cancelViewModalHandler}
-                                />
-                            </DialogActions>
-                        </Box>
-                    </Stack>
+                    <DialogActions>
+                        <GlobalTealOutlinedButton
+                            text="Close"
+                            onClick={cancelViewModalHandler}
+                        />
+                        <ConfirmPaymentModal
+                            orderId={props.orderId}
+                            context={`Are you sure do you want to mark as Paid the ${props.title}?`}
+                        />
+                    </DialogActions>
                 </Dialog>
             </React.Fragment>
         );
@@ -359,11 +342,6 @@ function ViewPaymentModal(props) {
                         </Box>
                     </Stack>
                 </DialogTitle>
-                <Box sx={closeIconButton}>
-                    <IconButton>
-                        <CloseIcon onClick={cancelViewModalHandler} />
-                    </IconButton>
-                </Box>
                 <DialogContent>
                     <DialogContentText id="alert-dialog-slide-description">
                         <Grid2 container justify="flex-start">
@@ -488,28 +466,16 @@ function ViewPaymentModal(props) {
                         </Table>
                     </TableContainer>
                 </DialogContent>
-                <Stack
-                    direction="row"
-                    alignItems="center"
-                    justifyContent="space-between"
-                >
-                    <Box pl={2} pb={2}>
-                        <DialogActions>
-                            <ConfirmPaymentModal
-                                orderId={props.orderId}
-                                context={`Are you sure do you want to mark as Paid the ${props.title} (${props.userId})?`}
-                            />
-                        </DialogActions>
-                    </Box>
-                    <Box>
-                        <DialogActions>
-                            <GlobalOrangeTextButton
-                                text="Close"
-                                onClick={cancelViewModalHandler}
-                            />
-                        </DialogActions>
-                    </Box>
-                </Stack>
+                <DialogActions>
+                    <GlobalTealOutlinedButton
+                        text="Close"
+                        onClick={cancelViewModalHandler}
+                    />
+                    <ConfirmPaymentModal
+                        orderId={props.orderId}
+                        context={`Are you sure do you want to mark as Paid the ${props.title}?`}
+                    />
+                </DialogActions>
             </Dialog>
         </React.Fragment>
     );

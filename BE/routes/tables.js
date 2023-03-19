@@ -35,7 +35,7 @@ route.post("/create", auth, async (req, res) => {
 
     // check if table name already exists
     const table_name_exists = await tables_model.findOne({
-        table_name: "Table " + table_name,
+        table_name: table_name,
     });
 
     if (table_name_exists) {
@@ -47,7 +47,7 @@ route.post("/create", auth, async (req, res) => {
     }
 
     const table = new tables_model({
-        table_name: "Table " + table_name,
+        table_name: table_name,
     });
 
     try {

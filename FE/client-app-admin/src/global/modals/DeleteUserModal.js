@@ -8,19 +8,28 @@ import { red } from '@mui/material/colors';
 import ReportProblemIcon from '@mui/icons-material/ReportProblem';
 import CloseIcon from '@mui/icons-material/Close';
 import DeleteIcon from '@mui/icons-material/Delete';
+import Snackbar from '@mui/material/Snackbar';
+import MuiAlert from '@mui/material/Alert';
 
 import GlobalGreyBody1 from '../typographies/bodies/GreyBody1';
 import GlobalBlackHeader5 from '../typographies/headers/BlackHeader5';
 import GlobalIndigoTextButton from '../buttons/text/IndigoTextButton';
 import GlobalOrangeTextButton from '../buttons/text/OrangeTextButton';
+import GlobalTealContainedButton from '../buttons/contains/TealContainedButton';
+import GlobalTealOutlinedButton from '../buttons/outlines/TealOutlinedButton';
 
 const Transition = React.forwardRef(function Transition(props, ref) {
     return <Slide direction='up' ref={ref} {...props} />;
 });
 
+const Alert = React.forwardRef(function Alert(props, ref) {
+    return <MuiAlert elevation={6} ref={ref} variant="filled" {...props} />;
+});
+
 function DeleteUserModal(props) {
     const { user } = useStore();
     const [openModal, setOpenModal] = React.useState(false);
+    const [openAlert, setOpenAlert] = React.useState(false);
 
     const deleteHandler = () => {
         setOpenModal(true);
@@ -28,6 +37,14 @@ function DeleteUserModal(props) {
 
     const cancelDeleteHandler = () => {
         setOpenModal(false);
+    };
+
+    const handleAlertClose = (event, reason) => {
+        if (reason === 'clickaway') {
+            return;
+        }
+
+        setOpenAlert(false);
     };
 
     const confirmDeleteHandler = () => {
@@ -44,9 +61,8 @@ function DeleteUserModal(props) {
                 }
             })
             .catch(err => console.log(err));
-
-
-
+        
+        setOpenAlert(true);
         setOpenModal(false);
     };
 
@@ -69,26 +85,26 @@ function DeleteUserModal(props) {
     return (
         <React.Fragment>
             <DeleteIcon onClick={deleteHandler} sx={props.sx} />
-            <Dialog keepMounted maxWidth='sm' fullWidth open={openModal} TransitionComponent={Transition} onClose={cancelDeleteHandler} aria-describedby='alert-dialog-slide-description'>
+            <Dialog keepMounted maxWidth='xs' fullWidth open={openModal} TransitionComponent={Transition} onClose={cancelDeleteHandler} aria-describedby='alert-dialog-slide-description'>
                 <DialogTitle sx={dialogAlignment}>
                     <ReportProblemIcon sx={deleteIcon} />
                     <GlobalBlackHeader5 text={props.message} />
                 </DialogTitle>
-                <Box sx={closeIconButton}>
-                    <IconButton>
-                        <CloseIcon onClick={cancelDeleteHandler} />
-                    </IconButton>
-                </Box>
                 <DialogContent>
                     <DialogContentText id='alert-dialog-slide-description'>
                         <GlobalGreyBody1 text={props.context} />
                     </DialogContentText>
                 </DialogContent>
                 <DialogActions>
-                    <GlobalOrangeTextButton text='Cancel' onClick={cancelDeleteHandler} />
-                    <GlobalIndigoTextButton text='Confirm' onClick={confirmDeleteHandler} />
+                    <GlobalTealOutlinedButton text='Cancel' onClick={cancelDeleteHandler} />
+                    <GlobalTealContainedButton text='Confirm' onClick={confirmDeleteHandler} />
                 </DialogActions>
             </Dialog>
+            <Snackbar open={openAlert} autoHideDuration={6000} onClose={handleAlertClose} anchorOrigin={{ vertical: "bottom", horizontal: "right" }}>
+                <Alert onClose={handleAlertClose} severity="success">
+                    Table Deleted Successfully!
+                </Alert>
+            </Snackbar>
         </React.Fragment>
     );
 };

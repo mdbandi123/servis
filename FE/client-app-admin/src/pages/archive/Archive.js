@@ -20,13 +20,19 @@ const archiveHeadCellsList = [
         id: 'orderId',
         dataAlignment: false,
         disablePadding: true,
-        label: 'ORDER ID'
+        label: 'TABLE'
     },
     {
         id: 'orderName',
         dataAlignment: false,
         disablePadding: false,
         label: 'NAME'
+    },
+    {
+        id: 'quantity',
+        dataAlignment: false,
+        disablePadding: false,
+        label: 'QUANTITY'
     },
     {
         id: 'category',
@@ -247,10 +253,20 @@ export default function EnhancedTable() {
                                         return (
                                             <TableRow sx={ zebraStriped } hover role='checkbox' aria-checked={ isItemSelected } tabIndex={ -1 } key={ row.orderId } selected={ isItemSelected } >
                                                 <TableCell padding='checkbox'/>
-                                                <TableCell component='th' id={ labelId } scope='row' padding='none' sx={ uniqueId }>{row.order_id}</TableCell>
+                                                <TableCell component='th' id={ labelId } scope='row' padding='none' sx={ uniqueId }>{row.table_number}</TableCell>
                                                 <TableCell align='left'>{row.item_name}</TableCell>
+                                                <TableCell align='left'>{row.quantity}</TableCell>
                                                 <TableCell align='left'>{row.item_category}</TableCell>
-                                                <TableCell align='left'>{row.time_ordered}</TableCell>
+                                                <TableCell align='left'>
+                                                    {
+                                                        new Date(row.time_ordered).getMonth() + '-' + 
+                                                        new Date(row.time_ordered).getDate() + '-' + 
+                                                        new Date(row.time_ordered).getFullYear() + ' | ' + 
+                                                        new Date(row.time_ordered).getHours() + ':' +
+                                                        new Date(row.time_ordered).getMinutes() + ':' +
+                                                        new Date(row.time_ordered).getSeconds()
+                                                    }
+                                                </TableCell>
                                             </TableRow>
                                         );
                                     })}

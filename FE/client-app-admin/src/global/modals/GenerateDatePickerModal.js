@@ -9,12 +9,15 @@ import { orange } from '@mui/material/colors';
 import CloseIcon from '@mui/icons-material/Close';
 import FileUploadIcon from '@mui/icons-material/FileUpload';
 import InsertPhotoIcon from '@mui/icons-material/InsertPhoto';
+import Snackbar from '@mui/material/Snackbar';
+import MuiAlert from '@mui/material/Alert';
 
 import GlobalGreyBody1 from '../typographies/bodies/GreyBody1';
 import GlobalBlackHeader5 from '../typographies/headers/BlackHeader5';
 import GlobalOrangeTextButton from '../buttons/text/OrangeTextButton';
 import GlobalIndigoTextButton from '../buttons/text/IndigoTextButton';
 import GlobalTealContainedButton from '../buttons/contains/TealContainedButton';
+import GlobalTealOutlinedButton from '../buttons/outlines/TealOutlinedButton';
 
 import { AdapterMoment } from '@mui/x-date-pickers/AdapterMoment';
 import { LocalizationProvider } from '@mui/x-date-pickers/LocalizationProvider';
@@ -24,9 +27,14 @@ const Transition = React.forwardRef(function Transition(props, ref) {
     return <Slide direction='up' ref={ref} {...props} />;
 });
 
+const Alert = React.forwardRef(function Alert(props, ref) {
+    return <MuiAlert elevation={6} ref={ref} variant="filled" {...props} />;
+});
+
 function GenerateDatePickerModal(props) {
     const [startDate, setStartDate] = React.useState(null);
     const [endDate, setEndDate] = React.useState(null);
+    const [openAlert, setOpenAlert] = React.useState(false);
 
     const [openGenerateReportModal, setOpenGenerateReportModal] = React.useState(false);
 
@@ -36,6 +44,14 @@ function GenerateDatePickerModal(props) {
 
     const cancelGenerateReportHandler = () => {
         setOpenGenerateReportModal(false);
+    };
+
+    const handleAlertClose = (event, reason) => {
+        if (reason === 'clickaway') {
+            return;
+        }
+
+        setOpenAlert(false);
     };
 
     const confirmGenerateReportHandler = async () => {
@@ -58,11 +74,13 @@ function GenerateDatePickerModal(props) {
             link.setAttribute('download', `archive_${start_date}_${end_date}.csv`);
             document.body.appendChild(link);
             link.click();
+            setOpenAlert(true);
         } catch (error) {
             console.error(error);
         }
 
-
+        setEndDate(null);
+        setStartDate(null);
         setOpenGenerateReportModal(false);
     };
 
@@ -100,13 +118,8 @@ function GenerateDatePickerModal(props) {
                 <DialogTitle sx={dialogAlignment}>
                     <GlobalBlackHeader5 text='Set Date Range To Generate Report' />
                 </DialogTitle>
-                <Box sx={closeIconButton}>
-                    <IconButton >
-                        <CloseIcon onClick={cancelGenerateReportHandler} />
-                    </IconButton>
-                </Box>
                 <DialogContent >
-                    <DialogContentText id='alert-dialog-slide-description'>
+                    <DialogContentText id='alert-dialog-slide-description' sx={{ marginTop: '1%' }}>
                         <Stack direction='row' justifyContent='space-between'>
                             <Box>
                                 <LocalizationProvider dateAdapter={AdapterMoment}>
@@ -122,10 +135,15 @@ function GenerateDatePickerModal(props) {
                     </DialogContentText>
                 </DialogContent>
                 <DialogActions>
-                    <GlobalOrangeTextButton text='Cancel' onClick={cancelGenerateReportHandler} />
-                    <GlobalIndigoTextButton text='Generate' onClick={confirmGenerateReportHandler} />
+                    <GlobalTealOutlinedButton text='Cancel' onClick={cancelGenerateReportHandler} />
+                    <GlobalTealContainedButton text='Generate' onClick={confirmGenerateReportHandler} disabled={!startDate || !endDate} />
                 </DialogActions>
             </Dialog>
+            <Snackbar open={openAlert} autoHideDuration={6000} onClose={handleAlertClose} anchorOrigin={{ vertical: "bottom", horizontal: "right" }}>
+                <Alert onClose={handleAlertClose} severity="success">
+                    Report Generate Successfully!
+                </Alert>
+            </Snackbar>
         </React.Fragment>
     );
 };

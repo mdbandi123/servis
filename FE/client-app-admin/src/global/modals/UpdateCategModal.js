@@ -10,19 +10,32 @@ import { CardMedia, Card } from '@mui/material/';
 import { teal } from '@mui/material/colors';
 import CloseIcon from '@mui/icons-material/Close';
 import FileUploadIcon from '@mui/icons-material/FileUpload';
+import EditIcon from '@mui/icons-material/Edit';
+import Snackbar from '@mui/material/Snackbar';
+import MuiAlert from '@mui/material/Alert';
+import InsertPhotoIcon from '@mui/icons-material/InsertPhoto';
 
 import GlobalBlackHeader5 from '../typographies/headers/BlackHeader5';
 import GlobalOrangeTextButton from '../buttons/text/OrangeTextButton';
 import GlobalIndigoTextButton from '../buttons/text/IndigoTextButton';
+import GlobalTealOutlinedButton from '../buttons/outlines/TealOutlinedButton';
+import GlobalTealContainedButton from '../buttons/contains/TealContainedButton';
+import {grey} from '@mui/material/colors';
 
 const Transition = React.forwardRef(function Transition(props, ref) {
     return <Slide direction='up' ref={ref} {...props} />;
 });
 
+const Alert = React.forwardRef(function Alert(props, ref) {
+    return <MuiAlert elevation={6} ref={ref} variant="filled" {...props} />;
+});
+
+
 function UpdateCategModal(props) {
     const [openCreateCategModal, setOpenCreateCategModal] = React.useState(false);
     const [image, setImage] = React.useState(null);
     const [categoryName, setCategoryName] = React.useState(props.category_name);
+    const [openAlert, setOpenAlert] = React.useState(false);
 
     const { user } = useStore();
 
@@ -32,6 +45,14 @@ function UpdateCategModal(props) {
 
     const cancelCategCreateHandler = () => {
         setOpenCreateCategModal(false);
+    };
+
+    const handleAlertClose = (event, reason) => {
+        if (reason === 'clickaway') {
+            return;
+        }
+
+        setOpenAlert(false);
     };
 
     const confirmCategCreateHandler = () => {
@@ -90,6 +111,7 @@ function UpdateCategModal(props) {
                 })
                 .catch((error) => console.error(error));
         }
+        setOpenAlert(true);
     };
 
     const closeIconButton = {
@@ -118,18 +140,19 @@ function UpdateCategModal(props) {
         }
     }
 
+    const uploadImageIcon = {
+        fontSize: '15em',
+        color: grey[600]
+    };
+
     return (
         <React.Fragment>
-            <GlobalIndigoTextButton text='Update' onClick={ CategCreateHandler } />
+            <EditIcon onClick={ CategCreateHandler } sx={ props.sx } />
+            {/* <GlobalIndigoTextButton text='Update' onClick={ CategCreateHandler } /> */}
             <Dialog keepMounted maxWidth='sm' fullWidth open={ openCreateCategModal } TransitionComponent={ Transition } onClose={ cancelCategCreateHandler } aria-describedby='alert-dialog-slide-description'>
                 <DialogTitle sx={ dialogAlignment }>
                     <GlobalBlackHeader5 text={ props.title } />
                 </DialogTitle>
-                <Box sx={ closeIconButton }>
-                    <IconButton>
-                        <CloseIcon onClick={ cancelCategCreateHandler } />
-                    </IconButton>
-                </Box>
                 <DialogContent>
                     <DialogContentText id='alert-dialog-slide-description'>
                         <Grid2 container spacing={2}>
@@ -137,7 +160,15 @@ function UpdateCategModal(props) {
                                 <Stack spacing={2}>
                                     <Box>
                                         <Card>
-                                            <CardMedia component='img' alt={ props.alt } height='250' image={ image ? URL.createObjectURL(image) : `${process.env.REACT_APP_BACKEND_URL}${props.image}` } />
+                                            {props.image ? <CardMedia component='img' height='250' image={`${process.env.REACT_APP_BACKEND_URL}${props.image}`} />
+                                                : <><Grid2 container justifyContent='center' sx={{ backgroundColor: grey[400] }}>
+                                                    <Grid2 item>
+                                                        <InsertPhotoIcon sx={uploadImageIcon} />
+                                                    </Grid2>
+                                                </Grid2></>
+                                            }
+
+                                            {/* <CardMedia component='img' alt={ props.alt } height='250' image={ image ? URL.createObjectURL(image) : `${process.env.REACT_APP_BACKEND_URL}${props.image}` } /> */}
                                         </Card>
                                     </Box>
                                     <Box>
@@ -158,10 +189,15 @@ function UpdateCategModal(props) {
                     </DialogContentText>
                 </DialogContent>
                 <DialogActions>
-                    <GlobalOrangeTextButton text='Cancel' onClick={ cancelCategCreateHandler } />
-                    <GlobalIndigoTextButton text='Update' onClick={ confirmCategCreateHandler } />
+                    <GlobalTealOutlinedButton text='Cancel' onClick={ cancelCategCreateHandler } />
+                    <GlobalTealContainedButton text='Update' onClick={ confirmCategCreateHandler } disabled={!categoryName} />
                 </DialogActions>
             </Dialog>
+            <Snackbar open={openAlert} autoHideDuration={6000} onClose={handleAlertClose} anchorOrigin={{ vertical: "bottom", horizontal: "right" }}>
+                <Alert onClose={handleAlertClose} severity="success" >
+                    Category Updated Successfully!
+                </Alert>
+            </Snackbar>
         </React.Fragment>
     );
 };
