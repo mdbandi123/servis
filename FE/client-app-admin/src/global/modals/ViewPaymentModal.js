@@ -215,19 +215,7 @@ function ViewPaymentModal(props) {
                                             sx={tableHeadText}
                                             align="left"
                                         >
-                                            Code
-                                        </TableCell>
-                                        <TableCell
-                                            sx={tableHeadText}
-                                            align="left"
-                                        >
                                             Category
-                                        </TableCell>
-                                        <TableCell
-                                            sx={tableHeadText}
-                                            align="left"
-                                        >
-                                            Quantity
                                         </TableCell>
                                         <TableCell
                                             sx={tableHeadText}
@@ -239,7 +227,13 @@ function ViewPaymentModal(props) {
                                             sx={tableHeadText}
                                             align="left"
                                         >
-                                            Amount
+                                            Quantity
+                                        </TableCell>
+                                        <TableCell
+                                            sx={tableHeadText}
+                                            align="left"
+                                        >
+                                           Total Amount
                                         </TableCell>
                                     </TableRow>
                                 </TableHead>
@@ -337,7 +331,7 @@ function ViewPaymentModal(props) {
                         </Box>
                         <Box>
                             <GlobalBlackHeader5
-                                text={props.title + " (" + props.userId + ")"}
+                                text={props.title}
                             />
                         </Box>
                     </Stack>
@@ -409,16 +403,16 @@ function ViewPaymentModal(props) {
                                         Name
                                     </TableCell>
                                     <TableCell sx={tableHeadText} align="left">
-                                        Code
+                                        Category
                                     </TableCell>
                                     <TableCell sx={tableHeadText} align="left">
-                                        Category
+                                        Unit Cost
                                     </TableCell>
                                     <TableCell sx={tableHeadText} align="left">
                                         Quantity
                                     </TableCell>
                                     <TableCell sx={tableHeadText} align="left">
-                                        Amount
+                                       Total Amount
                                     </TableCell>
                                 </TableRow>
                             </TableHead>
@@ -429,10 +423,10 @@ function ViewPaymentModal(props) {
                                             {item.item_name}
                                         </TableCell>
                                         <TableCell align="left">
-                                            {item._id}
+                                            {item.item_category}
                                         </TableCell>
                                         <TableCell align="left">
-                                            {item.item_category}
+                                            ₱{item.item_price.$numberDecimal}
                                         </TableCell>
                                         <TableCell align="left">
                                             {item.quantity}

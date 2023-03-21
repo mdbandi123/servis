@@ -161,7 +161,7 @@ function CreateItemModal() {
 
     const uploadImageIcon = {
         fontSize: '15em',
-        color: grey[600]
+        color: grey[500]
     };
 
     const uploadButton = {
@@ -229,7 +229,7 @@ function CreateItemModal() {
                 </DialogContent>
                 <DialogActions>
                     <GlobalTealOutlinedButton text='Cancel' onClick={ cancelItemCreateHandler } />
-                    <GlobalTealContainedButton text='Create' onClick={confirmItemCreateHandler} disabled={!itemPrice || !itemCategory || !itemName} />
+                    <GlobalTealContainedButton text='Create' onClick={confirmItemCreateHandler} disabled={!itemPrice || !itemCategory || !itemName || !itemImage} />
                 </DialogActions>
             </Dialog>
             <Snackbar open={openAlert} autoHideDuration={6000} onClose={handleAlertClose} anchorOrigin={{ vertical: "bottom", horizontal: "right" }}>

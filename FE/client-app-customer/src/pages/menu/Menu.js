@@ -6,6 +6,7 @@ import { useNavigate } from 'react-router-dom';
 import { grey } from '@mui/material/colors';
 import { Card, CardActionArea, CardMedia, CardContent, Box } from '@mui/material';
 import ExtensionOffIcon from '@mui/icons-material/ExtensionOff';
+import InsertPhotoIcon from '@mui/icons-material/InsertPhoto';
 
 import GlobalBlackHeader6 from '../../global/typographies/headers/BlackHeader6';
 import GlobalBlackHeader5 from '../../global/typographies/headers/BlackHeader5';
@@ -69,6 +70,12 @@ function Menu() {
         color: grey[600]
     };
 
+    const uploadImageIcon = {
+        fontSize: '8em',
+        color: grey[600],
+        display: 'flex',
+    };
+
     if (CategoryData.length === 0) {
         return (
             <FadeIn>
@@ -102,7 +109,11 @@ function Menu() {
                                 <Grid2 item xs={6} sm={6} md={4} lg={3} lx={3}>
                                     <Card sx={cardContainer}>
                                         <CardActionArea onClick={() => navigate(`/menu/${categoryList.category_name}`)}>
-                                            <CardMedia component='img' height='140' image={`${process.env.REACT_APP_BACKEND_URL}${categoryList.category_image}`} alt={categoryList.category_name} />
+                                            <CardMedia 
+                                                component='img' height='140' 
+                                                image={`${process.env.REACT_APP_BACKEND_URL}${categoryList.category_image}`} 
+                                                alt={categoryList.category_name} 
+                                            />
                                             <CardContent sx={cardContent}>
                                                 <GlobalBlackHeader6 sx={itemName} text={categoryList.category_name} />
                                             </CardContent>

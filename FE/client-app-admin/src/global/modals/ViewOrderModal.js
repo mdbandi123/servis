@@ -117,39 +117,6 @@ const onDragEnd = (result, columns, setColumns, user) => {
 function ViewOrderModal(props) {
     const { user } = useStore();
 
-    const userOrders = [
-        {
-            _id: "1",
-            status: "pending",
-            item_name: "Pork Tonkatsu",
-            item_image: `https://media.istockphoto.com/id/1364936307/photo/pork-tonkatsu.jpg?s=1024x1024&w=is&k=20&c=SSTaoCgZKHms3gm17F0NS9M0w_r9AQaKLKu_kEwzLtA=`,
-        },
-        {
-            _id: "2",
-            status: "preparing",
-            item_name: "Fried Chicken",
-            item_image: `https://media.istockphoto.com/id/1364936307/photo/pork-tonkatsu.jpg?s=1024x1024&w=is&k=20&c=SSTaoCgZKHms3gm17F0NS9M0w_r9AQaKLKu_kEwzLtA=`,
-        },
-        {
-            _id: "3",
-            status: "served",
-            item_name: "Mango Pudding",
-            item_image: `https://media.istockphoto.com/id/1364936307/photo/pork-tonkatsu.jpg?s=1024x1024&w=is&k=20&c=SSTaoCgZKHms3gm17F0NS9M0w_r9AQaKLKu_kEwzLtA=`,
-        },
-        {
-            _id: "4",
-            status: "pending",
-            item_name: "Pork Tonkatsu",
-            item_image: `https://media.istockphoto.com/id/1364936307/photo/pork-tonkatsu.jpg?s=1024x1024&w=is&k=20&c=SSTaoCgZKHms3gm17F0NS9M0w_r9AQaKLKu_kEwzLtA=`,
-        },
-        {
-            _id: "5",
-            status: "pending",
-            item_name: "Pork Tonkatsu",
-            item_image: `https://media.istockphoto.com/id/1364936307/photo/pork-tonkatsu.jpg?s=1024x1024&w=is&k=20&c=SSTaoCgZKHms3gm17F0NS9M0w_r9AQaKLKu_kEwzLtA=`,
-        },
-    ];
-
     const initialUserOrderStatus = {
         pending: {
             name: "Pending",
@@ -208,12 +175,6 @@ function ViewOrderModal(props) {
         setOpenViewOrderModal(false);
     };
 
-    const closeIconButton = {
-        position: "absolute",
-        top: 0,
-        right: 0,
-    };
-
     const dialogAlignment = {
         alignItems: "center",
         display: "flex",
@@ -239,7 +200,7 @@ function ViewOrderModal(props) {
         margin: 1,
         padding: 0,
         width: 330,
-        maxHeight: 350,
+        height: 350,
         overflow: "auto",
     };
 
@@ -286,340 +247,6 @@ function ViewOrderModal(props) {
         marginLeft: 2,
     };
 
-    if (userOrders.length === 0) {
-        return (
-            <React.Fragment>
-                <CardActionArea onClick={viewOrderHandler}>
-                    {props.children}
-                </CardActionArea>
-                <Dialog
-                    keepMounted
-                    fullWidth
-                    maxWidth="xl"
-                    open={openViewOrderModal}
-                    TransitionComponent={Transition}
-                    onClose={cancelViewModalHandler}
-                    aria-describedby="alert-dialog-slide-description"
-                >
-                    <DialogTitle sx={dialogAlignment}>
-                        <Stack direction="row" spacing={1} alignItems="center">
-                            <Box>
-                                <AccountCircleIcon sx={props.sx} />
-                            </Box>
-                            <Box>
-                                <GlobalBlackHeader5
-                                    text={
-                                        props.title + " (" + props.userId + ")"
-                                    }
-                                />
-                            </Box>
-                        </Stack>
-                    </DialogTitle>
-                    <DialogContent>
-                        <DialogContentText id="alert-dialog-slide-description">
-                            <Grid2 container justifyContent="center">
-                                <DragDropContext
-                                    onDragEnd={(result) =>
-                                        onDragEnd(
-                                            result,
-                                            columns,
-                                            setColumns,
-                                            user
-                                        )
-                                    }
-                                >
-                                    {Object.entries(columns).map(
-                                        ([columnId, column], index) => {
-                                            return (
-                                                <Card
-                                                    sx={[
-                                                        userOrderStatusContainer,
-                                                        {
-                                                            backgroundColor:
-                                                                column.theme,
-                                                        },
-                                                    ]}
-                                                    key={columnId}
-                                                >
-                                                    <Grid2
-                                                        container
-                                                        sx={orderStatusSection}
-                                                    >
-                                                        <Grid2 item container>
-                                                            <Grid2
-                                                                item
-                                                                container
-                                                                direction="column"
-                                                            >
-                                                                <Grid2 item>
-                                                                    <Stack
-                                                                        direction="row"
-                                                                        alignItems="center"
-                                                                        spacing={
-                                                                            2
-                                                                        }
-                                                                    >
-                                                                        <GlobalBlackHeader6
-                                                                            sx={[
-                                                                                orderStatusName,
-                                                                            ]}
-                                                                            text={
-                                                                                column.name
-                                                                            }
-                                                                        />
-                                                                        <GlobalBlackHeader6
-                                                                            sx={[
-                                                                                orderStatusName,
-                                                                                {
-                                                                                    color: column.theme,
-                                                                                },
-                                                                            ]}
-                                                                            text="5"
-                                                                        />
-                                                                    </Stack>
-                                                                </Grid2>
-                                                            </Grid2>
-                                                        </Grid2>
-                                                    </Grid2>
-                                                    <Droppable
-                                                        droppableId={columnId}
-                                                        key={columnId}
-                                                    >
-                                                        {(
-                                                            provided,
-                                                            snapshot
-                                                        ) => {
-                                                            return (
-                                                                <Box
-                                                                    {...provided.droppableProps}
-                                                                    ref={
-                                                                        provided.innerRef
-                                                                    }
-                                                                    sx={
-                                                                        orderStatusContent
-                                                                    }
-                                                                >
-                                                                    {column.items.map(
-                                                                        (
-                                                                            item,
-                                                                            index
-                                                                        ) => {
-                                                                            return (
-                                                                                <Draggable
-                                                                                    key={
-                                                                                        item._id
-                                                                                    }
-                                                                                    draggableId={
-                                                                                        item._id
-                                                                                    }
-                                                                                    index={
-                                                                                        index
-                                                                                    }
-                                                                                >
-                                                                                    {(
-                                                                                        provided,
-                                                                                        snapshot
-                                                                                    ) => {
-                                                                                        return (
-                                                                                            <Paper
-                                                                                                ref={
-                                                                                                    provided.innerRef
-                                                                                                }
-                                                                                                {...provided.draggableProps}
-                                                                                                {...provided.dragHandleProps}
-                                                                                                sx={[
-                                                                                                    orderListCard,
-                                                                                                    {
-                                                                                                        backgroundColor:
-                                                                                                            snapshot.isDragging
-                                                                                                                ? grey[100]
-                                                                                                                : grey[50],
-                                                                                                        ...provided
-                                                                                                            .draggableProps
-                                                                                                            .style,
-                                                                                                    },
-                                                                                                ]}
-                                                                                            >
-                                                                                                <ListItem>
-                                                                                                    <Grid2
-                                                                                                        container
-                                                                                                        alignContent="center"
-                                                                                                        alignItems="center"
-                                                                                                    >
-                                                                                                        <Grid2
-                                                                                                            item
-                                                                                                            xs={
-                                                                                                                4
-                                                                                                            }
-                                                                                                            sm={
-                                                                                                                4
-                                                                                                            }
-                                                                                                            md={
-                                                                                                                4
-                                                                                                            }
-                                                                                                            lg={
-                                                                                                                4
-                                                                                                            }
-                                                                                                            lx={
-                                                                                                                4
-                                                                                                            }
-                                                                                                            alignContent="center"
-                                                                                                        >
-                                                                                                            <ListItemAvatar>
-                                                                                                                <Avatar
-                                                                                                                    src={`${process.env.REACT_APP_BACKEND_URL}/${item.item_image}`}
-                                                                                                                    sx={
-                                                                                                                        foodImageAvatar
-                                                                                                                    }
-                                                                                                                />
-                                                                                                            </ListItemAvatar>
-                                                                                                        </Grid2>
-                                                                                                        <Grid2
-                                                                                                            item
-                                                                                                            xs={
-                                                                                                                8
-                                                                                                            }
-                                                                                                            sm={
-                                                                                                                8
-                                                                                                            }
-                                                                                                            md={
-                                                                                                                8
-                                                                                                            }
-                                                                                                            lg={
-                                                                                                                8
-                                                                                                            }
-                                                                                                            lx={
-                                                                                                                8
-                                                                                                            }
-                                                                                                        >
-                                                                                                            <Grid2
-                                                                                                                container
-                                                                                                                spacing={
-                                                                                                                    2
-                                                                                                                }
-                                                                                                            >
-                                                                                                                <Grid2
-                                                                                                                    item
-                                                                                                                    xs={
-                                                                                                                        12
-                                                                                                                    }
-                                                                                                                    sm={
-                                                                                                                        12
-                                                                                                                    }
-                                                                                                                    md={
-                                                                                                                        12
-                                                                                                                    }
-                                                                                                                    lg={
-                                                                                                                        12
-                                                                                                                    }
-                                                                                                                    lx={
-                                                                                                                        12
-                                                                                                                    }
-                                                                                                                >
-                                                                                                                    <GlobalBlackBody1
-                                                                                                                        text={
-                                                                                                                            item.item_name
-                                                                                                                        }
-                                                                                                                        sx={
-                                                                                                                            item_name
-                                                                                                                        }
-                                                                                                                    />
-                                                                                                                    <GlobalBlackBody2 text="#123123" />
-                                                                                                                </Grid2>
-                                                                                                                <Grid2
-                                                                                                                    item
-                                                                                                                    xs={
-                                                                                                                        12
-                                                                                                                    }
-                                                                                                                    sm={
-                                                                                                                        12
-                                                                                                                    }
-                                                                                                                    md={
-                                                                                                                        12
-                                                                                                                    }
-                                                                                                                    lg={
-                                                                                                                        12
-                                                                                                                    }
-                                                                                                                    lx={
-                                                                                                                        12
-                                                                                                                    }
-                                                                                                                >
-                                                                                                                    <GlobalGreyBody2
-                                                                                                                        text="06/25/2022 | 03:12:21"
-                                                                                                                        sx={
-                                                                                                                            orderListDate
-                                                                                                                        }
-                                                                                                                    />
-                                                                                                                </Grid2>
-                                                                                                            </Grid2>
-                                                                                                        </Grid2>
-                                                                                                    </Grid2>
-                                                                                                </ListItem>
-                                                                                            </Paper>
-                                                                                        );
-                                                                                    }}
-                                                                                </Draggable>
-                                                                            );
-                                                                        }
-                                                                    )}
-                                                                    {
-                                                                        provided.placeholder
-                                                                    }
-                                                                </Box>
-                                                            );
-                                                        }}
-                                                    </Droppable>
-                                                </Card>
-                                            );
-                                        }
-                                    )}
-                                    <Stack
-                                        direction="row"
-                                        sx={centerAlignment}
-                                        spacing={1}
-                                    >
-                                        <Grid2 container>
-                                            <Grid2
-                                                item
-                                                xs={12}
-                                                sm={12}
-                                                md={12}
-                                                lg={12}
-                                                lx={12}
-                                            >
-                                                <FindInPageTwoToneIcon
-                                                    sx={noDataIcon}
-                                                />
-                                                <GlobalBlackHeader5 text="No Order List Found" />
-                                            </Grid2>
-                                            <Grid2
-                                                item
-                                                xs={12}
-                                                sm={12}
-                                                md={12}
-                                                lg={12}
-                                                lx={12}
-                                            >
-                                                <GlobalGreyBody2
-                                                    text={`We couldn't find any order. Please wait for the customers' order`}
-                                                />
-                                            </Grid2>
-                                        </Grid2>
-                                    </Stack>
-                                </DragDropContext>
-                            </Grid2>
-                        </DialogContentText>
-                    </DialogContent>
-                    <DialogActions>
-                        <GlobalTealContainedButton
-                            text="Close"
-                            onClick={cancelViewModalHandler}
-                        />
-                    </DialogActions>
-                </Dialog>
-            </React.Fragment>
-        );
-    }
     return (
         <React.Fragment>
             <CardActionArea onClick={viewOrderHandler}>
@@ -636,244 +263,54 @@ function ViewOrderModal(props) {
             >
                 <DialogTitle sx={dialogAlignment}>
                     <AccountCircleIcon sx={props.sx} />
-                    <GlobalBlackHeader5
-                        text={props.title + " (" + props.userId + ")"}
-                    />
+                    <GlobalBlackHeader5 text={props.title + " (" + props.userId + ")"} />
                 </DialogTitle>
                 <DialogContent>
                     <DialogContentText id="alert-dialog-slide-description">
                         <Grid2 container justifyContent="center">
-                            <DragDropContext
-                                onDragEnd={(result) =>
-                                    onDragEnd(result, columns, setColumns, user)
-                                }
-                            >
-                                {Object.entries(columns).map(
-                                    ([columnId, column], index) => {
-                                        console.log(column);
+                            <DragDropContext onDragEnd={(result) => onDragEnd(result, columns, setColumns, user) } >
+                                {Object.entries(columns).map( ([columnId, column], index) => { console.log(column);
                                         return (
-                                            <Card
-                                                sx={[
-                                                    userOrderStatusContainer,
-                                                    {
-                                                        borderTop:
-                                                            "5px solid " +
-                                                            column.theme,
-                                                    },
-                                                ]}
-                                                key={columnId}
-                                            >
-                                                <Grid2
-                                                    container
-                                                    sx={orderStatusSection}
-                                                >
+                                            <Card sx={[ userOrderStatusContainer, { borderTop: "5px solid " + column.theme, }, ]} key={columnId} >
+                                                <Grid2 container sx={orderStatusSection} >
                                                     <Grid2 item container>
-                                                        <Grid2
-                                                            item
-                                                            container
-                                                            direction="column"
-                                                        >
+                                                        <Grid2 item container direction="column" >
                                                             <Grid2 item>
-                                                                <Stack
-                                                                    direction="row"
-                                                                    alignItems="center"
-                                                                    spacing={2}
-                                                                >
-                                                                    <GlobalBlackHeader6
-                                                                        sx={[
-                                                                            orderStatusName,
-                                                                        ]}
-                                                                        text={
-                                                                            column.name
-                                                                        }
-                                                                    />
-                                                                    <GlobalBlackHeader6
-                                                                        sx={[
-                                                                            orderStatusName,
-                                                                            {
-                                                                                color: column.theme,
-                                                                            },
-                                                                        ]}
-                                                                        text={
-                                                                            column
-                                                                                .items
-                                                                                .length
-                                                                        }
-                                                                    />
+                                                                <Stack direction="row" alignItems="center" spacing={2} >
+                                                                    <GlobalBlackHeader6 sx={[ orderStatusName ]} text={ column.name } />
+                                                                    <GlobalBlackHeader6 sx={[ orderStatusName, { color: column.theme, }, ]} text={ column.items.length } />
                                                                 </Stack>
                                                             </Grid2>
                                                         </Grid2>
                                                     </Grid2>
                                                 </Grid2>
-                                                <Droppable
-                                                    droppableId={columnId}
-                                                    key={columnId}
-                                                >
+                                                <Droppable droppableId={columnId} key={columnId} >
                                                     {(provided, snapshot) => {
                                                         return (
-                                                            <Box
-                                                                {...provided.droppableProps}
-                                                                ref={
-                                                                    provided.innerRef
-                                                                }
-                                                                sx={
-                                                                    orderStatusContent
-                                                                }
-                                                            >
+                                                            <Box {...provided.droppableProps} ref={ provided.innerRef } sx={ orderStatusContent } >
                                                                 {column.items.map(
-                                                                    (
-                                                                        item,
-                                                                        index
-                                                                    ) => {
+                                                                    ( item, index ) => {
                                                                         return (
-                                                                            <Draggable
-                                                                                key={
-                                                                                    item._id
-                                                                                }
-                                                                                draggableId={
-                                                                                    item._id
-                                                                                }
-                                                                                index={
-                                                                                    index
-                                                                                }
-                                                                            >
-                                                                                {(
-                                                                                    provided,
-                                                                                    snapshot
-                                                                                ) => {
+                                                                            <Draggable key={ item._id } draggableId={ item._id }  index={ index } >
+                                                                                {( provided, snapshot ) => {
                                                                                     return (
-                                                                                        <Paper
-                                                                                            ref={
-                                                                                                provided.innerRef
-                                                                                            }
-                                                                                            {...provided.draggableProps}
-                                                                                            {...provided.dragHandleProps}
-                                                                                            sx={[
-                                                                                                orderListCard,
-                                                                                                {
-                                                                                                    backgroundColor:
-                                                                                                        snapshot.isDragging
-                                                                                                            ? grey[200]
-                                                                                                            : grey[50],
-                                                                                                    ...provided
-                                                                                                        .draggableProps
-                                                                                                        .style,
-                                                                                                },
-                                                                                            ]}
-                                                                                        >
+                                                                                        <Paper ref={ provided.innerRef } {...provided.draggableProps} {...provided.dragHandleProps}
+                                                                                            sx={[ orderListCard, { backgroundColor: snapshot.isDragging ? grey[200] : grey[50], ...provided .draggableProps .style,}, ]} >
                                                                                             <ListItem>
-                                                                                                <Grid2
-                                                                                                    container
-                                                                                                    alignContent="center"
-                                                                                                    alignItems="center"
-                                                                                                >
-                                                                                                    <Grid2
-                                                                                                        item
-                                                                                                        xs={
-                                                                                                            4
-                                                                                                        }
-                                                                                                        sm={
-                                                                                                            4
-                                                                                                        }
-                                                                                                        md={
-                                                                                                            4
-                                                                                                        }
-                                                                                                        lg={
-                                                                                                            4
-                                                                                                        }
-                                                                                                        lx={
-                                                                                                            4
-                                                                                                        }
-                                                                                                        alignContent="center"
-                                                                                                    >
+                                                                                                <Grid2 container alignContent="center" alignItems="center" >
+                                                                                                    <Grid2 item xs={4} sm={4} md={4} lg={4} lx={4} alignContent="center"  >
                                                                                                         <ListItemAvatar>
-                                                                                                            <Avatar
-                                                                                                                src={`${process.env.REACT_APP_BACKEND_URL}${item.item_image}`}
-                                                                                                                sx={
-                                                                                                                    foodImageAvatar
-                                                                                                                }
-                                                                                                            />
+                                                                                                            <Avatar src={`${process.env.REACT_APP_BACKEND_URL}${item.item_image}`} sx={ foodImageAvatar } />
                                                                                                         </ListItemAvatar>
                                                                                                     </Grid2>
-                                                                                                    <Grid2
-                                                                                                        item
-                                                                                                        xs={
-                                                                                                            8
-                                                                                                        }
-                                                                                                        sm={
-                                                                                                            8
-                                                                                                        }
-                                                                                                        md={
-                                                                                                            8
-                                                                                                        }
-                                                                                                        lg={
-                                                                                                            8
-                                                                                                        }
-                                                                                                        lx={
-                                                                                                            8
-                                                                                                        }
-                                                                                                    >
-                                                                                                        <Grid2
-                                                                                                            container
-                                                                                                            spacing={
-                                                                                                                2
-                                                                                                            }
-                                                                                                        >
-                                                                                                            <Grid2
-                                                                                                                item
-                                                                                                                xs={
-                                                                                                                    12
-                                                                                                                }
-                                                                                                                sm={
-                                                                                                                    12
-                                                                                                                }
-                                                                                                                md={
-                                                                                                                    12
-                                                                                                                }
-                                                                                                                lg={
-                                                                                                                    12
-                                                                                                                }
-                                                                                                                lx={
-                                                                                                                    12
-                                                                                                                }
-                                                                                                            >
-                                                                                                                <GlobalBlackBody1
-                                                                                                                    text={`x${item.quantity} ${item.item_name}`}
-                                                                                                                    sx={
-                                                                                                                        item_name
-                                                                                                                    }
-                                                                                                                />
-                                                                                                                <GlobalGreyBody2
-                                                                                                                    text={`#${item._id.substr(
-                                                                                                                        0,
-                                                                                                                        9
-                                                                                                                    )}`}
-                                                                                                                />
+                                                                                                    <Grid2 item xs={8} sm={8} md={8} lg={8} lx={8}>
+                                                                                                        <Grid2 container spacing={2} >
+                                                                                                            <Grid2 item xs={12} sm={12} md={12} lg={12} lx={12} >
+                                                                                                                <GlobalBlackBody1 text={`x${item.quantity} ${item.item_name}`} sx={ item_name } />
+                                                                                                                <GlobalGreyBody2 text={`#${item._id.substr( 0, 9 )}`} />
                                                                                                             </Grid2>
-                                                                                                            <Grid2
-                                                                                                                item
-                                                                                                                xs={
-                                                                                                                    12
-                                                                                                                }
-                                                                                                                sm={
-                                                                                                                    12
-                                                                                                                }
-                                                                                                                md={
-                                                                                                                    12
-                                                                                                                }
-                                                                                                                lg={
-                                                                                                                    12
-                                                                                                                }
-                                                                                                                lx={
-                                                                                                                    12
-                                                                                                                }
-                                                                                                            >
-                                                                                                                <GlobalGreyBody2
-                                                                                                                    text="06/25/2022 | 03:12:21"
-                                                                                                                    sx={
-                                                                                                                        orderListDate
-                                                                                                                    }
-                                                                                                                />
+                                                                                                            <Grid2 item xs={12} sm={12} md={12} lg={12} lx={12} >
+                                                                                                                <GlobalGreyBody2 text={props.date} sx={ orderListDate } />
                                                                                                             </Grid2>
                                                                                                         </Grid2>
                                                                                                     </Grid2>

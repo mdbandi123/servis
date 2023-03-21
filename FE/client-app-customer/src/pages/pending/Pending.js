@@ -5,6 +5,7 @@ import Grid2 from '@mui/material/Unstable_Grid2/Grid2';
 import { Card, Stack, Box, CardMedia } from '@mui/material';
 import { grey } from '@mui/material/colors';
 import ExtensionOffIcon from '@mui/icons-material/ExtensionOff';
+import InsertPhotoIcon from '@mui/icons-material/InsertPhoto';
 
 import GlobalBlackHeader4 from '../../global/typographies/headers/BlackHeader4';
 import GlobalGreyBody1 from '../../global/typographies/bodies/GreyBody1';
@@ -57,9 +58,11 @@ function Pending() {
     };
 
     const foodImage = {
-        width: 90,
-        height: 90,
-        borderRadius: '50%',
+        width: 115,
+        height: 130,
+        mr: 0,
+        mb: 0,
+        mt: 0,
         m: 'auto',
     };
 
@@ -79,6 +82,11 @@ function Pending() {
     const noItemIcon = {
         fontSize: '6em',
         color: grey[600]
+    };
+
+    const uploadImageIcon = {
+        fontSize: '5em',
+        color: grey[600],
     };
 
     if (pendingItems.length === 0) {
@@ -114,7 +122,11 @@ function Pending() {
                     <Card>
                         <Grid2 container spacing={2} >
                             <Grid2 item justifySelf='center' alignSelf='center' xs={4} sm={3} md={2} lg={1} lx={1}>
-                                <CardMedia sx={foodImage} component='img' image={`${process.env.REACT_APP_BACKEND_URL}${cartList.item_image}`} alt={cartList.orderName} />
+                                <CardMedia 
+                                    sx={foodImage} component='img' 
+                                    image={`${process.env.REACT_APP_BACKEND_URL}${cartList.item_image}`} 
+                                    alt={cartList.orderName} 
+                                />
                             </Grid2>
                             <Grid2 item xs={8} sm={9} md={10} lg={11} lx={11} >
                                 <Grid2 item>

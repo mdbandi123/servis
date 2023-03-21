@@ -72,11 +72,6 @@ function FoodItems() {
         }
     };
 
-    const uploadImageIcon = {
-        fontSize: '8em',
-        color: grey[600]
-    };
-
     if (menuItems.length === 0) {
         return (
             <SlideDown>
@@ -133,14 +128,12 @@ function FoodItems() {
                         <AnimatePresence>
                             <motion.div layout key={foodItemList._id} initial={{ opacity: 0, scale: 0 }} animate={{ opacity: 1, scale: 1, transition: { duration: 0.3 } }} exit={{ opacity: 0, scale: 0, transition: { duration: 0.3 } }}>
                                 <Card sx={foodItemCardContainer} key={foodItemList._id}>
-                                    {foodItemList.image ? <CardMedia component='img' height='159' image={`${process.env.REACT_APP_BACKEND_URL}${foodItemList.image}`} /> 
-                                    : <><Grid2 container justifyContent='center' sx={{backgroundColor: grey[400], height: 171, mb: 0.01}}>
-                                            <Grid2 item>
-                                                <InsertPhotoIcon sx={uploadImageIcon} />
-                                            </Grid2>
-                                        </Grid2></>
-                                    }
-                                    
+                                    <CardMedia
+                                        component='img'
+                                        alt={foodItemList.category_name}
+                                        height='159'
+                                        image={`${process.env.REACT_APP_BACKEND_URL}${foodItemList.image}`}
+                                    />
                                     <CardContent>
                                         <GlobalIndigoHeader6 text={foodItemList.name} />
                                         <GlobalGreyBody2

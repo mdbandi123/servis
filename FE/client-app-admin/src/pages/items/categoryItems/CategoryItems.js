@@ -7,8 +7,6 @@ import Box from '@mui/material/Box';
 import Grid2 from '@mui/material/Unstable_Grid2/Grid2';
 import { CardActions, CardMedia, CardContent, Card, Tooltip, IconButton, Stack } from '@mui/material/';
 import FolderOffTwoToneIcon from '@mui/icons-material/FolderOffTwoTone';
-import {grey} from '@mui/material/colors';
-import InsertPhotoIcon from '@mui/icons-material/InsertPhoto';
 
 import GlobalIndigoHeader4 from '../../../global/typographies/headers/IndigoHeader4';
 import GlobalBlackHeader3 from '../../../global/typographies/headers/BlackHeader3';
@@ -71,11 +69,6 @@ function CategoryItems() {
         }
     };
 
-    const uploadImageIcon = {
-        fontSize: '8em',
-        color: grey[600]
-    };
-
     if (CategoryData.length === 0) {
         return (
             <SlideDown>
@@ -119,21 +112,12 @@ function CategoryItems() {
                                     sx={foodItemCardContainer}
                                     key={categItemList._id}
                                 >
-                                    {/* <CardMedia
+                                    <CardMedia
                                         component='img'
                                         alt={categItemList.category_name}
                                         height='140'
                                         image={`${process.env.REACT_APP_BACKEND_URL}${categItemList.category_image}`}
-                                    /> */}
-
-                                    {categItemList.category_image ? <CardMedia component='img' height='159' image={`${process.env.REACT_APP_BACKEND_URL}${categItemList.category_image}`} />
-                                        : <><Grid2 container justifyContent='center' sx={{ backgroundColor: grey[400], height: 171, mb: 0.01 }}>
-                                            <Grid2 item>
-                                                <InsertPhotoIcon sx={uploadImageIcon} />
-                                            </Grid2>
-                                        </Grid2></>
-                                    }
-
+                                    />
                                     <CardContent>
                                         <GlobalIndigoHeader6
                                             text={categItemList.category_name}

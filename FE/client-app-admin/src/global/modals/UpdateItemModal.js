@@ -199,15 +199,11 @@ function UpdateItemModal(props) {
                                 <Stack spacing={2}>
                                     <Box>
                                         <Card>
-                                            {props.image ? <CardMedia component='img' height='280' image={`${process.env.REACT_APP_BACKEND_URL}${props.image}`} />
-                                                : <><Grid2 container justifyContent='center' sx={{ backgroundColor: grey[400] }}>
-                                                    <Grid2 item>
-                                                        <InsertPhotoIcon sx={uploadImageIcon} />
-                                                    </Grid2>
-                                                </Grid2></>
-                                            }
-
-                                            {/* <CardMedia component='img' height='280' image={image ? URL.createObjectURL(image) : `${process.env.REACT_APP_BACKEND_URL}${props.image}`} /> */}
+                                            <CardMedia 
+                                                component='img' height='280'
+                                                image={image ? URL.createObjectURL(image) : 
+                                                `${process.env.REACT_APP_BACKEND_URL}${props.image}`} 
+                                            />
                                         </Card>
                                     </Box>
                                     <Box>

@@ -8,6 +8,11 @@ import GlobalBlackHeader5 from '../typographies/headers/BlackHeader5';
 import GlobalIndigoTextButton from '../buttons/text/IndigoTextButton';
 import GlobalOrangeTextButton from '../buttons/text/OrangeTextButton';
 import GlobalTealContainedButton from '../../global/buttons/contains/TealContainedButton';
+import GlobalTealOutlinedButton from '../buttons/outlines/TealOutlinedButton';
+
+import Snackbar from '@mui/material/Snackbar';
+import IconButton from '@mui/material/IconButton';
+import CloseIcon from '@mui/icons-material/Close';
 
 const Transition = React.forwardRef(function Transition(props, ref) {
     return <Slide direction='up' ref={ref} {...props} />;
@@ -15,6 +20,7 @@ const Transition = React.forwardRef(function Transition(props, ref) {
 
 function ConfirmOrderModal(props) {
     const [openConfirmModal, setOpenConfirmModal] = React.useState(false);
+    const [openAlert, setOpenAlert] = React.useState(false);
 
     const order_id = store((state) => state.order_id);
 
@@ -44,8 +50,24 @@ function ConfirmOrderModal(props) {
         ).catch((error) => {
             alert(error);
         });
-        
+        setOpenAlert(true);
     };
+
+    const handleClose = (event, reason) => {
+        if (reason === 'clickaway') {
+            return;
+        }
+
+        setOpenAlert(false);
+    };
+
+    const action = (
+        <React.Fragment>
+            <IconButton size="small" aria-label="close" color="inherit" onClick={handleClose} >
+                <CloseIcon fontSize="small" />
+            </IconButton>
+        </React.Fragment>
+    );
 
     const dialogAlignment = {
         alignItems: 'center',
@@ -65,10 +87,19 @@ function ConfirmOrderModal(props) {
                     </DialogContentText>
                 </DialogContent>
                 <DialogActions>
-                    <GlobalOrangeTextButton text='Cancel' onClick={ cancelConfirmHandler } />
-                    <GlobalIndigoTextButton text='Confirm' onClick={ proceedConfirmHandler } />
+                    <GlobalTealOutlinedButton text='Cancel' onClick={ cancelConfirmHandler } />
+                    <GlobalTealContainedButton text='Confirm' onClick={ proceedConfirmHandler } />
                 </DialogActions>
             </Dialog>
+            <Snackbar
+                anchorOrigin={{ vertical: "bottom", horizontal: "right" }}
+                sx={{ mb: 8 }}
+                open={openAlert}
+                autoHideDuration={2000}
+                onClose={handleClose}
+                message="Your orders are pending!"
+                action={action}
+            />
         </React.Fragment>
     );
 };

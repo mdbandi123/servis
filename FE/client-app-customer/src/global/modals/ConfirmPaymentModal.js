@@ -9,6 +9,7 @@ import GlobalBlackHeader5 from '../typographies/headers/BlackHeader5';
 import GlobalIndigoTextButton from '../buttons/text/IndigoTextButton';
 import GlobalOrangeTextButton from '../buttons/text/OrangeTextButton';
 import GlobalTealContainedButton from '../buttons/contains/TealContainedButton';
+import GlobalTealOutlinedButton from '../buttons/outlines/TealOutlinedButton';
 
 const Transition = React.forwardRef(function Transition(props, ref) {
     return <Slide direction='up' ref={ref} {...props} />;
@@ -66,8 +67,8 @@ function ConfirmPaymentModal(props) {
                     </DialogContentText>
                 </DialogContent>
                 <DialogActions>
-                    <GlobalOrangeTextButton text='Cancel' onClick={ cancelConfirmHandler } />
-                    <GlobalIndigoTextButton text='Confirm' onClick={ proceedConfirmHandler } />
+                    <GlobalTealOutlinedButton text='Cancel' onClick={ cancelConfirmHandler } />
+                    <GlobalTealContainedButton text='Confirm' onClick={ proceedConfirmHandler } />
                 </DialogActions>
             </Dialog>
         </React.Fragment>

@@ -139,7 +139,7 @@ function CreateCategModal(props) {
 
     const uploadImageIcon = {
         fontSize: '15em',
-        color: grey[600]
+        color: grey[500]
     };
 
     const uploadButton = {
@@ -187,7 +187,7 @@ function CreateCategModal(props) {
                 </DialogContent>
                 <DialogActions>
                     <GlobalTealOutlinedButton text='Cancel' onClick={ cancelCategCreateHandler } />
-                    <GlobalTealContainedButton text='Create' onClick={ confirmCategCreateHandler } disabled={!category_name} />
+                    <GlobalTealContainedButton text='Create' onClick={ confirmCategCreateHandler } disabled={!category_name || !category_image} />
                 </DialogActions>
             </Dialog>
             <Snackbar open={openAlert} autoHideDuration={6000} onClose={handleAlertClose} anchorOrigin={{ vertical: "bottom", horizontal: "right" }}>
