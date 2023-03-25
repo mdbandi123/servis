@@ -1,4 +1,13 @@
-"table_number","order_id","item_name","quantity","item_price","session_start"
-"","","","","",""
-"","","Most Ordered Item","","",""
-"","","Total Earnings",0,"",""
+"table_number","order_id","item_name","quantity","item_price","time_ordered"
+"Table 6","5ArTKlti3xDZUmRHrGZk","Speak Now",1,"2010","3-25-2023 | 14:37:54"
+"Table 6","5ArTKlti3xDZUmRHrGZk","Fearless",1,"2008","3-25-2023 | 14:40:01"
+"Table 6","5ArTKlti3xDZUmRHrGZk","1989",1,"1989","3-25-2023 | 14:42:02"
+"Table 6","13DoN1E3ngcFZdrdOrDO","Speak Now",1,"2010","3-25-2023 | 15:09:36"
+"Table 1","mSgXQSrrUlPcLYbgtTi4","Speak Now",1,"2010","3-25-2023 | 22:33:48"
+"Table 2","LpsLwc0VKhwYzlYsFbIZ","Orange Juice",2,"23","3-25-2023 | 22:44:02"
+"Table 2","LpsLwc0VKhwYzlYsFbIZ","Speak Now",1,"2010","3-25-2023 | 22:44:02"
+"Table 1","7VBkvOiex4dslPLZO0DK","Speak Now",1,"2010","3-25-2023 | 22:57:41"
+"Table 1","7VBkvOiex4dslPLZO0DK","Orange Juice",3,"23","3-25-2023 | 22:57:41"
+"","","","","",
+"","","Most Ordered Item","Speak Now","",
+"","","Total Earnings",14162,"",

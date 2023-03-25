@@ -310,7 +310,32 @@ function ViewOrderModal(props) {
                                                                                                                 <GlobalGreyBody2 text={`#${item._id.substr( 0, 9 )}`} />
                                                                                                             </Grid2>
                                                                                                             <Grid2 item xs={12} sm={12} md={12} lg={12} lx={12} >
-                                                                                                                <GlobalGreyBody2 text={props.date} sx={ orderListDate } />
+                                                                                                                <GlobalGreyBody2 text={[
+                                                                            new Date(
+                                                                                item.time_ordered
+                                                                            ).getMonth() +
+                                                                                1 +
+                                                                                "-",
+                                                                            new Date(
+                                                                                item.time_ordered
+                                                                            ).getDate() +
+                                                                                "-",
+                                                                            new Date(
+                                                                                item.time_ordered
+                                                                            ).getFullYear() +
+                                                                                " | " +
+                                                                                new Date(
+                                                                                    item.time_ordered
+                                                                                ).getHours() +
+                                                                                ":" +
+                                                                                new Date(
+                                                                                    item.time_ordered
+                                                                                ).getMinutes() +
+                                                                                ":" +
+                                                                                new Date(
+                                                                                    item.time_ordered
+                                                                                ).getSeconds(),
+                                                                        ]} sx={ orderListDate } />
                                                                                                             </Grid2>
                                                                                                         </Grid2>
                                                                                                     </Grid2>
