@@ -1,7 +1,7 @@
 import * as React from "react";
 import { useStore } from "../../store/store.js";
 
-import { motion, AnimatePresence } from 'framer-motion';
+import { motion, AnimatePresence } from "framer-motion";
 import { styled } from "@mui/material/styles";
 import { Box, Stack } from "@mui/material/";
 import Grid2 from "@mui/material/Unstable_Grid2/Grid2";
@@ -227,36 +227,86 @@ function OrderList() {
                                 <GlobalIndigoHeader4 text="Orders List" />
                             </Box>
                             <Grid2 container sx={centerAlignment} spacing={1}>
-                                <Grid2 item xs={12} sm={12} md={12} lg={12} lx={12} >
+                                <Grid2
+                                    item
+                                    xs={12}
+                                    sm={12}
+                                    md={12}
+                                    lg={12}
+                                    lx={12}
+                                >
                                     <PersonOffTwoToneIcon sx={noItemIcon} />
                                 </Grid2>
-                                <Grid2 item xs={12} sm={12} md={12} lg={12} lx={12} >
+                                <Grid2
+                                    item
+                                    xs={12}
+                                    sm={12}
+                                    md={12}
+                                    lg={12}
+                                    lx={12}
+                                >
                                     <GlobalBlackHeader3 text="No Running Orders" />
                                 </Grid2>
-                                <Grid2 item xs={12} sm={12} md={12} lg={12} lx={12} >
-                                    <GlobalGreyBody2 text={`We were unable to find any Orders. Please wait for customers' orders.`} />
+                                <Grid2
+                                    item
+                                    xs={12}
+                                    sm={12}
+                                    md={12}
+                                    lg={12}
+                                    lx={12}
+                                >
+                                    <GlobalGreyBody2
+                                        text={`We were unable to find any Orders. Please wait for customers' orders.`}
+                                    />
                                 </Grid2>
-                                <Grid2 item xs={12} sm={12} md={12} lg={12} lx={12} >
+                                <Grid2
+                                    item
+                                    xs={12}
+                                    sm={12}
+                                    md={12}
+                                    lg={12}
+                                    lx={12}
+                                >
                                     <GlobalTealContainedButton text="Create" />
                                 </Grid2>
                             </Grid2>
                         </Box>
                     </SlideDown>
                     <CssBaseline />
-                    <Drawer variant="permanent" open={openNotificationAppBar} anchor="right" >
+                    <Drawer
+                        variant="permanent"
+                        open={openNotificationAppBar}
+                        anchor="right"
+                    >
                         <AppBar position="sticky" sx={notificationAppBar}>
                             <List sx={notificationHeader}>
-                                <ListItem disablePadding sx={notificationListItem} >
-                                    <ListItemButton onClick={handleClick} sx={[notificationItemButton]} >
+                                <ListItem
+                                    disablePadding
+                                    sx={notificationListItem}
+                                >
+                                    <ListItemButton
+                                        onClick={handleClick}
+                                        sx={[notificationItemButton]}
+                                    >
                                         <ListItemIcon sx={notificationItemIcon}>
                                             {openNotificationAppBar ? (
-                                                <ChevronRightIcon sx={notificationOpenHandler} />
+                                                <ChevronRightIcon
+                                                    sx={notificationOpenHandler}
+                                                />
                                             ) : (
-                                                <ChevronLeftIcon sx={notificationOpenHandler} />
+                                                <ChevronLeftIcon
+                                                    sx={notificationOpenHandler}
+                                                />
                                             )}
                                         </ListItemIcon>
-                                        <ListItemText sx={notificationTitle} disableTypography primary={
-                                                <Typography sx={notificationTitleText} variant="body1" >
+                                        <ListItemText
+                                            sx={notificationTitle}
+                                            disableTypography
+                                            primary={
+                                                <Typography
+                                                    sx={notificationTitleText}
+                                                    variant="body1"
+                                                >
                                                     Notification
                                                 </Typography>
                                             }
@@ -282,19 +332,65 @@ function OrderList() {
                         </Box>
                         <Grid2 container spacing={1} alignItems="baseline">
                             {orderListNotification
-                                .sort( (a, b) =>
-                                    new Date(a.session_start) -
-                                    new Date(b.session_start)
+                                .sort(
+                                    (a, b) =>
+                                        new Date(a.session_start) -
+                                        new Date(b.session_start)
                                 )
                                 .map((notificationItem) => (
-                                    <Grid2 sx={orderListCard} item xs={12} sm={6} md={6} lg={4} lx={4} >
+                                    <Grid2
+                                        sx={orderListCard}
+                                        item
+                                        xs={12}
+                                        sm={6}
+                                        md={6}
+                                        lg={4}
+                                        lx={4}
+                                    >
                                         {console.log(notificationItem)}
                                         <AnimatePresence>
-                                            <motion.div layout key={notificationItem.order_id} initial={{ opacity: 0, scale: 0 }} animate={{ opacity: 1, scale: 1, transition: { duration: 0.5 } }} exit={{ opacity: 0, scale: 0, transition: { duration: 0.5 } }}>
-                                                <Card sx={orderListCardContainer}>
-                                                    <ViewOrderModal orders={notificationItem} title={ notificationItem.table_number } userId={ notificationItem.order_id } sx={userTableIcon} >
+                                            <motion.div
+                                                layout
+                                                key={notificationItem.order_id}
+                                                initial={{
+                                                    opacity: 0,
+                                                    scale: 0,
+                                                }}
+                                                animate={{
+                                                    opacity: 1,
+                                                    scale: 1,
+                                                    transition: {
+                                                        duration: 0.5,
+                                                    },
+                                                }}
+                                                exit={{
+                                                    opacity: 0,
+                                                    scale: 0,
+                                                    transition: {
+                                                        duration: 0.5,
+                                                    },
+                                                }}
+                                            >
+                                                <Card
+                                                    sx={orderListCardContainer}
+                                                >
+                                                    <ViewOrderModal
+                                                        orders={
+                                                            notificationItem
+                                                        }
+                                                        title={
+                                                            notificationItem.table_number
+                                                        }
+                                                        userId={
+                                                            notificationItem.order_id
+                                                        }
+                                                        sx={userTableIcon}
+                                                    >
                                                         <CardContent>
-                                                            <Grid2 container spacing={1}>
+                                                            <Grid2
+                                                                container
+                                                                spacing={1}
+                                                            >
                                                                 <Grid2 item>
                                                                     <GlobalTealBadge
                                                                         badgeContent={
@@ -302,38 +398,94 @@ function OrderList() {
                                                                                 (
                                                                                     orderedItem
                                                                                 ) =>
-                                                                                    orderedItem.status !== "served"
-                                                                            ).length
+                                                                                    orderedItem.status !==
+                                                                                    "served"
+                                                                            )
+                                                                                .length
                                                                         }
                                                                         overlap="circular"
                                                                         max={9}
                                                                     >
                                                                         <AccountCircleIcon
-                                                                            sx={ userTableIcon } />
+                                                                            sx={
+                                                                                userTableIcon
+                                                                            }
+                                                                        />
                                                                     </GlobalTealBadge>
                                                                 </Grid2>
-                                                                <Grid2 item xs={12} sm container >
-                                                                    <Grid2 item xs container direction="column" spacing={2} >
-                                                                        <Grid2 item xs>
-                                                                            <Stack direction="row" alignItems="center" spacing={2} >
-                                                                                <GlobalBlackHeader6 sx={ orderListUsername } text={ notificationItem.table_number } />
+                                                                <Grid2
+                                                                    item
+                                                                    xs={12}
+                                                                    sm
+                                                                    container
+                                                                >
+                                                                    <Grid2
+                                                                        item
+                                                                        xs
+                                                                        container
+                                                                        direction="column"
+                                                                        spacing={
+                                                                            2
+                                                                        }
+                                                                    >
+                                                                        <Grid2
+                                                                            item
+                                                                            xs
+                                                                        >
+                                                                            <Stack
+                                                                                direction="row"
+                                                                                alignItems="center"
+                                                                                spacing={
+                                                                                    2
+                                                                                }
+                                                                            >
+                                                                                <GlobalBlackHeader6
+                                                                                    sx={
+                                                                                        orderListUsername
+                                                                                    }
+                                                                                    text={
+                                                                                        notificationItem.table_number
+                                                                                    }
+                                                                                />
                                                                             </Stack>
                                                                             {/* <GlobalGreyCaption2 text={ notificationItem.order_id } /> */}
                                                                         </Grid2>
-                                                                        <Grid2 item>
+                                                                        <Grid2
+                                                                            item
+                                                                        >
                                                                             <GlobalGreyCaption1
                                                                                 text={[
-                                                                                    new Date( notificationItem.session_start ).getMonth()    + "-",
-                                                                                    new Date( notificationItem.session_start ).getDate()     + "-",
-                                                                                    new Date( notificationItem.session_start ).getFullYear() + " | " +
-                                                                                    new Date( notificationItem.session_start ).getHours()    + ":"   +
-                                                                                    new Date( notificationItem.session_start ).getMinutes()  + ":"   +
-                                                                                    new Date( notificationItem.session_start ).getSeconds(),
+                                                                                    new Date(
+                                                                                        notificationItem.session_start
+                                                                                    ).getMonth() +
+                                                                                        1 +
+                                                                                        "-",
+                                                                                    new Date(
+                                                                                        notificationItem.session_start
+                                                                                    ).getDate() +
+                                                                                        "-",
+                                                                                    new Date(
+                                                                                        notificationItem.session_start
+                                                                                    ).getFullYear() +
+                                                                                        " | " +
+                                                                                        new Date(
+                                                                                            notificationItem.session_start
+                                                                                        ).getHours() +
+                                                                                        ":" +
+                                                                                        new Date(
+                                                                                            notificationItem.session_start
+                                                                                        ).getMinutes() +
+                                                                                        ":" +
+                                                                                        new Date(
+                                                                                            notificationItem.session_start
+                                                                                        ).getSeconds(),
                                                                                 ]}
                                                                             />
                                                                         </Grid2>
                                                                     </Grid2>
-                                                                    <Grid2 item />
+                                                                    <Grid2
+                                                                        item
+                                                                    />
                                                                 </Grid2>
                                                             </Grid2>
                                                         </CardContent>
@@ -347,33 +499,51 @@ function OrderList() {
                     </Box>
                 </SlideDown>
                 <CssBaseline />
-                <Drawer variant="permanent" open={openNotificationAppBar} anchor="right" >
+                <Drawer
+                    variant="permanent"
+                    open={openNotificationAppBar}
+                    anchor="right"
+                >
                     <AppBar position="sticky" sx={notificationAppBar}>
                         <List sx={notificationHeader}>
                             <ListItem disablePadding sx={notificationListItem}>
-                                <ListItemButton onClick={handleClick} sx={[notificationItemButton]} >
+                                <ListItemButton
+                                    onClick={handleClick}
+                                    sx={[notificationItemButton]}
+                                >
                                     <ListItemIcon sx={notificationItemIcon}>
                                         <GlobalTealBadge
                                             badgeContent={
                                                 orderListNotification
-                                                .map((item) =>
-                                                    item.ordered_items.filter(
-                                                        (item) =>
-                                                            item.status !== "served"
+                                                    .map((item) =>
+                                                        item.ordered_items.filter(
+                                                            (item) =>
+                                                                item.status !==
+                                                                "served"
+                                                        )
                                                     )
-                                                ).flat().length
+                                                    .flat().length
                                             }
                                         >
                                             {openNotificationAppBar ? (
-                                                <ChevronRightIcon sx={notificationOpenHandler} />
+                                                <ChevronRightIcon
+                                                    sx={notificationOpenHandler}
+                                                />
                                             ) : (
-                                                <ChevronLeftIcon sx={notificationOpenHandler} />
+                                                <ChevronLeftIcon
+                                                    sx={notificationOpenHandler}
+                                                />
                                             )}
                                         </GlobalTealBadge>
                                     </ListItemIcon>
-                                    <ListItemText sx={notificationTitle} disableTypography 
-                                        primary={ 
-                                            <Typography sx={notificationTitleText} variant="body1">
+                                    <ListItemText
+                                        sx={notificationTitle}
+                                        disableTypography
+                                        primary={
+                                            <Typography
+                                                sx={notificationTitleText}
+                                                variant="body1"
+                                            >
                                                 Notification
                                             </Typography>
                                         }
@@ -388,53 +558,155 @@ function OrderList() {
                             .filter((item) => item.status !== "served")
                             .map((filteredItem) => (
                                 <AnimatePresence>
-                                <motion.div layout key={notificationItem.order_id} initial={{ opacity: 0, scale: 0 }} animate={{ opacity: 1, scale: 1, transition: { duration: 0.5 } }} exit={{ opacity: 0, scale: 0, transition: { duration: 0.5 } }}>
-                                <ListItem disablePadding sx={notificationListItem} >
-                                            <ViewOrderModal orders={notificationItem} title={notificationItem.table_number} userId={notificationItem.order_id} sx={userIconNotification} date={[
-                                                new Date(filteredItem.time_ordered).getMonth() + "-",
-                                                new Date(filteredItem.time_ordered).getDate() + "-",
-                                                new Date(filteredItem.time_ordered).getFullYear() + " | " +
-                                                new Date(filteredItem.time_ordered).getHours() + ":" +
-                                                new Date(filteredItem.time_ordered).getMinutes() + ":" +
-                                                new Date(filteredItem.time_ordered).getSeconds(),
-                                            ]} >
-                                        <ListItemButton sx={notificationItemButton} >
-                                            <ListItemIcon sx={notificationItemIcon} >
-                                                <AccountCircleIcon sx={[notificationUserPhoto]} />
-                                            </ListItemIcon>
-                                            <Stack direction="column"  justifyContent="flex-start" spacing={-1} >
-                                                <Stack direction="row">
-                                                    <Box>
-                                                        <ListItemText sx={ notificationOrderContent } primary={<GlobalBlackBody1 sx={ notificationUserName } text={ notificationItem.table_number } /> } />
-                                                    </Box>
-                                                </Stack>
-                                                <Stack direction="row">
-                                                    <Box>
-                                                        <ListItemText sx={ notificationOrderContent } primary={ <GlobalBlackBody2 text={`x${filteredItem.quantity} ${filteredItem.item_name}`} /> } />
-                                                    </Box>
-                                                </Stack>
-                                                <Box alignItems="flex-end">
-                                                    <ListItemText sx={ notificationOrderContent }
-                                                        primary={
-                                                            <GlobalGreyCaption2
-                                                                text={[
-                                                                    new Date( filteredItem.time_ordered ).getMonth()    + "-",
-                                                                    new Date( filteredItem.time_ordered ).getDate()     + "-",
-                                                                    new Date( filteredItem.time_ordered ).getFullYear() + " | " +
-                                                                    new Date( filteredItem.time_ordered ).getHours()    + ":"   +
-                                                                    new Date( filteredItem.time_ordered ).getMinutes()  + ":"   +
-                                                                    new Date( filteredItem.time_ordered ).getSeconds(),
-                                                                ]}
-                                                            />
+                                    <motion.div
+                                        layout
+                                        key={notificationItem.order_id}
+                                        initial={{ opacity: 0, scale: 0 }}
+                                        animate={{
+                                            opacity: 1,
+                                            scale: 1,
+                                            transition: { duration: 0.5 },
+                                        }}
+                                        exit={{
+                                            opacity: 0,
+                                            scale: 0,
+                                            transition: { duration: 0.5 },
+                                        }}
+                                    >
+                                        <ListItem
+                                            disablePadding
+                                            sx={notificationListItem}
+                                        >
+                                            <ViewOrderModal
+                                                orders={notificationItem}
+                                                title={
+                                                    notificationItem.table_number
+                                                }
+                                                userId={
+                                                    notificationItem.order_id
+                                                }
+                                                sx={userIconNotification}
+                                                date={[
+                                                    new Date(
+                                                        filteredItem.time_ordered
+                                                    ).getMonth() +
+                                                        1 +
+                                                        "-",
+                                                    new Date(
+                                                        filteredItem.time_ordered
+                                                    ).getDate() + "-",
+                                                    new Date(
+                                                        filteredItem.time_ordered
+                                                    ).getFullYear() +
+                                                        " | " +
+                                                        new Date(
+                                                            filteredItem.time_ordered
+                                                        ).getHours() +
+                                                        ":" +
+                                                        new Date(
+                                                            filteredItem.time_ordered
+                                                        ).getMinutes() +
+                                                        ":" +
+                                                        new Date(
+                                                            filteredItem.time_ordered
+                                                        ).getSeconds(),
+                                                ]}
+                                            >
+                                                <ListItemButton
+                                                    sx={notificationItemButton}
+                                                >
+                                                    <ListItemIcon
+                                                        sx={
+                                                            notificationItemIcon
                                                         }
-                                                    />
-                                                </Box>
-                                            </Stack>
-                                        </ListItemButton>
-                                    </ViewOrderModal>
-                                    <Divider />
-                                </ListItem>
-                                </motion.div>
+                                                    >
+                                                        <AccountCircleIcon
+                                                            sx={[
+                                                                notificationUserPhoto,
+                                                            ]}
+                                                        />
+                                                    </ListItemIcon>
+                                                    <Stack
+                                                        direction="column"
+                                                        justifyContent="flex-start"
+                                                        spacing={-1}
+                                                    >
+                                                        <Stack direction="row">
+                                                            <Box>
+                                                                <ListItemText
+                                                                    sx={
+                                                                        notificationOrderContent
+                                                                    }
+                                                                    primary={
+                                                                        <GlobalBlackBody1
+                                                                            sx={
+                                                                                notificationUserName
+                                                                            }
+                                                                            text={
+                                                                                notificationItem.table_number
+                                                                            }
+                                                                        />
+                                                                    }
+                                                                />
+                                                            </Box>
+                                                        </Stack>
+                                                        <Stack direction="row">
+                                                            <Box>
+                                                                <ListItemText
+                                                                    sx={
+                                                                        notificationOrderContent
+                                                                    }
+                                                                    primary={
+                                                                        <GlobalBlackBody2
+                                                                            text={`x${filteredItem.quantity} ${filteredItem.item_name}`}
+                                                                        />
+                                                                    }
+                                                                />
+                                                            </Box>
+                                                        </Stack>
+                                                        <Box alignItems="flex-end">
+                                                            <ListItemText
+                                                                sx={
+                                                                    notificationOrderContent
+                                                                }
+                                                                primary={
+                                                                    <GlobalGreyCaption2
+                                                                        text={[
+                                                                            new Date(
+                                                                                filteredItem.time_ordered
+                                                                            ).getMonth() +
+                                                                                1 +
+                                                                                "-",
+                                                                            new Date(
+                                                                                filteredItem.time_ordered
+                                                                            ).getDate() +
+                                                                                "-",
+                                                                            new Date(
+                                                                                filteredItem.time_ordered
+                                                                            ).getFullYear() +
+                                                                                " | " +
+                                                                                new Date(
+                                                                                    filteredItem.time_ordered
+                                                                                ).getHours() +
+                                                                                ":" +
+                                                                                new Date(
+                                                                                    filteredItem.time_ordered
+                                                                                ).getMinutes() +
+                                                                                ":" +
+                                                                                new Date(
+                                                                                    filteredItem.time_ordered
+                                                                                ).getSeconds(),
+                                                                        ]}
+                                                                    />
+                                                                }
+                                                            />
+                                                        </Box>
+                                                    </Stack>
+                                                </ListItemButton>
+                                            </ViewOrderModal>
+                                            <Divider />
+                                        </ListItem>
+                                    </motion.div>
                                 </AnimatePresence>
                             ))
                     )}
