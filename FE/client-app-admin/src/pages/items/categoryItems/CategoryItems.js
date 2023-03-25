@@ -2,9 +2,10 @@ import * as React from 'react';
 import { useStore } from '../../../store/store';
 
 import { motion, AnimatePresence } from 'framer-motion';
+import { teal } from '@mui/material/colors';
 import Box from '@mui/material/Box';
 import Grid2 from '@mui/material/Unstable_Grid2/Grid2';
-import { CardActions, CardMedia, CardContent, Card } from '@mui/material/';
+import { CardActions, CardMedia, CardContent, Card, Tooltip, IconButton, Stack } from '@mui/material/';
 import FolderOffTwoToneIcon from '@mui/icons-material/FolderOffTwoTone';
 
 import GlobalIndigoHeader4 from '../../../global/typographies/headers/IndigoHeader4';
@@ -15,6 +16,7 @@ import CreateCategModal from '../../../global/modals/CreateCategModal';
 import UpdateCategModal from '../../../global/modals/UpdateCategModal';
 import GlobalIndigoHeader6 from '../../../global/typographies/headers/IndigoHeader6';
 import SlideDown from '../../../animation/SlideDown';
+import GlobalBlackBody1 from '../../../global/typographies/bodies/BlackBody1';
 
 function CategoryItems() {
     const {CategoryData, setCategoryItems} = useStore();
@@ -57,6 +59,14 @@ function CategoryItems() {
 
     const noItemIcon = {
         fontSize: '8em',
+    };
+
+    const actionIcon = {
+        color: teal[400],
+        '&:hover': {
+            color: teal[500],
+            transition: '0.5s'
+        }
     };
 
     if (CategoryData.length === 0) {
@@ -102,7 +112,6 @@ function CategoryItems() {
                                     sx={foodItemCardContainer}
                                     key={categItemList._id}
                                 >
-                                
                                     <CardMedia
                                         component='img'
                                         alt={categItemList.category_name}
@@ -114,24 +123,37 @@ function CategoryItems() {
                                             text={categItemList.category_name}
                                         />
                                     </CardContent>
-                                    <CardActions>
-                                        <UpdateCategModal
-                                            title={
-                                                'Update ' + categItemList.category_name
-                                            }
-                                            value={categItemList.category_name}
-                                            image={categItemList.category_image}
-                                            alt={categItemList.category_name}
-                                            category_id={categItemList._id}
-                                            category_name={categItemList.category_name}
-                                        />
-                                        <DeleteItemModal
-                                            context={
-                                                'If you delete this category will be permanently gone. Are you sure you want to delete ' +
-                                                categItemList.category_name +
-                                                '?'}
-                                            category_id={categItemList._id}
-                                        />
+                                    <CardActions sx={{float: 'right'}}>
+                                        <Tooltip title='Update'>
+                                            <IconButton>
+                                                <UpdateCategModal
+                                                    title={
+                                                        'Update ' + categItemList.category_name
+                                                    }
+                                                    value={categItemList.category_name}
+                                                    image={categItemList.category_image}
+                                                    alt={categItemList.category_name}
+                                                    category_id={categItemList._id}
+                                                    category_name={categItemList.category_name}
+                                                    sx={actionIcon}
+                                                />
+                                            </IconButton>
+                                        </Tooltip>
+                                        <Tooltip title='Delete'>
+                                            <IconButton>
+                                                <DeleteItemModal
+                                                    context={<>
+                                                        <Grid2 container>
+                                                            Are you sure you want to delete
+                                                            <GlobalBlackBody1 text={categItemList.category_name} sx={{ ml: 0.5, fontWeight: 'bold' }} />?
+                                                        </Grid2>
+                                                    </> }
+                                                    category_id={categItemList._id}
+                                                    header={`Delete Category Item`}
+                                                    sx={actionIcon}
+                                                />
+                                            </IconButton>
+                                        </Tooltip>
                                     </CardActions>
                                 </Card>
                             </motion.div>

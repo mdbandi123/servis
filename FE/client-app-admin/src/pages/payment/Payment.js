@@ -218,11 +218,11 @@ function Payment(props) {
                                                             paymentList.table_number
                                                         }
                                                     />
-                                                    <GlobalGreyBody2
+                                                    {/* <GlobalGreyBody2
                                                         text={
                                                             paymentList.order_id
                                                         }
-                                                    />
+                                                    /> */}
                                                 </Grid2>
                                             </Grid2>
                                             <Grid2

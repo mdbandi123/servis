@@ -12,6 +12,7 @@ import GlobalTealContainedButton from "../../global/buttons/contains/TealContain
 import GlobalIndigoHeader2 from "../../global/typographies/headers/IndigoHeader2";
 import GlobalBlackHeader5 from "../../global/typographies/headers/BlackHeader5";
 import FadeIn from "../../animation/FadeIn";
+import GlobalTealOutlinedButton from "../../global/buttons/outlines/TealOutlinedButton";
 
 function ForgotPassword() {
     const navigate = useNavigate();
@@ -103,7 +104,7 @@ function ForgotPassword() {
                                         onClick={() => navigate("/login")}
                                         sx={backButton}
                                     >
-                                        <GlobalGreyContainedButton text="Back" />
+                                        <GlobalTealOutlinedButton text="Back" />
                                     </Box>
                                     <Box>
                                         <GlobalTealContainedButton

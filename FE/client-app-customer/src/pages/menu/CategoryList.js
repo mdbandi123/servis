@@ -15,6 +15,7 @@ import { grey } from "@mui/material/colors";
 import ArrowBackRoundedIcon from "@mui/icons-material/ArrowBackRounded";
 import AddRoundedIcon from "@mui/icons-material/AddRounded";
 import ExtensionOffIcon from "@mui/icons-material/ExtensionOff";
+import InsertPhotoIcon from '@mui/icons-material/InsertPhoto';
 
 import GlobalBlackHeader6 from "../../global/typographies/headers/BlackHeader6";
 import GlobalBlackHeader4 from "../../global/typographies/headers/BlackHeader4";
@@ -24,10 +25,14 @@ import GlobalTealContainedButton from "../../global/buttons/contains/TealContain
 import GlobalBlackHeader5 from "../../global/typographies/headers/BlackHeader5";
 import FadeIn from "../../global/animation/FadeIn";
 
+import Snackbar from '@mui/material/Snackbar';
+import CloseIcon from '@mui/icons-material/Close';
+
 function CategoryList() {
     const navigate = useNavigate();
     const { category_name } = useParams();
     const [StartersData, setStartersData] = React.useState([]);
+    const [openAlert, setOpenAlert] = React.useState(false);
 
     const { order_id } = useStore();
 
@@ -73,7 +78,24 @@ function CategoryList() {
             .catch((error) => {
                 console.log(error);
             });
+        setOpenAlert(true);
     };
+
+    const handleClose = (event, reason) => {
+        if (reason === 'clickaway') {
+            return;
+        }
+
+        setOpenAlert(false);
+    };
+
+    const action = (
+        <React.Fragment>
+            <IconButton size="small" aria-label="close" color="inherit" onClick={handleClose} >
+                <CloseIcon fontSize="small" />
+            </IconButton>
+        </React.Fragment>
+    );
 
     const pageContainer = {
         pb: 8,
@@ -124,6 +146,12 @@ function CategoryList() {
 
     const categoryNamePriceContainer = {
         height: 90,
+    };
+
+    const uploadImageIcon = {
+        fontSize: '8em',
+        color: grey[600],
+        display: 'flex',
     };
 
     if (StartersData.length === 0) {
@@ -237,6 +265,15 @@ function CategoryList() {
                     </Grid2>
                 </Grid2>
             </Box>
+            <Snackbar
+                anchorOrigin={{ vertical: "bottom", horizontal: "right" }}
+                sx={{ mb: 4 }}
+                open={openAlert}
+                autoHideDuration={2000}
+                onClose={handleClose}
+                message="Food added to your Cart!"
+                action={action}
+            />
         </FadeIn>
     );
 }

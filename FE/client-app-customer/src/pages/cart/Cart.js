@@ -7,6 +7,7 @@ import { grey, teal } from '@mui/material/colors';
 import AddRoundedIcon from '@mui/icons-material/AddRounded';
 import RemoveRoundedIcon from '@mui/icons-material/RemoveRounded';
 import ExtensionOffIcon from '@mui/icons-material/ExtensionOff';
+import InsertPhotoIcon from '@mui/icons-material/InsertPhoto';
 
 import GlobalBlackBody1 from '../../global/typographies/bodies/BlackBody1';
 import GlobalBlackHeader6 from '../../global/typographies/headers/BlackHeader6';
@@ -110,9 +111,11 @@ function Cart() {
     };
 
     const foodImage = {
-        width: 90,
-        height: 90,
-        borderRadius: '50%',
+        width: 115,
+        height: 130,
+        mr: 0,
+        mb: 0,
+        mt: 0,
         m: 'auto',
     };
 
@@ -208,7 +211,11 @@ function Cart() {
                     <Card>
                         <Grid2 container spacing={2} >
                             <Grid2 item justifySelf='center' alignSelf='center' xs={4} sm={3} md={2} lg={1} lx={1}>
-                                <CardMedia sx={foodImage} component='img' image={`${process.env.REACT_APP_BACKEND_URL}${cartList.item_image}`} alt={cartList.item_name} />
+                                <CardMedia 
+                                    sx={foodImage} component='img' 
+                                    image={`${process.env.REACT_APP_BACKEND_URL}${cartList.item_image}`}
+                                    alt={cartList.item_name} 
+                                />
                             </Grid2>
                             <Grid2 item xs={8} sm={9} md={10} lg={11} lx={11} >
                                 <Grid2 item>

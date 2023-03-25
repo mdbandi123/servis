@@ -36,7 +36,7 @@ import GlobalBlackHeader5 from "../typographies/headers/BlackHeader5";
 import GlobalOrangeTextButton from "../buttons/text/OrangeTextButton";
 import GlobalGreyBody2 from "../typographies/bodies/GreyBody2";
 import GlobalBlackHeader4 from "../typographies/headers/BlackHeader4";
-import GlobalTealContainedButton from "../buttons/contains/TealContainedButton";
+import GlobalTealOutlinedButton from "../buttons/outlines/TealOutlinedButton";
 import ConfirmPaymentModal from "./ConfirmPaymentModal";
 
 const Transition = React.forwardRef(function Transition(props, ref) {
@@ -107,6 +107,12 @@ function ViewPaymentModal(props) {
         fontSize: "4em",
     };
 
+    const zebraStriped = {
+        '&:nth-of-type(odd)': {
+            backgroundColor: grey[300],
+        },
+    };
+
     if (props.ordered_items.length === 0) {
         return (
             <React.Fragment>
@@ -130,17 +136,12 @@ function ViewPaymentModal(props) {
                             <Box>
                                 <GlobalBlackHeader5
                                     text={
-                                        props.title + " (" + props.userId + ")"
+                                        props.title
                                     }
                                 />
                             </Box>
                         </Stack>
                     </DialogTitle>
-                    <Box sx={closeIconButton}>
-                        <IconButton>
-                            <CloseIcon onClick={cancelViewModalHandler} />
-                        </IconButton>
-                    </Box>
                     <DialogContent>
                         <DialogContentText id="alert-dialog-slide-description">
                             <Grid2 container justify="flex-start">
@@ -214,19 +215,7 @@ function ViewPaymentModal(props) {
                                             sx={tableHeadText}
                                             align="left"
                                         >
-                                            Code
-                                        </TableCell>
-                                        <TableCell
-                                            sx={tableHeadText}
-                                            align="left"
-                                        >
                                             Category
-                                        </TableCell>
-                                        <TableCell
-                                            sx={tableHeadText}
-                                            align="left"
-                                        >
-                                            Quantity
                                         </TableCell>
                                         <TableCell
                                             sx={tableHeadText}
@@ -238,7 +227,13 @@ function ViewPaymentModal(props) {
                                             sx={tableHeadText}
                                             align="left"
                                         >
-                                            Amount
+                                            Quantity
+                                        </TableCell>
+                                        <TableCell
+                                            sx={tableHeadText}
+                                            align="left"
+                                        >
+                                           Total Amount
                                         </TableCell>
                                     </TableRow>
                                 </TableHead>
@@ -300,28 +295,16 @@ function ViewPaymentModal(props) {
                             </Table>
                         </TableContainer>
                     </DialogContent>
-                    <Stack
-                        direction="row"
-                        alignItems="center"
-                        justifyContent="space-between"
-                    >
-                        <Box pl={2} pb={2}>
-                            <DialogActions>
-                                <ConfirmPaymentModal
-                                    orderId={props.orderId}
-                                    context={`Are you sure do you want to mark as Paid the ${props.title} (${props.userId})?`}
-                                />
-                            </DialogActions>
-                        </Box>
-                        <Box>
-                            <DialogActions>
-                                <GlobalOrangeTextButton
-                                    text="Close"
-                                    onClick={cancelViewModalHandler}
-                                />
-                            </DialogActions>
-                        </Box>
-                    </Stack>
+                    <DialogActions>
+                        <GlobalTealOutlinedButton
+                            text="Close"
+                            onClick={cancelViewModalHandler}
+                        />
+                        <ConfirmPaymentModal
+                            orderId={props.orderId}
+                            context={`Are you sure do you want to mark as Paid the ${props.title}?`}
+                        />
+                    </DialogActions>
                 </Dialog>
             </React.Fragment>
         );
@@ -348,16 +331,11 @@ function ViewPaymentModal(props) {
                         </Box>
                         <Box>
                             <GlobalBlackHeader5
-                                text={props.title + " (" + props.userId + ")"}
+                                text={props.title}
                             />
                         </Box>
                     </Stack>
                 </DialogTitle>
-                <Box sx={closeIconButton}>
-                    <IconButton>
-                        <CloseIcon onClick={cancelViewModalHandler} />
-                    </IconButton>
-                </Box>
                 <DialogContent>
                     <DialogContentText id="alert-dialog-slide-description">
                         <Grid2 container justify="flex-start">
@@ -425,30 +403,30 @@ function ViewPaymentModal(props) {
                                         Name
                                     </TableCell>
                                     <TableCell sx={tableHeadText} align="left">
-                                        Code
+                                        Category
                                     </TableCell>
                                     <TableCell sx={tableHeadText} align="left">
-                                        Category
+                                        Unit Cost
                                     </TableCell>
                                     <TableCell sx={tableHeadText} align="left">
                                         Quantity
                                     </TableCell>
                                     <TableCell sx={tableHeadText} align="left">
-                                        Amount
+                                       Total Amount
                                     </TableCell>
                                 </TableRow>
                             </TableHead>
                             <TableBody sx={tableBodyContainer}>
                                 {props.ordered_items.map((item) => (
-                                    <TableRow sx={paymentTableRow}>
+                                    <TableRow sx={[paymentTableRow, zebraStriped]}>
                                         <TableCell align="left">
                                             {item.item_name}
                                         </TableCell>
                                         <TableCell align="left">
-                                            {item._id}
+                                            {item.item_category}
                                         </TableCell>
                                         <TableCell align="left">
-                                            {item.item_category}
+                                            ₱{item.item_price.$numberDecimal}
                                         </TableCell>
                                         <TableCell align="left">
                                             {item.quantity}
@@ -482,28 +460,16 @@ function ViewPaymentModal(props) {
                         </Table>
                     </TableContainer>
                 </DialogContent>
-                <Stack
-                    direction="row"
-                    alignItems="center"
-                    justifyContent="space-between"
-                >
-                    <Box pl={2} pb={2}>
-                        <DialogActions>
-                            <ConfirmPaymentModal
-                                orderId={props.orderId}
-                                context={`Are you sure do you want to mark as Paid the ${props.title} (${props.userId})?`}
-                            />
-                        </DialogActions>
-                    </Box>
-                    <Box>
-                        <DialogActions>
-                            <GlobalOrangeTextButton
-                                text="Close"
-                                onClick={cancelViewModalHandler}
-                            />
-                        </DialogActions>
-                    </Box>
-                </Stack>
+                <DialogActions>
+                    <GlobalTealOutlinedButton
+                        text="Close"
+                        onClick={cancelViewModalHandler}
+                    />
+                    <ConfirmPaymentModal
+                        orderId={props.orderId}
+                        context={`Are you sure do you want to mark as Paid the ${props.title}?`}
+                    />
+                </DialogActions>
             </Dialog>
         </React.Fragment>
     );

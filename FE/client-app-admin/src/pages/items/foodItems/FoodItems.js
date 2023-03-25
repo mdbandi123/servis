@@ -2,11 +2,12 @@ import * as React from 'react';
 import { useStore } from '../../../store/store';
 
 import { motion, AnimatePresence } from 'framer-motion';
-import { Box, Stack, TextField } from '@mui/material/';
+import { Box, IconButton, Stack, TextField, Tooltip } from '@mui/material/';
 import Grid2 from '@mui/material/Unstable_Grid2/Grid2';
 import { CardActions, CardMedia, CardContent, Card } from '@mui/material/';
-import { grey } from '@mui/material/colors';
+import { grey, teal } from '@mui/material/colors';
 import FolderOffTwoToneIcon from '@mui/icons-material/FolderOffTwoTone';
+import InsertPhotoIcon from '@mui/icons-material/InsertPhoto';
 
 import GlobalIndigoHeader4 from '../../../global/typographies/headers/IndigoHeader4';
 import GlobalIndigoHeader6 from '../../../global/typographies/headers/IndigoHeader6';
@@ -17,6 +18,7 @@ import DeleteItemModal from '../../../global/modals/DeleteItemModal';
 import CreateItemModal from '../../../global/modals/CreateItemModal';
 import UpdateItemModal from '../../../global/modals/UpdateItemModal';
 import SlideDown from '../../../animation/SlideDown';
+import GlobalBlackBody1 from '../../../global/typographies/bodies/BlackBody1';
 
 function FoodItems() {
     const { menuItems, setMenuItems } = useStore();
@@ -60,7 +62,15 @@ function FoodItems() {
 
     const searchBar = {
         backgroundColor: grey[50]
-    }
+    };
+
+    const actionIcon = {
+        color: teal[400],
+        '&:hover': {
+            color: teal[500],
+            transition: '0.5s'
+        }
+    };
 
     if (menuItems.length === 0) {
         return (
@@ -120,8 +130,8 @@ function FoodItems() {
                                 <Card sx={foodItemCardContainer} key={foodItemList._id}>
                                     <CardMedia
                                         component='img'
-                                        alt={foodItemList.name}
-                                        height='140'
+                                        alt={foodItemList.category_name}
+                                        height='159'
                                         image={`${process.env.REACT_APP_BACKEND_URL}${foodItemList.image}`}
                                     />
                                     <CardContent>
@@ -133,27 +143,39 @@ function FoodItems() {
                                             text={`₱${foodItemList.price.$numberDecimal}`}
                                         />
                                     </CardContent>
-                                    <CardActions>
-                                        <UpdateItemModal
-                                            title={'Update ' + foodItemList.name}
-                                            id={foodItemList._id}
-                                            image={foodItemList.image}
-                                            alt={foodItemList.name}
-                                            valueName={foodItemList.name}
-                                            valuePrice={
-                                                foodItemList.price.$numberDecimal
-                                            }
-                                            valueCateg={foodItemList.category_name}
-                                            availability={foodItemList.is_available}
-                                        />
-                                        <DeleteItemModal
-                                            context={
-                                                'If you delete this item will be permanently gone. Are you sure you want to delete ' +
-                                                foodItemList.name +
-                                                '?'
-                                            }
-                                            item_id={foodItemList._id}
-                                        />
+                                    <CardActions sx={{ float: 'right' }}>                                   
+                                        <Tooltip title='Update'>
+                                            <IconButton>
+                                                <UpdateItemModal
+                                                    title={'Update ' + foodItemList.name}
+                                                    id={foodItemList._id}
+                                                    image={foodItemList.image}
+                                                    alt={foodItemList.name}
+                                                    valueName={foodItemList.name}
+                                                    valuePrice={
+                                                        foodItemList.price.$numberDecimal
+                                                    }
+                                                    valueCateg={foodItemList.category_name}
+                                                    availability={foodItemList.is_available}
+                                                    sx={actionIcon}
+                                                />
+                                            </IconButton>
+                                        </Tooltip>
+                                        <Tooltip title='Delete'>
+                                            <IconButton>
+                                                <DeleteItemModal
+                                                    context={ <>
+                                                            <Grid2 container>
+                                                                Are you sure you want to delete
+                                                                <GlobalBlackBody1 text={foodItemList.name} sx={{ ml: 0.5, fontWeight: 'bold' }} />?
+                                                            </Grid2>
+                                                        </> }
+                                                    item_id={foodItemList._id}
+                                                    header={`Delete Food Item`}
+                                                    sx={actionIcon}
+                                                />
+                                            </IconButton>
+                                        </Tooltip>
                                     </CardActions>
                                 </Card>
                             </motion.div>

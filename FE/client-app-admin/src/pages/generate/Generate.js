@@ -16,6 +16,8 @@ import {
 import { grey } from "@mui/material/colors";
 import AccountCircleIcon from "@mui/icons-material/AccountCircle";
 import QrCodeIcon from "@mui/icons-material/QrCode";
+import Snackbar from '@mui/material/Snackbar';
+import MuiAlert from '@mui/material/Alert';
 
 import GlobalGreyBody1 from "../../global/typographies/bodies/GreyBody1";
 import GlobalGreyBody3 from "../../global/typographies/bodies/GreyBody3";
@@ -26,9 +28,14 @@ import GlobalIndigoHeader4 from "../../global/typographies/headers/IndigoHeader4
 import GlobalBlackHeader5 from "../../global/typographies/headers/BlackHeader5";
 import GlobalTealContainedButton from "../../global/buttons/contains/TealContainedButton";
 import SlideDown from "../../animation/SlideDown";
+import GlobalTealOutlinedButton from "../../global/buttons/outlines/TealOutlinedButton";
 
 const Transition = React.forwardRef(function Transition(props, ref) {
     return <Slide direction="up" ref={ref} {...props} />;
+});
+
+const Alert = React.forwardRef(function Alert(props, ref) {
+    return <MuiAlert elevation={6} ref={ref} variant="filled" {...props} />;
 });
 
 function Generate() {
@@ -36,6 +43,7 @@ function Generate() {
 
     const [url, setUrl] = React.useState(null);
     const [table, setTable] = React.useState(null);
+    const [openAlert, setOpenAlert] = React.useState(false);
 
     const { user } = useStore();
 
@@ -45,6 +53,14 @@ function Generate() {
 
     //filter table data to only those not in use
     tableData = tableData.filter((table) => table.in_use === false);
+
+    const handleAlertClose = (event, reason) => {
+        if (reason === 'clickaway') {
+            return;
+        }
+
+        setOpenAlert(false);
+    };
 
     React.useEffect(() => {
         fetch(`${process.env.REACT_APP_BACKEND_URL}/tables/`, {
@@ -88,6 +104,8 @@ function Generate() {
             .catch((error) => {
                 console.log(error);
             });
+        
+        setOpenAlert(true);
     };
 
     const styles = {
@@ -202,8 +220,8 @@ function Generate() {
                             <Box>
                                 <TextField
                                     color="warning"
-                                    label="User"
-                                    helperText="Select User"
+                                    label="Table"
+                                    helperText="Select Table"
                                     variant="filled"
                                     fullWidth
                                     select
@@ -237,6 +255,7 @@ function Generate() {
                                     sx={qrBtnContainer}
                                     text="Generate"
                                     onClick={confirmHandler}
+                                    disabled={!table}
                                 />
                             </Box>
                         </Stack>
@@ -305,24 +324,34 @@ function Generate() {
                 aria-describedby="alert-dialog-slide-description"
             >
                 <DialogTitle sx={dialogAlignment}>
-                    <GlobalBlackHeader5 text="Message Confirmation" />
+                    <GlobalBlackHeader5 text="Generate QR Code" />
                 </DialogTitle>
                 <DialogContent>
                     <DialogContentText id="alert-dialog-slide-description">
-                        <GlobalGreyBody1 text="Are you sure do you want to Generate QR Code?" />
+                        <GlobalGreyBody1 text={<>
+                            <Grid2 container>
+                                Are you sure you want to Generate QR Code for
+                                <GlobalBlackBody1 text={table} sx={{ ml: 0.5, fontWeight: 'bold' }} />?
+                            </Grid2> </>
+                        } />
                     </DialogContentText>
                 </DialogContent>
                 <DialogActions>
-                    <GlobalOrangeTextButton
+                    <GlobalTealOutlinedButton
                         text="Cancel"
                         onClick={cancelConfirmHandler}
                     />
-                    <GlobalIndigoTextButton
+                    <GlobalTealContainedButton
                         text="Confirm"
                         onClick={proceedConfirmHandler}
                     />
                 </DialogActions>
             </Dialog>
+            <Snackbar open={openAlert} autoHideDuration={6000} onClose={handleAlertClose} anchorOrigin={{ vertical: "bottom", horizontal: "right" }}>
+                <Alert onClose={handleAlertClose} severity="success">
+                    Table Generate Successfully!
+                </Alert>
+            </Snackbar>
         </SlideDown>
     );
 }

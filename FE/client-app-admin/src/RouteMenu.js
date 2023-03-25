@@ -7,7 +7,7 @@ import Archive from './pages/archive/Archive';
 import FoodItems from './pages/items/foodItems/FoodItems';
 import CategoryItems from './pages/items/categoryItems/CategoryItems';
 import Generate from './pages/generate/Generate';
-import Settings from './pages/settings/Settings';
+import TableManagement from './pages/table-management/TableManagement';
 import Loading from './pages/loading/Loading';
 import SignUp from './pages/signup/SignUp';
 import ForgotPassword from './pages/forgot-password/ForgotPassword';
@@ -43,7 +43,7 @@ const RouteMenu = () => {
                     <Route path='/fooditems' exact element={ <FoodItems /> } />
                     <Route path='/categoryitems' exact element={ <CategoryItems /> } />
                     <Route path='/generate' exact element={ <Generate /> } />
-                    <Route path='/tableusers' exact element={ <Settings /> } />
+                    <Route path='/table-management' exact element={ <TableManagement /> } />
                     <Route path='/logout' element={ <Logout/> } />
                 </Route>
             </Route>

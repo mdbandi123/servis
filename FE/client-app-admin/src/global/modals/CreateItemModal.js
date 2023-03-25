@@ -11,15 +11,22 @@ import CloseIcon from '@mui/icons-material/Close';
 import FileUploadIcon from '@mui/icons-material/FileUpload';
 import InsertPhotoIcon from '@mui/icons-material/InsertPhoto';
 import { CardMedia } from '@mui/material/';
+import Snackbar from '@mui/material/Snackbar';
+import MuiAlert from '@mui/material/Alert';
 
 import GlobalGreyBody1 from '../../global/typographies/bodies/GreyBody1';
 import GlobalBlackHeader5 from '../../global/typographies/headers/BlackHeader5';
 import GlobalOrangeTextButton from '../../global/buttons/text/OrangeTextButton';
 import GlobalIndigoTextButton from '../../global/buttons/text/IndigoTextButton';
 import GlobalTealContainedButton from '../../global/buttons/contains/TealContainedButton';
+import GlobalTealOutlinedButton from '../buttons/outlines/TealOutlinedButton';
 
 const Transition = React.forwardRef(function Transition(props, ref) {
     return <Slide direction='up' ref={ref} {...props} />;
+});
+
+const Alert = React.forwardRef(function Alert(props, ref) {
+    return <MuiAlert elevation={6} ref={ref} variant="filled" {...props} />;
 });
 
 function CreateItemModal() {
@@ -29,6 +36,7 @@ function CreateItemModal() {
     const [itemName, setItemName] = React.useState('');
     const [itemPrice, setItemPrice] = React.useState('');
     const [CategoryData, setCategoryData] = React.useState([]);
+    const [openAlert, setOpenAlert] = React.useState(false);
 
     const { user } = useStore();
 
@@ -45,6 +53,14 @@ function CreateItemModal() {
             })
             .catch((error) => console.error(error));
     }, []);
+
+    const handleAlertClose = (event, reason) => {
+        if (reason === 'clickaway') {
+            return;
+        }
+
+        setOpenAlert(false);
+    };
 
     const ItemCreateHandler = () => {
         setOpenCreateItemModal(true);
@@ -122,6 +138,7 @@ function CreateItemModal() {
                 })
                 .catch((error) => console.error(error));
         }
+        setOpenAlert(true);
     };
 
     const closeIconButton = {
@@ -160,13 +177,8 @@ function CreateItemModal() {
             <GlobalTealContainedButton text='Create' onClick={ ItemCreateHandler } />
             <Dialog keepMounted maxWidth='sm' fullWidth open={ openCreateItemModal } TransitionComponent={ Transition } onClose={ cancelItemCreateHandler } aria-describedby='alert-dialog-slide-description'>
                 <DialogTitle sx={ dialogAlignment }>
-                    <GlobalBlackHeader5 text='Create New Item' />
+                    <GlobalBlackHeader5 text='Create New Food' />
                 </DialogTitle>
-                <Box sx={ closeIconButton }>
-                    <IconButton>
-                        <CloseIcon onClick={ cancelItemCreateHandler } />
-                    </IconButton>
-                </Box>
                 <DialogContent>
                     <DialogContentText id='alert-dialog-slide-description'>
                         <Grid2 container spacing={2}>
@@ -189,7 +201,17 @@ function CreateItemModal() {
                                         <TextField id='outlined-textarea' color='warning' type='text' label='Name' placeholder='Enter Food Name' value={itemName} onChange={(e) => setItemName(e.target.value)} variant='filled' fullWidth />
                                     </Box>
                                     <Box>
-                                        <TextField id='outlined-textarea' color='warning' type='number' label='Price' placeholder='Enter Food Price' value={itemPrice} onChange={(e) => setItemPrice(e.target.value)} variant='filled' fullWidth />
+                                        <TextField id='outlined-textarea' color='warning' type='number' label='Price' placeholder='Enter Food Price' value={itemPrice}
+                                            onChange={(e) => {
+                                                const min = 1;
+
+                                                const value = Math.max(min, Math.min(Number(e.target.value)));
+
+                                                setItemPrice(value);
+                                            }} 
+
+                                            variant='filled' fullWidth
+                                        />
                                     </Box>
                                     <Box>
                                         <TextField id='filled-select-currency' color='warning' label='Category' helperText='Select Category' variant='filled' value={itemCategory} onChange={(e) => {setItemCategory(e.target.value)}} fullWidth select>
@@ -206,10 +228,15 @@ function CreateItemModal() {
                     </DialogContentText>
                 </DialogContent>
                 <DialogActions>
-                    <GlobalOrangeTextButton text='Cancel' onClick={ cancelItemCreateHandler } />
-                    <GlobalIndigoTextButton text='Create' onClick={ confirmItemCreateHandler } />
+                    <GlobalTealOutlinedButton text='Cancel' onClick={ cancelItemCreateHandler } />
+                    <GlobalTealContainedButton text='Create' onClick={confirmItemCreateHandler} disabled={!itemPrice || !itemCategory || !itemName || !itemImage} />
                 </DialogActions>
             </Dialog>
+            <Snackbar open={openAlert} autoHideDuration={6000} onClose={handleAlertClose} anchorOrigin={{ vertical: "bottom", horizontal: "right" }}>
+                <Alert onClose={handleAlertClose} severity="success" >
+                    Food Item Create Successfully!
+                </Alert>
+            </Snackbar>
         </React.Fragment>
     );
 };
