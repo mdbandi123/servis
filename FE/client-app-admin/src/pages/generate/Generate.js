@@ -43,6 +43,7 @@ function Generate() {
 
     const [url, setUrl] = React.useState(null);
     const [table, setTable] = React.useState(null);
+    const [generate, setGenerate] = React.useState(null);
     const [openAlert, setOpenAlert] = React.useState(false);
 
     const { user } = useStore();
@@ -100,6 +101,7 @@ function Generate() {
                 console.log(data);
                 setUrl(data.url);
                 setOpenConfirmModal(false);
+                setGenerate(!generate);
             })
             .catch((error) => {
                 console.log(error);
@@ -107,6 +109,11 @@ function Generate() {
         
         setOpenAlert(true);
     };
+
+    const buttonEnableHandler = (e) => {
+        setTable(e.target.value);
+        setGenerate(true);
+    }
 
     const styles = {
         qrCodeContainer: {
@@ -225,7 +232,7 @@ function Generate() {
                                     variant="filled"
                                     fullWidth
                                     select
-                                    onChange={(e) => setTable(e.target.value)}
+                                    onChange={buttonEnableHandler}
                                 >
                                     {tableData.map((tableList) => (
                                         <MenuItem
@@ -255,7 +262,7 @@ function Generate() {
                                     sx={qrBtnContainer}
                                     text="Generate"
                                     onClick={confirmHandler}
-                                    disabled={!table}
+                                    disabled={!generate}
                                 />
                             </Box>
                         </Stack>
