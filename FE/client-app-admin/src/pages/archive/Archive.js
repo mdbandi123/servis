@@ -15,6 +15,8 @@ import GlobalTealContainedButton from '../../global/buttons/contains/TealContain
 import GenerateDatePickerModal from '../../global/modals/GenerateDatePickerModal';
 import SlideDown from '../../animation/SlideDown';
 
+import ArchiveSkeleton from '../../skeletons/ArchiveSkeleton';
+
 const archiveHeadCellsList = [
     {
         id: 'orderId',
@@ -106,6 +108,7 @@ EnhancedTableHead.propTypes = {
 };
 
 export default function EnhancedTable() {
+    const [loading, setLoading] = React.useState(true);
     const user = useStore(state => state.user);
     const [rows, setRows] = React.useState([])
     React.useEffect(() => {
@@ -119,6 +122,9 @@ export default function EnhancedTable() {
         .then(data => {
             console.log('data here')
             console.log(data);
+            setTimeout(() => {
+                setLoading(false)
+            }, 3000);
             setRows(data.items);
         })
         .catch(error => console.log(error))
@@ -216,13 +222,28 @@ export default function EnhancedTable() {
                 <Box sx={ tableContainerWidth }>
                     <Paper sx={ archiveTablePaper }>
                         <TableContainer>
-                            <Table sx={ archiveTable } aria-labelledby='tableTitle' size={ dense ? 'small' : 'medium' } >
-                                <EnhancedTableHead numSelected={ selected.length } order={ order } orderBy={ orderBy } onSelectAllClick={ handleSelectAllClick } onRequestSort={ handleRequestSort } />
-                            </Table>
-                            <Stack direction='row' sx={ centerAlignment } spacing={1} >
-                                <FindInPageTwoToneIcon sx={ noDataIcon } />
-                                <GlobalBlackHeader5 text='No Data Found' />
-                            </Stack>
+                            {
+                                loading ? (
+                                    <>
+                                        <Table sx={archiveTable} aria-labelledby='tableTitle' size={dense ? 'small' : 'medium'} >
+                                            <EnhancedTableHead numSelected={selected.length} order={order} orderBy={orderBy} onSelectAllClick={handleSelectAllClick} onRequestSort={handleRequestSort} />
+                                            {Array.from(new Array(rowsPerPage)).map(() => (
+                                                <ArchiveSkeleton />
+                                            ))}
+                                        </Table>
+                                    </>
+                                ) : (
+                                    <>
+                                        <Table sx={archiveTable} aria-labelledby='tableTitle' size={dense ? 'small' : 'medium'} >
+                                            <EnhancedTableHead numSelected={selected.length} order={order} orderBy={orderBy} onSelectAllClick={handleSelectAllClick} onRequestSort={handleRequestSort} />
+                                        </Table>
+                                        <Stack direction='row' sx={centerAlignment} spacing={1} >
+                                            <FindInPageTwoToneIcon sx={noDataIcon} />
+                                            <GlobalBlackHeader5 text='No Data Found' />
+                                        </Stack>
+                                    </>
+                                )
+                            }
                         </TableContainer>
                         <TablePagination rowsPerPageOptions={ [5, 10, 15, 20, 25, 30] } component='div' count={ rows.length } rowsPerPage={ rowsPerPage } page={ page } onPageChange={ handleChangePage } onRowsPerPageChange={ handleChangeRowsPerPage } />
                     </Paper>
@@ -245,29 +266,42 @@ export default function EnhancedTable() {
                     <TableContainer>
                         <Table sx={ archiveTable } aria-labelledby='tableTitle' size={ dense ? 'small' : 'medium' } >
                             <EnhancedTableHead numSelected={ selected.length } order={ order } orderBy={ orderBy } onSelectAllClick={ handleSelectAllClick } onRequestSort={ handleRequestSort } rowCount={ rows.length } />
+                            
                             <TableBody>
                                 {stableSort(rows, getComparator(order, orderBy)).slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage).map((row, index) => {
                                         const isItemSelected = isSelected(row.orderId);
                                         const labelId = `enhanced-table-checkbox-${index}`;
 
                                         return (
-                                            <TableRow sx={ zebraStriped } hover role='checkbox' aria-checked={ isItemSelected } tabIndex={ -1 } key={ row.orderId } selected={ isItemSelected } >
-                                                <TableCell padding='checkbox'/>
-                                                <TableCell component='th' id={ labelId } scope='row' padding='none' sx={ uniqueId }>{row.table_number}</TableCell>
-                                                <TableCell align='left'>{row.item_name}</TableCell>
-                                                <TableCell align='left'>{row.quantity}</TableCell>
-                                                <TableCell align='left'>{row.item_category}</TableCell>
-                                                <TableCell align='left'>
-                                                    {
-                                                        new Date(row.time_ordered).getMonth() + '-' + 
-                                                        new Date(row.time_ordered).getDate() + '-' + 
-                                                        new Date(row.time_ordered).getFullYear() + ' | ' + 
-                                                        new Date(row.time_ordered).getHours() + ':' +
-                                                        new Date(row.time_ordered).getMinutes() + ':' +
-                                                        new Date(row.time_ordered).getSeconds()
-                                                    }
-                                                </TableCell>
-                                            </TableRow>
+                                            <>
+                                                {
+                                                    loading ? (
+                                                        <>
+                                                            <ArchiveSkeleton />
+                                                        </>
+                                                    ) : (
+                                                        <>
+                                                            <TableRow sx={zebraStriped} hover role='checkbox' aria-checked={isItemSelected} tabIndex={-1} key={row.orderId} selected={isItemSelected} >
+                                                                <TableCell padding='checkbox' />
+                                                                <TableCell component='th' id={labelId} scope='row' padding='none' sx={uniqueId}>{row.table_number}</TableCell>
+                                                                <TableCell align='left'>{row.item_name}</TableCell>
+                                                                <TableCell align='left'>{row.quantity}</TableCell>
+                                                                <TableCell align='left'>{row.item_category}</TableCell>
+                                                                <TableCell align='left'>
+                                                                    {
+                                                                        new Date(row.time_ordered).getMonth() + '-' +
+                                                                        new Date(row.time_ordered).getDate() + '-' +
+                                                                        new Date(row.time_ordered).getFullYear() + ' | ' +
+                                                                        new Date(row.time_ordered).getHours() + ':' +
+                                                                        new Date(row.time_ordered).getMinutes() + ':' +
+                                                                        new Date(row.time_ordered).getSeconds()
+                                                                    }
+                                                                </TableCell>
+                                                            </TableRow>
+                                                        </>
+                                                    )
+                                                } 
+                                            </>
                                         );
                                     })}
                                 {emptyRows > 0 && (
