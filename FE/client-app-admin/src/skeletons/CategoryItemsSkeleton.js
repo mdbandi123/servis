@@ -7,7 +7,7 @@ import { Box, Skeleton } from '@mui/material';
 function CategorySkeleton() {
     const skeleton = {
         container: {
-            maxWidth: 350
+            mb: 4
         },
         bgColor: {
             backgroundColor: grey[400],
@@ -18,30 +18,26 @@ function CategorySkeleton() {
         mr: {
             mr: 3
         },
-        floatRight: {
-            float: 'right'
-        }
+        mb: {
+            mb: 1
+        },
     };
 
     return (
         <React.Fragment>
             {Array.from(new Array(8)).map(() => (
-                <Grid2 item xs={12} sm={6} md={4} lg={3} lx={2.4}>
-                    <Box sx={ skeleton.container }>
-                        <Box>
-                            <Skeleton sx={[skeleton.bgColor]} variant='rounded' height={140} animation='wave' />
-                        </Box>
-                        <Box sx={skeleton.mt}>
-                            <Skeleton sx={[skeleton.bgColor]} variant='text' width={150} animation='wave' />
-                        </Box>
-                        <Box>
-                            <Skeleton sx={[skeleton.bgColor]} variant='text' width={130} animation='wave' />
-                        </Box>
-                        <Box sx={skeleton.mt}>
-                            <Skeleton sx={[skeleton.floatRight, skeleton.bgColor]} variant='circular' width={25} height={25} animation='wave' />
-                            <Skeleton sx={[skeleton.floatRight, skeleton.bgColor, skeleton.mr]} variant='circular' width={25} height={25} animation='wave' />
-                        </Box>
-                    </Box>
+                <Grid2 item sx={skeleton.container} xs={12} sm={6} md={4} lg={3} lx={2.4} >
+                    <Grid2 container>
+                        <Grid2 item xs={12} sm={12} md={12} lg={12} lx={12}>
+                            <Skeleton sx={skeleton.bgColor} variant='rounded' height={140} animation='wave' />
+                        </Grid2>
+                        <Grid2 item xs={9} sm={9} md={9} lg={9} lx={9}>
+                            <Skeleton sx={[skeleton.bgColor]} variant='text' animation='wave' />
+                        </Grid2>
+                        <Grid2 item xs={7} sm={7} md={7} lg={7} lx={7}>
+                            <Skeleton sx={skeleton.bgColor} variant='text' animation='wave' />
+                        </Grid2>
+                    </Grid2>
                 </Grid2>
             ))}
         </React.Fragment>

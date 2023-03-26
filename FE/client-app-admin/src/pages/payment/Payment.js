@@ -15,10 +15,12 @@ import GlobalBlackBody1 from "../../global/typographies/bodies/BlackBody1";
 import GlobalGreyBody2 from "../../global/typographies/bodies/GreyBody2";
 import GlobalGreyBody3 from "../../global/typographies/bodies/GreyBody3";
 import ViewPaymentModal from "../../global/modals/ViewPaymentModal";
-import GlobalTealContainedButton from "../../global/buttons/contains/TealContainedButton";
 import SlideDown from "../../animation/SlideDown";
 
+import PaymentSkeleton from "../../skeletons/PaymentSkeleton";
+
 function Payment(props) {
+    const [loading, setLoading] = React.useState(true);
     const { setOrderedItems, user } = useStore();
     const PaymentData = useStore.getState().orderedItems || [];
 
@@ -34,7 +36,11 @@ function Payment(props) {
             .then((data) => {
                 if (data) {
                     console.log(data.orders);
+                    setTimeout(() => {
+                        setLoading(false)
+                    }, 3000);
                     setOrderedItems(data.orders);
+                    // setLoading(false);
                 }
             })
             .catch((error) => console.error(error));
@@ -109,22 +115,29 @@ function Payment(props) {
                 <Box sx={pageTitleContainer}>
                     <GlobalIndigoHeader4 text="Payment" />
                 </Box>
-                <Grid2 container sx={centerAlignment} spacing={1}>
-                    <Grid2 item xs={12} sm={12} md={12} lg={12} lx={12}>
-                        <PersonOffTwoToneIcon sx={noItemIcon} />
-                    </Grid2>
-                    <Grid2 item xs={12} sm={12} md={12} lg={12} lx={12}>
-                        <GlobalBlackHeader3 text="No User Found" />
-                    </Grid2>
-                    <Grid2 item xs={12} sm={12} md={12} lg={12} lx={12}>
-                        <GlobalGreyBody2
-                            text={`We couldn't find any Users. Try to create Users`}
-                        />
-                    </Grid2>
-                    <Grid2 item xs={12} sm={12} md={12} lg={12} lx={12}>
-                        <GlobalTealContainedButton text="Create" />
-                    </Grid2>
-                </Grid2>
+                    {
+                        loading ? (
+                            <Grid2 container spacing={3}>
+                                <PaymentSkeleton />
+                            </Grid2>
+                        ) : (
+                            <Grid2 container sx={centerAlignment} >
+                                <Grid2 container sx={centerAlignment} spacing={1}>
+                                    <Grid2 item xs={12} sm={12} md={12} lg={12} lx={12}>
+                                        <PersonOffTwoToneIcon sx={noItemIcon} />
+                                    </Grid2>
+                                    <Grid2 item xs={12} sm={12} md={12} lg={12} lx={12}>
+                                        <GlobalBlackHeader3 text={ `No Payments list Found` } />
+                                    </Grid2>
+                                    <Grid2 item xs={12} sm={12} md={12} lg={12} lx={12}>
+                                        <GlobalGreyBody2
+                                            text={`We couldn't find any Payment.`}
+                                        />
+                                    </Grid2>
+                                </Grid2>
+                            </Grid2>
+                        )
+                    }
             </SlideDown>
         );
     }
@@ -135,168 +148,177 @@ function Payment(props) {
                 <GlobalIndigoHeader4 text="Payment" />
             </Box>
             <Grid2 container spacing={3}>
-                {PaymentData.sort((a, b) => b.billed_out - a.billed_out).map(
-                    (paymentList) => {
-                        const date = new Date(paymentList.session_start);
-                        const month = date.getMonth() + 1;
-                        const day = date.getDate();
-                        const year = date.getFullYear();
-                        const hour = date.getHours();
-                        const minute = date.getMinutes();
+                {
+                    loading ? (
+                        <PaymentSkeleton />
+                    ) : (
+                        <>
+                            {PaymentData.sort((a, b) => b.billed_out - a.billed_out).map(
+                                (paymentList) => {
+                                    const date = new Date(paymentList.session_start);
+                                    const month = date.getMonth() + 1;
+                                    const day = date.getDate();
+                                    const year = date.getFullYear();
+                                    const hour = date.getHours();
+                                    const minute = date.getMinutes();
 
-                        return (
-                            <Grid2
-                                item
-                                xs={12}
-                                sm={6}
-                                md={6}
-                                lg={4}
-                                lx={4}
-                                justifyContent="space-around"
-                            >
-                                <AnimatePresence>
-                                <motion.div layout key={paymentList.order_id} initial={{ opacity: 0, scale: 0 }} animate={{ opacity: 1, scale: 1, transition: { duration: 0.5 } }} exit={{ opacity: 0, scale: 0, transition: { duration: 0.5 } }}>
-                                <Card sx={paymentCard}>
-                                    <ViewPaymentModal
-                                        orderId={paymentList.order_id}
-                                        title={paymentList.table_number}
-                                        userId={paymentList.order_id}
-                                        orderDate={[
-                                            month + "/" + day + "/" + year,
-                                        ]}
-                                        orderTime={[hour + ":" + minute]}
-                                        sx={userIcon}
-                                        ordered_items={
-                                            paymentList.ordered_items
-                                        }
-                                    >
-                                        <CardContent>
-                                            <Grid2
-                                                container
-                                                sx={userTableProfile}
-                                            >
-                                                <Grid2
-                                                    item
-                                                    xs={12}
-                                                    sm={12}
-                                                    md={3}
-                                                    lg={3}
-                                                    lx={3}
+                                    return (
+                                        <Grid2
+                                            item
+                                            xs={12}
+                                            sm={6}
+                                            md={6}
+                                            lg={4}
+                                            lx={4}
+                                            justifyContent="space-around"
+                                        >
+                                            <AnimatePresence>
+                                            <motion.div layout key={paymentList.order_id} initial={{ opacity: 0, scale: 0 }} animate={{ opacity: 1, scale: 1, transition: { duration: 0.5 } }} exit={{ opacity: 0, scale: 0, transition: { duration: 0.5 } }}>
+                                            <Card sx={paymentCard}>
+                                                <ViewPaymentModal
+                                                    orderId={paymentList.order_id}
+                                                    title={paymentList.table_number}
+                                                    userId={paymentList.order_id}
+                                                    orderDate={[
+                                                        month + "/" + day + "/" + year,
+                                                    ]}
+                                                    orderTime={[hour + ":" + minute]}
+                                                    sx={userIcon}
+                                                    ordered_items={
+                                                        paymentList.ordered_items
+                                                    }
                                                 >
-                                                    {paymentList.billed_out ? (
-                                                        <>
-                                                            <Badge
-                                                                badgeContent={1}
-                                                                overlap="circular"
-                                                                sx={
-                                                                    badgePayment
-                                                                }
+                                                    <CardContent>
+                                                        <Grid2
+                                                            container
+                                                            sx={userTableProfile}
+                                                        >
+                                                            <Grid2
+                                                                item
+                                                                xs={12}
+                                                                sm={12}
+                                                                md={3}
+                                                                lg={3}
+                                                                lx={3}
                                                             >
-                                                                <AccountCircleIcon
-                                                                    sx={
-                                                                        userTableIcon
+                                                                {paymentList.billed_out ? (
+                                                                    <>
+                                                                        <Badge
+                                                                            badgeContent={1}
+                                                                            overlap="circular"
+                                                                            sx={
+                                                                                badgePayment
+                                                                            }
+                                                                        >
+                                                                            <AccountCircleIcon
+                                                                                sx={
+                                                                                    userTableIcon
+                                                                                }
+                                                                            />
+                                                                        </Badge>
+                                                                    </>
+                                                                ) : (
+                                                                    <AccountCircleIcon
+                                                                        sx={userTableIcon}
+                                                                    />
+                                                                )}
+                                                            </Grid2>
+                                                            <Grid2
+                                                                item
+                                                                xs={12}
+                                                                sm={12}
+                                                                md={9}
+                                                                lg={9}
+                                                                lx={9}
+                                                            >
+                                                                <GlobalBlackHeader5
+                                                                    text={
+                                                                        paymentList.table_number
                                                                     }
                                                                 />
-                                                            </Badge>
-                                                        </>
-                                                    ) : (
-                                                        <AccountCircleIcon
-                                                            sx={userTableIcon}
-                                                        />
-                                                    )}
-                                                </Grid2>
-                                                <Grid2
-                                                    item
-                                                    xs={12}
-                                                    sm={12}
-                                                    md={9}
-                                                    lg={9}
-                                                    lx={9}
-                                                >
-                                                    <GlobalBlackHeader5
-                                                        text={
-                                                            paymentList.table_number
-                                                        }
-                                                    />
-                                                    {/* <GlobalGreyBody2
-                                                        text={
-                                                            paymentList.order_id
-                                                        }
-                                                    /> */}
-                                                </Grid2>
-                                            </Grid2>
-                                            <Grid2
-                                                container
-                                                sx={userTableCardInfo}
-                                            >
-                                                <Grid2
-                                                    item
-                                                    xs={12}
-                                                    sm={12}
-                                                    md={4}
-                                                    lg={4}
-                                                    lx={4}
-                                                >
-                                                    <GlobalGreyBody3
-                                                        text={`DATE OF ORDER`}
-                                                    />
-                                                    <GlobalBlackBody1
-                                                        text={`${month}/${day}/${year}`}
-                                                    />
-                                                </Grid2>
-                                                <Grid2
-                                                    item
-                                                    xs={12}
-                                                    sm={12}
-                                                    md={4}
-                                                    lg={4}
-                                                    lx={4}
-                                                >
-                                                    <GlobalGreyBody3
-                                                        text={`TOTAL ORDERS`}
-                                                    />
-                                                    <GlobalBlackBody1
-                                                        text={paymentList.ordered_items.reduce(
-                                                            (sum, item) =>
-                                                                sum +
-                                                                item.quantity,
-                                                            0
-                                                        )}
-                                                    />
-                                                </Grid2>
-                                                <Grid2
-                                                    item
-                                                    xs={12}
-                                                    sm={12}
-                                                    md={4}
-                                                    lg={4}
-                                                    lx={4}
-                                                >
-                                                    <GlobalGreyBody3
-                                                        text={`TOTAL AMOUNT`}
-                                                    />
-                                                    <GlobalBlackBody1
-                                                        text={`₱${paymentList.ordered_items.reduce(
-                                                            (sum, item) =>
-                                                                sum +
-                                                                item.quantity *
-                                                                    item
-                                                                        .item_price
-                                                                        .$numberDecimal,
-                                                            0
-                                                        )}`}
-                                                    />
-                                                </Grid2>
-                                            </Grid2>
-                                        </CardContent>
-                                    </ViewPaymentModal>
-                                </Card>
-                            </motion.div>
-                            </AnimatePresence>
-                        </Grid2>
-                        );
-                    }
-                )}
+                                                                {/* <GlobalGreyBody2
+                                                                    text={
+                                                                        paymentList.order_id
+                                                                    }
+                                                                /> */}
+                                                            </Grid2>
+                                                        </Grid2>
+                                                        <Grid2
+                                                            container
+                                                            sx={userTableCardInfo}
+                                                        >
+                                                            <Grid2
+                                                                item
+                                                                xs={12}
+                                                                sm={12}
+                                                                md={4}
+                                                                lg={4}
+                                                                lx={4}
+                                                            >
+                                                                <GlobalGreyBody3
+                                                                    text={`DATE OF ORDER`}
+                                                                />
+                                                                <GlobalBlackBody1
+                                                                    text={`${month}/${day}/${year}`}
+                                                                />
+                                                            </Grid2>
+                                                            <Grid2
+                                                                item
+                                                                xs={12}
+                                                                sm={12}
+                                                                md={4}
+                                                                lg={4}
+                                                                lx={4}
+                                                            >
+                                                                <GlobalGreyBody3
+                                                                    text={`TOTAL ORDERS`}
+                                                                />
+                                                                <GlobalBlackBody1
+                                                                    text={paymentList.ordered_items.reduce(
+                                                                        (sum, item) =>
+                                                                            sum +
+                                                                            item.quantity,
+                                                                        0
+                                                                    )}
+                                                                />
+                                                            </Grid2>
+                                                            <Grid2
+                                                                item
+                                                                xs={12}
+                                                                sm={12}
+                                                                md={4}
+                                                                lg={4}
+                                                                lx={4}
+                                                            >
+                                                                <GlobalGreyBody3
+                                                                    text={`TOTAL AMOUNT`}
+                                                                />
+                                                                <GlobalBlackBody1
+                                                                    text={`₱${paymentList.ordered_items.reduce(
+                                                                        (sum, item) =>
+                                                                            sum +
+                                                                            item.quantity *
+                                                                                item
+                                                                                    .item_price
+                                                                                    .$numberDecimal,
+                                                                        0
+                                                                    )}`}
+                                                                />
+                                                            </Grid2>
+                                                        </Grid2>
+                                                    </CardContent>
+                                                </ViewPaymentModal>
+                                            </Card>
+                                        </motion.div>
+                                        </AnimatePresence>
+                                    </Grid2>
+                                    );
+                                }
+                            )}
+                        </>
+                    )
+                }
+                
             </Grid2>
         </SlideDown>
     );
