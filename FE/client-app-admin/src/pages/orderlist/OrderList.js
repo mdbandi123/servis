@@ -26,6 +26,8 @@ import AccountCircleIcon from "@mui/icons-material/AccountCircle";
 import ChevronLeftIcon from "@mui/icons-material/ChevronLeft";
 import ChevronRightIcon from "@mui/icons-material/ChevronRight";
 import PersonOffTwoToneIcon from "@mui/icons-material/PersonOffTwoTone";
+import FastfoodIcon from '@mui/icons-material/Fastfood';
+import NoFoodIcon from '@mui/icons-material/NoFood';
 
 import GlobalGreyCaption1 from "../../global/typographies/captions/GreyCaption1";
 import GlobalGreyCaption2 from "../../global/typographies/captions/GreyCaption2";
@@ -205,6 +207,7 @@ function OrderList() {
     };
 
     const orderListUsername = {
+        marginTop:'.25em',
         fontSize: "1.4em",
     };
 
@@ -224,7 +227,7 @@ function OrderList() {
                     <SlideDown>
                         <Box component="main">
                             <Box sx={pageTitleContainer}>
-                                <GlobalIndigoHeader4 text="Orders List" />
+                                <GlobalIndigoHeader4 text="Order Board" />
                             </Box>
                             <Grid2 container sx={centerAlignment} spacing={1}>
                                 <Grid2
@@ -235,7 +238,7 @@ function OrderList() {
                                     lg={12}
                                     lx={12}
                                 >
-                                    <PersonOffTwoToneIcon sx={noItemIcon} />
+                                    <NoFoodIcon sx={noItemIcon} />
                                 </Grid2>
                                 <Grid2
                                     item
@@ -256,10 +259,10 @@ function OrderList() {
                                     lx={12}
                                 >
                                     <GlobalGreyBody2
-                                        text={`We were unable to find any Orders. Please wait for customers' orders.`}
+                                        text={`We were unable to find any Orders. Please wait for customers to orders.`}
                                     />
                                 </Grid2>
-                                <Grid2
+                                {/* <Grid2
                                     item
                                     xs={12}
                                     sm={12}
@@ -268,7 +271,7 @@ function OrderList() {
                                     lx={12}
                                 >
                                     <GlobalTealContainedButton text="Create" />
-                                </Grid2>
+                                </Grid2> */}
                             </Grid2>
                         </Box>
                     </SlideDown>
@@ -328,7 +331,7 @@ function OrderList() {
                 <SlideDown>
                     <Box component="main">
                         <Box sx={pageTitleContainer}>
-                            <GlobalIndigoHeader4 text="Orders List" />
+                            <GlobalIndigoHeader4 text="Order Board" />
                         </Box>
                         <Grid2 container spacing={1} alignItems="baseline">
                             {orderListNotification
@@ -406,7 +409,7 @@ function OrderList() {
                                                                         overlap="circular"
                                                                         max={9}
                                                                     >
-                                                                        <AccountCircleIcon
+                                                                        <FastfoodIcon
                                                                             sx={
                                                                                 userTableIcon
                                                                             }
@@ -620,7 +623,7 @@ function OrderList() {
                                                             notificationItemIcon
                                                         }
                                                     >
-                                                        <AccountCircleIcon
+                                                        <FastfoodIcon
                                                             sx={[
                                                                 notificationUserPhoto,
                                                             ]}
