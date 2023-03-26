@@ -7,7 +7,6 @@ import Grid2 from '@mui/material/Unstable_Grid2/Grid2';
 import { CardActions, CardMedia, CardContent, Card } from '@mui/material/';
 import { grey, teal } from '@mui/material/colors';
 import FolderOffTwoToneIcon from '@mui/icons-material/FolderOffTwoTone';
-import InsertPhotoIcon from '@mui/icons-material/InsertPhoto';
 
 import GlobalIndigoHeader4 from '../../../global/typographies/headers/IndigoHeader4';
 import GlobalIndigoHeader6 from '../../../global/typographies/headers/IndigoHeader6';
@@ -20,7 +19,10 @@ import UpdateItemModal from '../../../global/modals/UpdateItemModal';
 import SlideDown from '../../../animation/SlideDown';
 import GlobalBlackBody1 from '../../../global/typographies/bodies/BlackBody1';
 
+import FoodSkeleton from '../../../skeletons/FoodItemSkeleton';
+
 function FoodItems() {
+    const [loading, setLoading] = React.useState(true);
     const { menuItems, setMenuItems } = useStore();
     const [search, setSearch] = React.useState('');
 
@@ -30,6 +32,9 @@ function FoodItems() {
         fetch(`${process.env.REACT_APP_BACKEND_URL}/menu_items/`)
             .then((res) => res.json())
             .then((data) => {
+                setTimeout(() => {
+                    setLoading(false)
+                }, 3000);
                 setMenuItems(data.items);
             });
     }, []);
@@ -88,18 +93,26 @@ function FoodItems() {
                         </Box>
                     </Stack>
                 </Box>
-                <Grid2 container sx={centerAlignment} spacing={1}>
-                    <Grid2 item xs={12} sm={12} md={12} lg={12} lx={12}>
-                        <FolderOffTwoToneIcon sx={noItemIcon} />
-                    </Grid2>
-                    <Grid2 item xs={12} sm={12} md={12} lg={12} lx={12}>
-                        <GlobalBlackHeader3 text={`No Food Item Found`} />
-                    </Grid2>
-                    <Grid2 item xs={12} sm={12} md={12} lg={12} lx={12}>
-                        <GlobalGreyBody2
-                            text={`We couldn't find any Food Items. Try to create your own Food Item.`}
-                        />
-                    </Grid2>
+                <Grid2 container sx={centerAlignment} >
+                    {
+                        loading ? (
+                            <FoodSkeleton />
+                        ) : (
+                            <Grid2 container sx={centerAlignment} spacing={1}>
+                                <Grid2 item xs={12} sm={12} md={12} lg={12} lx={12}>
+                                    <FolderOffTwoToneIcon sx={noItemIcon} />
+                                </Grid2>
+                                <Grid2 item xs={12} sm={12} md={12} lg={12} lx={12}>
+                                    <GlobalBlackHeader3 text={ `No Food Item Found` } />
+                                </Grid2>
+                                <Grid2 item xs={12} sm={12} md={12} lg={12} lx={12}>
+                                    <GlobalGreyBody2
+                                        text={`We couldn't find any Food Items. Try to create Food Item.`}
+                                    />
+                                </Grid2>
+                            </Grid2>
+                        )
+                    }
                 </Grid2>
             </SlideDown>
         );
@@ -121,67 +134,75 @@ function FoodItems() {
                 </Stack>
             </Box>
             <Grid2 container spacing={3}>
-                {menuItems.filter((foodItemList) => {
-                    return search.toLowerCase() === '' ? foodItemList : foodItemList.name.toLowerCase().includes(search);
-                }).map((foodItemList) => (
-                    <Grid2 item xs={12} sm={6} md={4} lg={3} lx={2.4}>
-                        <AnimatePresence>
-                            <motion.div layout key={foodItemList._id} initial={{ opacity: 0, scale: 0 }} animate={{ opacity: 1, scale: 1, transition: { duration: 0.3 } }} exit={{ opacity: 0, scale: 0, transition: { duration: 0.3 } }}>
-                                <Card sx={foodItemCardContainer} key={foodItemList._id}>
-                                    <CardMedia
-                                        component='img'
-                                        alt={foodItemList.category_name}
-                                        height='159'
-                                        image={`${process.env.REACT_APP_BACKEND_URL}${foodItemList.image}`}
-                                    />
-                                    <CardContent>
-                                        <GlobalIndigoHeader6 text={foodItemList.name} />
-                                        <GlobalGreyBody2
-                                            text={foodItemList.category_name}
-                                        />
-                                        <GlobalBlackHeader6
-                                            text={`₱${foodItemList.price.$numberDecimal}`}
-                                        />
-                                    </CardContent>
-                                    <CardActions sx={{ float: 'right' }}>                                   
-                                        <Tooltip title='Update'>
-                                            <IconButton>
-                                                <UpdateItemModal
-                                                    title={'Update ' + foodItemList.name}
-                                                    id={foodItemList._id}
-                                                    image={foodItemList.image}
-                                                    alt={foodItemList.name}
-                                                    valueName={foodItemList.name}
-                                                    valuePrice={
-                                                        foodItemList.price.$numberDecimal
-                                                    }
-                                                    valueCateg={foodItemList.category_name}
-                                                    availability={foodItemList.is_available}
-                                                    sx={actionIcon}
+                {
+                    loading ? (
+                        <FoodSkeleton />
+                    ) : (
+                        <>
+                            {menuItems.filter((foodItemList) => {
+                                return search.toLowerCase() === '' ? foodItemList : foodItemList.name.toLowerCase().includes(search);
+                            }).map((foodItemList) => (
+                                <Grid2 item xs={12} sm={6} md={4} lg={3} lx={2.4}>
+                                    <AnimatePresence>
+                                        <motion.div layout key={foodItemList._id} initial={{ opacity: 0, scale: 0 }} animate={{ opacity: 1, scale: 1, transition: { duration: 0.3 } }} exit={{ opacity: 0, scale: 0, transition: { duration: 0.3 } }}>
+                                            <Card sx={foodItemCardContainer} key={foodItemList._id}>
+                                                <CardMedia
+                                                    component='img'
+                                                    alt={foodItemList.category_name}
+                                                    height='159'
+                                                    image={`${process.env.REACT_APP_BACKEND_URL}${foodItemList.image}`}
                                                 />
-                                            </IconButton>
-                                        </Tooltip>
-                                        <Tooltip title='Delete'>
-                                            <IconButton>
-                                                <DeleteItemModal
-                                                    context={ <>
-                                                            <Grid2 container>
-                                                                Are you sure you want to delete
-                                                                <GlobalBlackBody1 text={foodItemList.name} sx={{ ml: 0.5, fontWeight: 'bold' }} />?
-                                                            </Grid2>
-                                                        </> }
-                                                    item_id={foodItemList._id}
-                                                    header={`Delete Food Item`}
-                                                    sx={actionIcon}
-                                                />
-                                            </IconButton>
-                                        </Tooltip>
-                                    </CardActions>
-                                </Card>
-                            </motion.div>
-                        </AnimatePresence>
-                    </Grid2>
-                ))}
+                                                <CardContent>
+                                                    <GlobalIndigoHeader6 text={foodItemList.name} />
+                                                    <GlobalGreyBody2
+                                                        text={foodItemList.category_name}
+                                                    />
+                                                    <GlobalBlackHeader6
+                                                        text={`₱${foodItemList.price.$numberDecimal}`}
+                                                    />
+                                                </CardContent>
+                                                <CardActions sx={{ float: 'right' }}>
+                                                    <Tooltip title='Update'>
+                                                        <IconButton>
+                                                            <UpdateItemModal
+                                                                title={'Update ' + foodItemList.name}
+                                                                id={foodItemList._id}
+                                                                image={foodItemList.image}
+                                                                alt={foodItemList.name}
+                                                                valueName={foodItemList.name}
+                                                                valuePrice={
+                                                                    foodItemList.price.$numberDecimal
+                                                                }
+                                                                valueCateg={foodItemList.category_name}
+                                                                availability={foodItemList.is_available}
+                                                                sx={actionIcon}
+                                                            />
+                                                        </IconButton>
+                                                    </Tooltip>
+                                                    <Tooltip title='Delete'>
+                                                        <IconButton>
+                                                            <DeleteItemModal
+                                                                context={<>
+                                                                    <Grid2 container>
+                                                                        Are you sure you want to delete
+                                                                        <GlobalBlackBody1 text={foodItemList.name} sx={{ ml: 0.5, fontWeight: 'bold' }} />?
+                                                                    </Grid2>
+                                                                </>}
+                                                                item_id={foodItemList._id}
+                                                                header={`Delete Food Item`}
+                                                                sx={actionIcon}
+                                                            />
+                                                        </IconButton>
+                                                    </Tooltip>
+                                                </CardActions>
+                                            </Card>
+                                        </motion.div>
+                                    </AnimatePresence>
+                                </Grid2>
+                            ))}
+                        </>
+                    )
+                }
             </Grid2>
         </SlideDown>
     );

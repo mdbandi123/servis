@@ -41,8 +41,9 @@ function TableManagement() {
                 setTimeout(() => {
                     setLoading(false)
                 }, 3000)
-                // setLoading(false)
+                
                 setTableData(data.tables)
+                // setLoading(false);
             }
         ).catch((error) => {
             console.log(error);
@@ -116,7 +117,7 @@ function TableManagement() {
                                 </Grid2>
                                 <Grid2 item xs={12} sm={12} md={12} lg={12} lx={12}>
                                     <GlobalGreyBody2
-                                        text={`We couldn't find any Table. Try to create Table.`}
+                                        text={`We couldn't find any Table. Please create Table.`}
                                     />
                                 </Grid2>
                             </Grid2>
