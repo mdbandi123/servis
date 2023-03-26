@@ -11,6 +11,7 @@ import {
     ListItemIcon,
     ListItemText,
     Collapse,
+    Avatar,
 } from "@mui/material/";
 import { CssBaseline, IconButton } from "@mui/material/";
 import { Box, Toolbar, Divider } from "@mui/material/";
@@ -147,14 +148,14 @@ function Navbar() {
     };
 
     const menuList1 = [
-        { title: "Orders List", path: "/" },
+        { title: "Order Board", path: "/" },
         { title: "Payment", path: "/payment" },
         { title: "Archive", path: "/archive" },
     ];
 
     const menuList2 = [
         { title: "Table Management", path: "/table-management" },
-        { title: "Generate", path: "/generate" },
+        { title: "Generate QR", path: "/generate" },
     ];
 
     const menulist3 = [{ title: "Signout", path: "/logout" }];
@@ -253,7 +254,8 @@ function Navbar() {
                     </Tooltip>
                     <Stack direction="row" spacing={2} alignItems="center">
                         <Box>
-                            <AccountCircleIcon sx={adminIcon} />
+                            <Avatar sx={adminIcon} src='servis-logo-white.png'/>
+                            {/* <AccountCircleIcon sx={adminIcon} /> */}
                         </Box>
                         <Box>
                             <GlobalWhiteHeader5 text={`Admin Interface`} />

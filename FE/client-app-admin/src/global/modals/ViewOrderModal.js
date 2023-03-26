@@ -262,7 +262,7 @@ function ViewOrderModal(props) {
                 aria-describedby="alert-dialog-slide-description"
             >
                 <DialogTitle sx={dialogAlignment}>
-                    <AccountCircleIcon sx={props.sx} />
+                    {/* <AccountCircleIcon sx={props.sx} /> */}
                     <GlobalBlackHeader5 text={props.title + " (" + props.userId + ")"} />
                 </DialogTitle>
                 <DialogContent>

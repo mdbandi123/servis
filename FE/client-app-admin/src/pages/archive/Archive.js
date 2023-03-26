@@ -243,9 +243,9 @@ export default function EnhancedTable() {
             <Box sx={ tableContainerWidth }>
                 <Paper sx={ archiveTablePaper }>
                     <TableContainer>
-                        <Table sx={ archiveTable } aria-labelledby='tableTitle' size={ dense ? 'small' : 'medium' } >
+                        <Table sx={ archiveTable } aria-labelledby='tableTitle' size={ dense ? 'small' : 'medium' }>
                             <EnhancedTableHead numSelected={ selected.length } order={ order } orderBy={ orderBy } onSelectAllClick={ handleSelectAllClick } onRequestSort={ handleRequestSort } rowCount={ rows.length } />
-                            <TableBody>
+                            <TableBody >
                                 {stableSort(rows, getComparator(order, orderBy)).slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage).map((row, index) => {
                                         const isItemSelected = isSelected(row.orderId);
                                         const labelId = `enhanced-table-checkbox-${index}`;

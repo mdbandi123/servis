@@ -43,6 +43,7 @@ function Generate() {
 
     const [url, setUrl] = React.useState(null);
     const [table, setTable] = React.useState(null);
+    const [generate, setGenerate] = React.useState(null);
     const [openAlert, setOpenAlert] = React.useState(false);
 
     const { user } = useStore();
@@ -100,6 +101,7 @@ function Generate() {
                 console.log(data);
                 setUrl(data.url);
                 setOpenConfirmModal(false);
+                setGenerate(!generate);
             })
             .catch((error) => {
                 console.log(error);
@@ -107,6 +109,11 @@ function Generate() {
         
         setOpenAlert(true);
     };
+
+    const generateButtonEnableHandler = (e) => {
+        setTable(e.target.value);
+        setGenerate(!generate);
+    }
 
     const styles = {
         qrCodeContainer: {
@@ -208,7 +215,7 @@ function Generate() {
     return (
         <SlideDown>
             <Box sx={pageTitleContainer}>
-                <GlobalIndigoHeader4 text="Generate" />
+                <GlobalIndigoHeader4 text="Generate QR" />
             </Box>
             <Grid2 container spacing={3}>
                 <Grid2 item xs={12} sm={12} md={5} lg={5} lx={5}>
@@ -225,7 +232,7 @@ function Generate() {
                                     variant="filled"
                                     fullWidth
                                     select
-                                    onChange={(e) => setTable(e.target.value)}
+                                    onChange={generateButtonEnableHandler}
                                 >
                                     {tableData.map((tableList) => (
                                         <MenuItem
@@ -255,7 +262,7 @@ function Generate() {
                                     sx={qrBtnContainer}
                                     text="Generate"
                                     onClick={confirmHandler}
-                                    disabled={!table}
+                                    disabled={!generate}
                                 />
                             </Box>
                         </Stack>

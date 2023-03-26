@@ -131,7 +131,7 @@ function ViewPaymentModal(props) {
                     <DialogTitle sx={dialogAlignment}>
                         <Stack direction="row" spacing={1} alignItems="center">
                             <Box>
-                                <AccountCircleIcon sx={props.sx} />
+                                {/* <AccountCircleIcon sx={props.sx} /> */}
                             </Box>
                             <Box>
                                 <GlobalBlackHeader5
@@ -327,7 +327,7 @@ function ViewPaymentModal(props) {
                 <DialogTitle sx={dialogAlignment}>
                     <Stack direction="row" spacing={1} alignItems="center">
                         <Box>
-                            <AccountCircleIcon sx={props.sx} />
+                            {/* <AccountCircleIcon sx={props.sx} /> */}
                         </Box>
                         <Box>
                             <GlobalBlackHeader5

@@ -3,10 +3,13 @@ import { useStore } from "../../store/store";
 
 import { motion, AnimatePresence } from 'framer-motion';
 import { grey, teal, orange } from "@mui/material/colors";
-import { Box, Card, CardContent, Badge } from "@mui/material/";
+import { Box, Card, CardContent, Badge, Avatar } from "@mui/material/";
 import Grid2 from "@mui/material/Unstable_Grid2/Grid2";
 import AccountCircleIcon from "@mui/icons-material/AccountCircle";
+import AccountBalanceWalletIcon from '@mui/icons-material/AccountBalanceWallet';
 import PersonOffTwoToneIcon from "@mui/icons-material/PersonOffTwoTone";
+import CreditCardIcon from '@mui/icons-material/CreditCard';
+import CreditCardOffIcon from '@mui/icons-material/CreditCardOff';
 
 import GlobalIndigoHeader4 from "../../global/typographies/headers/IndigoHeader4";
 import GlobalBlackHeader5 from "../../global/typographies/headers/BlackHeader5";
@@ -111,19 +114,19 @@ function Payment(props) {
                 </Box>
                 <Grid2 container sx={centerAlignment} spacing={1}>
                     <Grid2 item xs={12} sm={12} md={12} lg={12} lx={12}>
-                        <PersonOffTwoToneIcon sx={noItemIcon} />
+                        <CreditCardOffIcon sx={noItemIcon} />
                     </Grid2>
                     <Grid2 item xs={12} sm={12} md={12} lg={12} lx={12}>
-                        <GlobalBlackHeader3 text="No User Found" />
+                        <GlobalBlackHeader3 text="No Orders For Billout Found" />
                     </Grid2>
                     <Grid2 item xs={12} sm={12} md={12} lg={12} lx={12}>
                         <GlobalGreyBody2
-                            text={`We couldn't find any Users. Try to create Users`}
+                            text={`We couldn't find any orders. Please wait for customers to order.`}
                         />
                     </Grid2>
-                    <Grid2 item xs={12} sm={12} md={12} lg={12} lx={12}>
+                    {/* <Grid2 item xs={12} sm={12} md={12} lg={12} lx={12}>
                         <GlobalTealContainedButton text="Create" />
-                    </Grid2>
+                    </Grid2> */}
                 </Grid2>
             </SlideDown>
         );
@@ -192,7 +195,7 @@ function Payment(props) {
                                                                     badgePayment
                                                                 }
                                                             >
-                                                                <AccountCircleIcon
+                                                                <CreditCardIcon
                                                                     sx={
                                                                         userTableIcon
                                                                     }
@@ -200,7 +203,7 @@ function Payment(props) {
                                                             </Badge>
                                                         </>
                                                     ) : (
-                                                        <AccountCircleIcon
+                                                        <CreditCardIcon
                                                             sx={userTableIcon}
                                                         />
                                                     )}
@@ -217,6 +220,8 @@ function Payment(props) {
                                                         text={
                                                             paymentList.table_number
                                                         }
+
+                                                        sx={{marginTop: '3%', marginLeft: '-10%'}}
                                                     />
                                                     {/* <GlobalGreyBody2
                                                         text={

@@ -23,6 +23,8 @@ import {
 } from "@mui/material";
 import { teal, grey, orange } from "@mui/material/colors";
 import AccountCircleIcon from "@mui/icons-material/AccountCircle";
+import FastfoodIcon from '@mui/icons-material/Fastfood';
+import NoFoodIcon from '@mui/icons-material/NoFood';
 import ChevronLeftIcon from "@mui/icons-material/ChevronLeft";
 import ChevronRightIcon from "@mui/icons-material/ChevronRight";
 import PersonOffTwoToneIcon from "@mui/icons-material/PersonOffTwoTone";
@@ -110,7 +112,7 @@ function OrderList() {
     };
 
     const pageTitleContainer = {
-        mb: 3,
+        mb: 4,
         textAlign: {
             xs: "center",
             sm: "center",
@@ -205,7 +207,8 @@ function OrderList() {
     };
 
     const orderListUsername = {
-        fontSize: "1.4em",
+        marginTop: '.25em',
+        fontSize: "1.5em",
     };
 
     const userIconNotification = {
@@ -224,21 +227,21 @@ function OrderList() {
                     <SlideDown>
                         <Box component="main">
                             <Box sx={pageTitleContainer}>
-                                <GlobalIndigoHeader4 text="Orders List" />
+                                <GlobalIndigoHeader4 text="Order Board" />
                             </Box>
                             <Grid2 container sx={centerAlignment} spacing={1}>
                                 <Grid2 item xs={12} sm={12} md={12} lg={12} lx={12} >
-                                    <PersonOffTwoToneIcon sx={noItemIcon} />
+                                    <NoFoodIcon sx={noItemIcon} />
                                 </Grid2>
                                 <Grid2 item xs={12} sm={12} md={12} lg={12} lx={12} >
-                                    <GlobalBlackHeader3 text="No Running Orders" />
+                                    <GlobalBlackHeader3 text="No Running Orders Found" />
                                 </Grid2>
                                 <Grid2 item xs={12} sm={12} md={12} lg={12} lx={12} >
-                                    <GlobalGreyBody2 text={`We were unable to find any Orders. Please wait for customers' orders.`} />
+                                    <GlobalGreyBody2 text={`We were unable to find any Orders. Please wait for customers to order.`} />
                                 </Grid2>
-                                <Grid2 item xs={12} sm={12} md={12} lg={12} lx={12} >
+                                {/* <Grid2 item xs={12} sm={12} md={12} lg={12} lx={12} >
                                     <GlobalTealContainedButton text="Create" />
-                                </Grid2>
+                                </Grid2> */}
                             </Grid2>
                         </Box>
                     </SlideDown>
@@ -278,7 +281,7 @@ function OrderList() {
                 <SlideDown>
                     <Box component="main">
                         <Box sx={pageTitleContainer}>
-                            <GlobalIndigoHeader4 text="Orders List" />
+                            <GlobalIndigoHeader4 text="Order Board" />
                         </Box>
                         <Grid2 container spacing={1} alignItems="baseline">
                             {orderListNotification
@@ -308,12 +311,12 @@ function OrderList() {
                                                                         overlap="circular"
                                                                         max={9}
                                                                     >
-                                                                        <AccountCircleIcon
+                                                                        <FastfoodIcon
                                                                             sx={ userTableIcon } />
                                                                     </GlobalTealBadge>
                                                                 </Grid2>
                                                                 <Grid2 item xs={12} sm container >
-                                                                    <Grid2 item xs container direction="column" spacing={2} >
+                                                                    <Grid2 item xs container direction="column" spacing={1} >
                                                                         <Grid2 item xs>
                                                                             <Stack direction="row" alignItems="center" spacing={2} >
                                                                                 <GlobalBlackHeader6 sx={ orderListUsername } text={ notificationItem.table_number } />
@@ -400,7 +403,7 @@ function OrderList() {
                                             ]} >
                                         <ListItemButton sx={notificationItemButton} >
                                             <ListItemIcon sx={notificationItemIcon} >
-                                                <AccountCircleIcon sx={[notificationUserPhoto]} />
+                                                <FastfoodIcon sx={[notificationUserPhoto]} />
                                             </ListItemIcon>
                                             <Stack direction="column"  justifyContent="flex-start" spacing={-1} >
                                                 <Stack direction="row">
