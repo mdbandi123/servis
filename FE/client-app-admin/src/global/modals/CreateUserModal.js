@@ -98,18 +98,7 @@ function CreateUserModal(props) {
                                 <Grid2 container spacing={1}>
                                     <Grid2 item xs={12} sm={12} md={12} lg={12} lx={12}>
                                         <TextField id='outlined-textarea' color='warning' type='text' label='Table Name' placeholder='Enter Table Name' value={tableName} variant='filled' fullWidth 
-                                        onChange={(e) => { 
-                                            const arr = e.target.value.split(" ");
-
-                                            for (var i = 0; i < arr.length; i++) {
-                                                arr[i] = arr[i].charAt(0).toUpperCase() + arr[i].slice(1);
-                                            }
-
-                                            const str2 = arr.join(' ');
-
-                                            setTableName(str2);
-
-                                        }} />
+                                        onChange={(e) => setTableName(e.target.value) } />
                                     </Grid2>
                                 </Grid2>
                             </Grid2>
