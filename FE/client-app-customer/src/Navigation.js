@@ -126,7 +126,7 @@ export default function Navigation(props) {
                     <Toolbar>
                         <Stack direction="row" alignItems="center" spacing={1}>
                             <Box>
-                                <Avatar sx={avatar} />
+                                <Avatar sx={avatar} src='servis-logo-white.png'/>
                             </Box>
                             <Box>
                                 <GlobalWhiteHeader6 text={`${table_number}`} />

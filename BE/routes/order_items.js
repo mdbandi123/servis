@@ -104,10 +104,20 @@ route.get("/archive-csv", async (req, res) => {
         const start_date = req.query.start_date;
         const end_date = req.query.end_date;
 
-        const orders = await order_model.find({
-            is_paid: true,
-            session_start: { $gte: new Date(start_date), $lte: new Date(end_date) },
-        }).lean();
+        const start = new Date(start_date);
+        start.setHours(0, 0, 0, 0);
+        const end = new Date(end_date);
+        end.setHours(23, 59, 59, 999);
+
+        const orders = await order_model
+            .find({
+                is_paid: true,
+                session_start: {
+                    $gte: start,
+                    $lte: end,
+                },
+            })
+            .lean();
         if (!orders) {
             return res
                 .status(404)
@@ -121,8 +131,25 @@ route.get("/archive-csv", async (req, res) => {
             order.ordered_items.forEach((item) => {
                 item.table_number = order.table_number;
                 item.order_id = order.order_id;
-                item.session_start = order.session_start;
-                item.item_price = JSON.parse(JSON.stringify(item.item_price)).$numberDecimal
+
+                const date = new Date(item.time_ordered);
+                const formattedDate = `${
+                    date.getMonth() + 1
+                }-${date.getDate()}-${date.getFullYear()} | ${date
+                    .getHours()
+                    .toString()
+                    .padStart(2, "0")}:${date
+                    .getMinutes()
+                    .toString()
+                    .padStart(2, "0")}:${date
+                    .getSeconds()
+                    .toString()
+                    .padStart(2, "0")}`;
+                item.time_ordered = formattedDate;
+
+                item.item_price = JSON.parse(
+                    JSON.stringify(item.item_price)
+                ).$numberDecimal;
                 items.push(item);
 
                 if (!itemTotals[item.item_name]) {
@@ -175,12 +202,12 @@ route.get("/archive-csv", async (req, res) => {
             "item_name",
             "quantity",
             "item_price",
-            "session_start",
+            "time_ordered",
         ];
         const opts = { fields };
         try {
             const csv = json2csv(items, opts);
-            await fs.promises.writeFile('archive.csv', csv, function (err) {
+            await fs.promises.writeFile("archive.csv", csv, function (err) {
                 if (err) return console.error(err);
                 console.log("Data written to file");
             });
@@ -194,12 +221,10 @@ route.get("/archive-csv", async (req, res) => {
                 return res.status(500).send(err.message);
             }
         });
-
     } catch (error) {
         res.status(400).json({ success: false, message: error.message });
     }
 });
-
 
 // retrieves all items in the order of the CURRENT session (body payload: order_id)
 route.get("/items/:order_id", async (req, res) => {
@@ -236,78 +261,79 @@ route.post("/item", async (req, res) => {
     const order_id = req.body.order_id;
     const item_id = req.body.item_id;
     const quantity = req.body.quantity;
-  
+
     // find the item in the menu collection inside the menu_item array of objects with the _id
     const menu = await menu_model.findOne({
-      menu_item: { $elemMatch: { _id: mongoose.Types.ObjectId(item_id) } },
+        menu_item: { $elemMatch: { _id: mongoose.Types.ObjectId(item_id) } },
     });
-  
+
     if (!menu) {
-      return res.status(500).json({
-        message: "not found in menu",
-      });
+        return res.status(500).json({
+            message: "not found in menu",
+        });
     }
-  
+
     // find the item in the menu_item array of objects using the id
-    const item = menu.menu_item.find((menuItem) => menuItem._id.toString() === item_id);
-  
+    const item = menu.menu_item.find(
+        (menuItem) => menuItem._id.toString() === item_id
+    );
+
     // if the item is not found in the menu_item array of objects
     if (!item) {
-      return res.status(500).json({
-        message: "Item not found in menu",
-      });
+        return res.status(500).json({
+            message: "Item not found in menu",
+        });
     }
-  
+
     const order = await order_model.findOne({ order_id });
     if (!order) {
-      return res.status(404).json({ message: "Order not found" });
+        return res.status(404).json({ message: "Order not found" });
     }
-  
-    const existingItemIndex = order.cart_items.findIndex(
-      (cartItem) => cartItem.item_name === item.name
-    );
-  
-    try {
-      if (existingItemIndex === -1) {
-        // create a new cart item
-        const newItem = new cart_item_model({
-          item_id: item._id,
-          item_name: item.name,
-          item_price: item.price,
-          item_category: menu.category_name,
-          quantity: quantity,
-          item_image: item.image,
-        });
-  
-        // add the order to the order collection
-        await order_model.findOneAndUpdate(
-          { order_id: order_id },
-          { $push: { cart_items: newItem } },
-          { new: true }
-        );
-  
-        return res.status(200).json({
-          message: `Item has been added to the cart.`,
-        });
-      } else {
-        // add 1 to the existing item's quantity
-        const existingItem = order.cart_items[existingItemIndex];
-        existingItem.quantity += 1;
 
-        await order.save();
-  
-        return res.status(200).json({
-          message: `Quantity of item in cart has been increased by 1.`,
-        });
-      }
+    const existingItemIndex = order.cart_items.findIndex(
+        (cartItem) => cartItem.item_name === item.name
+    );
+
+    try {
+        if (existingItemIndex === -1) {
+            // create a new cart item
+            const newItem = new cart_item_model({
+                item_id: item._id,
+                item_name: item.name,
+                item_price: item.price,
+                item_category: menu.category_name,
+                quantity: quantity,
+                item_image: item.image,
+            });
+
+            // add the order to the order collection
+            await order_model.findOneAndUpdate(
+                { order_id: order_id },
+                { $push: { cart_items: newItem } },
+                { new: true }
+            );
+
+            return res.status(200).json({
+                message: `Item has been added to the cart.`,
+            });
+        } else {
+            // add 1 to the existing item's quantity
+            const existingItem = order.cart_items[existingItemIndex];
+            existingItem.quantity += 1;
+
+            await order.save();
+
+            return res.status(200).json({
+                message: `Quantity of item in cart has been increased by 1.`,
+            });
+        }
     } catch (error) {
-      return res.status(500).json({
-        message: "Error adding item to cart",
-        error: error,
-      });
+        return res.status(500).json({
+            message: "Error adding item to cart",
+            error: error,
+        });
     }
-  });
-  
+});
 
 // update the status of an item in the order of the CURRENT session (body payload: order_id, item_id, status)
 route.put("/status", auth, async (req, res) => {
@@ -352,8 +378,8 @@ route.put("/quantity", async (req, res) => {
                 { $pull: { cart_items: { _id: item_id } } },
                 { new: true }
             );
-            }
-            
+        }
+
         // update the quantity of the item in the order collection
         await order_model.findOneAndUpdate(
             { order_id: order_id, "cart_items._id": item_id },
@@ -379,26 +405,28 @@ route.put("/checkout", async (req, res) => {
 
     try {
         const order = await order_model.findOne({ order_id });
-    
+
         if (!order) {
-          return res.status(404).json({ message: "Order not found" });
+            return res.status(404).json({ message: "Order not found" });
         }
 
         const currentTime = new Date();
         order.cart_items = order.cart_items.map((item) => ({
-        ...item,
-        time_ordered: currentTime,
+            ...item,
+            time_ordered: currentTime,
         }));
-        
+
         order.ordered_items = [...order.ordered_items, ...order.cart_items];
         order.cart_items = [];
-    
+
         await order.save();
-    
-        return res.status(200).json({ message: "Cart items moved to ordered items" });
-      } catch (error) {
+
+        return res
+            .status(200)
+            .json({ message: "Cart items moved to ordered items" });
+    } catch (error) {
         return res.status(500).json({ message: "An error occurred", error });
-      }
+    }
 });
 
 //remove the item from the cart of the CURRENT session (body payload: order_id, item_id)
