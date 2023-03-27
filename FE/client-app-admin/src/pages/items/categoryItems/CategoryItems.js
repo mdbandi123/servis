@@ -85,27 +85,29 @@ function CategoryItems() {
                 <Box mb={3}>
                     <CreateCategModal />
                 </Box>
-                <Grid2 container sx={centerAlignment} >
                     {
                         loading ? (
-                            <CategorySkeleton />
+                            <Grid2 container spacing={1}>
+                                <CategorySkeleton />
+                            </Grid2>
                         ) : (
-                            <Grid2 container sx={centerAlignment} spacing={1}>
-                                <Grid2 item xs={12} sm={12} md={12} lg={12} lx={12}>
-                                    <FolderOffTwoToneIcon sx={noItemIcon} />
-                                </Grid2>
-                                <Grid2 item xs={12} sm={12} md={12} lg={12} lx={12}>
-                                    <GlobalBlackHeader3 text={ `No Category Item Found` } />
-                                </Grid2>
-                                <Grid2 item xs={12} sm={12} md={12} lg={12} lx={12}>
-                                    <GlobalGreyBody2
-                                        text={`We couldn't find any Category Items. Try to create your own Category Item.`}
-                                    />
+                            <Grid2 container sx={centerAlignment} >
+                                <Grid2 container sx={centerAlignment} spacing={1}>
+                                    <Grid2 item xs={12} sm={12} md={12} lg={12} lx={12}>
+                                        <FolderOffTwoToneIcon sx={noItemIcon} />
+                                    </Grid2>
+                                    <Grid2 item xs={12} sm={12} md={12} lg={12} lx={12}>
+                                        <GlobalBlackHeader3 text={ `No Category Item Found` } />
+                                    </Grid2>
+                                    <Grid2 item xs={12} sm={12} md={12} lg={12} lx={12}>
+                                        <GlobalGreyBody2
+                                            text={`We couldn't find any Category Items. Try to create your own Category Item.`}
+                                        />
+                                    </Grid2>
                                 </Grid2>
                             </Grid2>
                         )
                     }
-                </Grid2>
             </SlideDown>
         );
     }
@@ -118,7 +120,7 @@ function CategoryItems() {
             <Box mb={3}>
                 <CreateCategModal/>
             </Box>
-            <Grid2 container spacing={3}>
+            <Grid2 container spacing={1}>
                 {
                     loading ? (
                         <CategorySkeleton />

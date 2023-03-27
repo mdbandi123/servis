@@ -36,6 +36,7 @@ function FoodItems() {
                     setLoading(false)
                 }, 3000);
                 setMenuItems(data.items);
+                //setLoading(false);
             });
     }, []);
 
@@ -93,11 +94,13 @@ function FoodItems() {
                         </Box>
                     </Stack>
                 </Box>
-                <Grid2 container sx={centerAlignment} >
-                    {
-                        loading ? (
+                {
+                    loading ? (
+                        <Grid2 container spacing={1}>
                             <FoodSkeleton />
-                        ) : (
+                        </Grid2>
+                    ) : (
+                        <Grid2 container sx={centerAlignment} >
                             <Grid2 container sx={centerAlignment} spacing={1}>
                                 <Grid2 item xs={12} sm={12} md={12} lg={12} lx={12}>
                                     <FolderOffTwoToneIcon sx={noItemIcon} />
@@ -111,9 +114,9 @@ function FoodItems() {
                                     />
                                 </Grid2>
                             </Grid2>
-                        )
-                    }
-                </Grid2>
+                        </Grid2>
+                    )
+                }
             </SlideDown>
         );
     }
@@ -133,7 +136,7 @@ function FoodItems() {
                     </Box>
                 </Stack>
             </Box>
-            <Grid2 container spacing={3}>
+            <Grid2 container spacing={1}>
                 {
                     loading ? (
                         <FoodSkeleton />

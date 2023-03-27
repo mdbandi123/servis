@@ -103,27 +103,29 @@ function TableManagement() {
                 <Box sx={qrHeader}>
                     <CreateUserModal />
                 </Box>
-                <Grid2 container sx={centerAlignment} >
                     {
                         loading ? (
-                            <TableMngmntSkeleton />
+                            <Grid2 container>
+                                <TableMngmntSkeleton />
+                            </Grid2>
                         ) : (
-                            <Grid2 container sx={centerAlignment} spacing={1}>
-                                <Grid2 item xs={12} sm={12} md={12} lg={12} lx={12}>
-                                    <FolderOffTwoToneIcon sx={noItemIcon} />
-                                </Grid2>
-                                <Grid2 item xs={12} sm={12} md={12} lg={12} lx={12}>
-                                    <GlobalBlackHeader3 text={`No Table Found`} />
-                                </Grid2>
-                                <Grid2 item xs={12} sm={12} md={12} lg={12} lx={12}>
-                                    <GlobalGreyBody2
-                                        text={`We couldn't find any Table. Please create Table.`}
-                                    />
+                            <Grid2 container sx={centerAlignment} >
+                                <Grid2 container sx={centerAlignment} spacing={1}>
+                                    <Grid2 item xs={12} sm={12} md={12} lg={12} lx={12}>
+                                        <FolderOffTwoToneIcon sx={noItemIcon} />
+                                    </Grid2>
+                                    <Grid2 item xs={12} sm={12} md={12} lg={12} lx={12}>
+                                        <GlobalBlackHeader3 text={`No Table Found`} />
+                                    </Grid2>
+                                    <Grid2 item xs={12} sm={12} md={12} lg={12} lx={12}>
+                                        <GlobalGreyBody2
+                                            text={`We couldn't find any Table. Please create Table.`}
+                                        />
+                                    </Grid2>
                                 </Grid2>
                             </Grid2>
                         )
                     }
-                </Grid2>
             </SlideDown>
         );
     }
