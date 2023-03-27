@@ -214,7 +214,7 @@ function Payment(props) {
                                                                                 badgePayment
                                                                             }
                                                                         >
-                                                                            <AccountCircleIcon
+                                                                            <CreditCardIcon
                                                                                 sx={
                                                                                     userTableIcon
                                                                                 }
@@ -222,7 +222,7 @@ function Payment(props) {
                                                                         </Badge>
                                                                     </>
                                                                 ) : (
-                                                                    <AccountCircleIcon
+                                                                    <CreditCardIcon
                                                                         sx={userTableIcon}
                                                                     />
                                                                 )}
@@ -240,6 +240,8 @@ function Payment(props) {
                                                                     text={
                                                                         paymentList.table_number
                                                                     }
+
+                                                                    sx={{marginTop:'3%', marginLeft: '-7%'}}
                                                                 />
                                                                 {/* <GlobalGreyBody2
                                                                     text={
