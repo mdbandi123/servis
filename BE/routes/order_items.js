@@ -411,6 +411,9 @@ route.put("/checkout", async (req, res) => {
         }
 
         const currentTime = new Date();
+        currentTime.setMinutes(
+            currentTime.getMinutes() + currentTime.getTimezoneOffset() + 8 * 60
+        );
         order.cart_items = order.cart_items.map((item) => ({
             ...item,
             time_ordered: currentTime,

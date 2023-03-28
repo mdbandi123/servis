@@ -289,12 +289,12 @@ export default function EnhancedTable() {
                                                                 <TableCell align='left'>{row.item_category}</TableCell>
                                                                 <TableCell align='left'>
                                                                     {
-                                                                        new Date(row.time_ordered).getMonth() + '-' +
-                                                                        new Date(row.time_ordered).getDate() + '-' +
-                                                                        new Date(row.time_ordered).getFullYear() + ' | ' +
-                                                                        new Date(row.time_ordered).getHours() + ':' +
-                                                                        new Date(row.time_ordered).getMinutes() + ':' +
-                                                                        new Date(row.time_ordered).getSeconds()
+                                                                        new Date(new Date(row.time_ordered).getTime() - (8 * 60 * 60 * 1000)).getMonth() + '-' +
+                                                                        new Date(new Date(row.time_ordered).getTime() - (8 * 60 * 60 * 1000)).getDate() + '-' +
+                                                                        new Date(new Date(row.time_ordered).getTime() - (8 * 60 * 60 * 1000)).getFullYear() + ' | ' +
+                                                                        new Date(new Date(row.time_ordered).getTime() - (8 * 60 * 60 * 1000)).getHours() + ':' +
+                                                                        new Date(new Date(row.time_ordered).getTime() - (8 * 60 * 60 * 1000)).getMinutes() + ':' +
+                                                                        new Date(new Date(row.time_ordered).getTime() - (8 * 60 * 60 * 1000)).getSeconds()
                                                                     }
                                                                 </TableCell>
                                                             </TableRow>
