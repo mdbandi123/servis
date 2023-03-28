@@ -17,6 +17,7 @@ import UpdateCategModal from '../../../global/modals/UpdateCategModal';
 import GlobalIndigoHeader6 from '../../../global/typographies/headers/IndigoHeader6';
 import SlideDown from '../../../animation/SlideDown';
 import GlobalBlackBody1 from '../../../global/typographies/bodies/BlackBody1';
+import GlobalTealContainedButton from '../../../global/buttons/contains/TealContainedButton';
 
 import CategorySkeleton from '../../../skeletons/CategoryItemsSkeleton';
 
@@ -33,11 +34,11 @@ function CategoryItems() {
         })
             .then((response) => response.json())
             .then((data) => {
-                setTimeout(() => {
-                    setLoading(false)
-                }, 3000);
+                // setTimeout(() => {
+                //     setLoading(false)
+                // }, 3000);
                 setCategoryItems(data.categories);
-                // setLoading(false);
+                setLoading(false);
             })
             .catch((error) => console.error(error));
     }, []);
@@ -83,7 +84,13 @@ function CategoryItems() {
                     <GlobalIndigoHeader4 text={ `Category Items` } />
                 </Box>
                 <Box mb={3}>
-                    <CreateCategModal />
+                    {
+                        loading ? (
+                            <GlobalTealContainedButton text='Create' disabled={true} />
+                        ) : (
+                            <CreateCategModal />
+                        )
+                    }
                 </Box>
                     {
                         loading ? (
@@ -118,7 +125,13 @@ function CategoryItems() {
                 <GlobalIndigoHeader4 text={ `Category Items` } />
             </Box>
             <Box mb={3}>
-                <CreateCategModal/>
+                {
+                    loading ? (
+                        <GlobalTealContainedButton text='Create' disabled={true} />
+                    ) : (
+                        <CreateCategModal />
+                    )
+                }
             </Box>
             <Grid2 container spacing={1}>
                 {

@@ -107,11 +107,11 @@ function OrderList() {
             .then((response) => response.json())
             .then((data) => {
                 // console.log('data.orders',data.orders);
-                setTimeout(() => {
-                    setLoading(false)
-                }, 3000);
+                // setTimeout(() => {
+                //     setLoading(false)
+                // }, 3000);
                 setOrderedItems(data.orders);
-                // setLoading(false);
+                setLoading(false);
             })
             .catch((error) => console.error(error));
     }, []);

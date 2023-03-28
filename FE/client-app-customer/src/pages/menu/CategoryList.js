@@ -28,7 +28,10 @@ import FadeIn from "../../global/animation/FadeIn";
 import Snackbar from '@mui/material/Snackbar';
 import CloseIcon from '@mui/icons-material/Close';
 
+import CategorySkeleton from "../../skeletons/CategoryListSkeleton";
+
 function CategoryList() {
+    const [loading, setLoading] = React.useState(true);
     const navigate = useNavigate();
     const { category_name } = useParams();
     const [StartersData, setStartersData] = React.useState([]);
@@ -44,7 +47,11 @@ function CategoryList() {
             .then((data) => {
                 if (data.success) {
                     // console.log(data.items);
+                    // setTimeout(() => {
+                    //     setLoading(false)
+                    // }, 3000);
                     setStartersData(data.items);
+                    setLoading(false);
                 } else {
                     console.log(data.error);
                 }
@@ -170,21 +177,33 @@ function CategoryList() {
                         </IconButton>
                         <GlobalBlackHeader4 text={category_name} />
                     </Stack>
-                    <Grid2 container sx={centerAlignment} spacing={1}>
-                        <Grid2 item xs={12} sm={12} md={12} lg={12} lx={12}>
-                            <ExtensionOffIcon sx={noItemIcon} />
-                        </Grid2>
-                        <Grid2 item xs={12} sm={12} md={12} lg={12} lx={12}>
-                            <GlobalBlackHeader5
-                                text={`No ${category_name} Found`}
-                            />
-                        </Grid2>
-                        <Grid2 item xs={12} sm={12} md={12} lg={12} lx={12}>
-                            <GlobalGreyBody2
-                                text={`We couldn't find any ${category_name}. Admin might not have created yet.`}
-                            />
-                        </Grid2>
-                    </Grid2>
+                    {
+                        loading ? (
+                            <Grid2 container justifyContent="start">
+                                <Grid2 item>
+                                    <Grid2 container justifyContent="start" spacing={1}>
+                                        <CategorySkeleton />
+                                    </Grid2>
+                                </Grid2>
+                            </Grid2>
+                        ) : (
+                            <Grid2 container sx={centerAlignment} spacing={1}>
+                                <Grid2 item xs={12} sm={12} md={12} lg={12} lx={12}>
+                                    <ExtensionOffIcon sx={noItemIcon} />
+                                </Grid2>
+                                <Grid2 item xs={12} sm={12} md={12} lg={12} lx={12}>
+                                    <GlobalBlackHeader5
+                                        text={`No ${category_name} Found`}
+                                    />
+                                </Grid2>
+                                <Grid2 item xs={12} sm={12} md={12} lg={12} lx={12}>
+                                    <GlobalGreyBody2
+                                        text={`We couldn't find any ${category_name}. Admin might not have created yet.`}
+                                    />
+                                </Grid2>
+                            </Grid2>
+                        )
+                    } 
                 </Box>
             </FadeIn>
         );
@@ -208,59 +227,69 @@ function CategoryList() {
                 <Grid2 container justifyContent="start">
                     <Grid2 item>
                         <Grid2 container justifyContent="start" spacing={1}>
-                            {StartersData.filter(
-                                (startersList) => startersList.is_available
-                            ).map((startersList) => (
-                                <Grid2 item xs={6} sm={6} md={4} lg={3} lx={3}>
-                                    <Card sx={cardContainer}>
-                                        <CardMedia
-                                            component="img"
-                                            height="140"
-                                            image={`${process.env.REACT_APP_BACKEND_URL}${startersList.image}`}
-                                            alt={startersList.name}
-                                        />
-                                        <CardContent sx={cardContent}>
-                                            <Stack
-                                                direction="column"
-                                                spacing={2}
-                                            >
-                                                <Box
-                                                    sx={
-                                                        categoryNamePriceContainer
-                                                    }
-                                                >
-                                                    <GlobalBlackHeader6
-                                                        sx={itemNamePrice}
-                                                        text={startersList.name}
+                            {
+                                loading ? (
+                                    <>
+                                        <CategorySkeleton />
+                                    </>
+                                ) : (
+                                    <>
+                                        {StartersData.filter(
+                                            (startersList) => startersList.is_available
+                                        ).map((startersList) => (
+                                            <Grid2 item xs={6} sm={6} md={4} lg={3} lx={3}>
+                                                <Card sx={cardContainer}>
+                                                    <CardMedia
+                                                        component="img"
+                                                        height="140"
+                                                        image={`${process.env.REACT_APP_BACKEND_URL}${startersList.image}`}
+                                                        alt={startersList.name}
                                                     />
-                                                    <GlobalOrangeHeader6
-                                                        sx={itemNamePrice}
-                                                        text={
-                                                            "₱" +
-                                                            startersList.price
-                                                                .$numberDecimal
-                                                        }
-                                                    />
-                                                </Box>
-                                                <Box>
-                                                    <GlobalTealContainedButton
-                                                        text="Add"
-                                                        sx={addBtn}
-                                                        startIcon={
-                                                            <AddRoundedIcon />
-                                                        }
-                                                        onClick={() =>
-                                                            addToCart(
-                                                                startersList._id
-                                                            )
-                                                        }
-                                                    />
-                                                </Box>
-                                            </Stack>
-                                        </CardContent>
-                                    </Card>
-                                </Grid2>
-                            ))}
+                                                    <CardContent sx={cardContent}>
+                                                        <Stack
+                                                            direction="column"
+                                                            spacing={2}
+                                                        >
+                                                            <Box
+                                                                sx={
+                                                                    categoryNamePriceContainer
+                                                                }
+                                                            >
+                                                                <GlobalBlackHeader6
+                                                                    sx={itemNamePrice}
+                                                                    text={startersList.name}
+                                                                />
+                                                                <GlobalOrangeHeader6
+                                                                    sx={itemNamePrice}
+                                                                    text={
+                                                                        "₱" +
+                                                                        startersList.price
+                                                                            .$numberDecimal
+                                                                    }
+                                                                />
+                                                            </Box>
+                                                            <Box>
+                                                                <GlobalTealContainedButton
+                                                                    text="Add"
+                                                                    sx={addBtn}
+                                                                    startIcon={
+                                                                        <AddRoundedIcon />
+                                                                    }
+                                                                    onClick={() =>
+                                                                        addToCart(
+                                                                            startersList._id
+                                                                        )
+                                                                    }
+                                                                />
+                                                            </Box>
+                                                        </Stack>
+                                                    </CardContent>
+                                                </Card>
+                                            </Grid2>
+                                        ))}
+                                    </>
+                                )
+                            }
                         </Grid2>
                     </Grid2>
                 </Grid2>

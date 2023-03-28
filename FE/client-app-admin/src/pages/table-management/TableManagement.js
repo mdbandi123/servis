@@ -16,6 +16,7 @@ import GlobalBlackBody1 from '../../global/typographies/bodies/BlackBody1';
 import SlideDown from '../../animation/SlideDown';
 import GlobalBlackHeader3 from '../../global/typographies/headers/BlackHeader3';
 import GlobalGreyBody2 from '../../global/typographies/bodies/GreyBody2';
+import GlobalTealContainedButton from '../../global/buttons/contains/TealContainedButton';
 
 import TableMngmntSkeleton from '../../skeletons/TableMananagementSkeleton';
 
@@ -38,12 +39,12 @@ function TableManagement() {
             .then(response => response.json())
             .then(data => {
                 console.log(data);
-                setTimeout(() => {
-                    setLoading(false)
-                }, 3000)
+                // setTimeout(() => {
+                //     setLoading(false)
+                // }, 3000)
                 
                 setTableData(data.tables)
-                // setLoading(false);
+                setLoading(false);
             }
         ).catch((error) => {
             console.log(error);
@@ -101,7 +102,13 @@ function TableManagement() {
                     <GlobalIndigoHeader4 text='Table Management' />
                 </Box>
                 <Box sx={qrHeader}>
-                    <CreateUserModal />
+                    {
+                        loading ? (
+                            <GlobalTealContainedButton text='Create' disabled={true} />
+                        ) : (
+                            <CreateUserModal />
+                        )
+                    }
                 </Box>
                     {
                         loading ? (
@@ -136,7 +143,13 @@ function TableManagement() {
                 <GlobalIndigoHeader4 text='Table Management' />
             </Box>
             <Box sx={qrHeader}>
-                <CreateUserModal/>
+                {
+                    loading ? (
+                        <GlobalTealContainedButton text='Create' disabled={true} />
+                    ) : (
+                        <CreateUserModal />
+                    )
+                }
             </Box>
             <Grid2 container >
                 {

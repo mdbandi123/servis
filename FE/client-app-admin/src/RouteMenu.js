@@ -13,6 +13,7 @@ import SignUp from './pages/signup/SignUp';
 import ForgotPassword from './pages/forgot-password/ForgotPassword';
 import Login from './pages/signin/SignIn'
 import Logout from './SignOut'
+import VerifyEmail from './pages/verify-email/VerifyEmail';
 
 import PrivateRoute from "./PrivateRoute";
 import firebase from "firebase/app";
@@ -49,6 +50,7 @@ const RouteMenu = () => {
             </Route>
             <Route path='/signup' exact element={ <SignUp/> } />
             <Route path='/login' exact element={ <Login/> } />
+            <Route path='/verifyemail' exact element={ <VerifyEmail/> } />
             <Route path='/forgotpassword' exact element={ <ForgotPassword/> } />
         </Routes>
     )

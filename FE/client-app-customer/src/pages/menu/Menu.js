@@ -13,8 +13,10 @@ import GlobalBlackHeader5 from '../../global/typographies/headers/BlackHeader5';
 import GlobalBlackHeader4 from '../../global/typographies/headers/BlackHeader4';
 import GlobalGreyBody2 from '../../global/typographies/bodies/GreyBody2';
 import FadeIn from '../../global/animation/FadeIn';
+import MenuSkeleton from '../../skeletons/MenuSkeleton';
 
 function Menu() {
+    const [loading, setLoading] = React.useState(true);
     const { setCategoryItems } = store.getState();
     const CategoryData = store((state) => state.CategoryData);
 
@@ -27,7 +29,11 @@ function Menu() {
         })
             .then((response) => response.json())
             .then((data) => {
+                // setTimeout(() => {
+                //     setLoading(false)
+                // }, 3000);
                 setCategoryItems(data.categories);
+                setLoading(false);
             })
             .catch((error) => console.error(error));
     }, []);
@@ -80,17 +86,34 @@ function Menu() {
         return (
             <FadeIn>
                 <Box sx={pageContainer}>
-                    <Grid2 container sx={centerAlignment} spacing={1}>
-                        <Grid2 item xs={12} sm={12} md={12} lg={12} lx={12}>
-                            <ExtensionOffIcon sx={noItemIcon} />
-                        </Grid2>
-                        <Grid2 item xs={12} sm={12} md={12} lg={12} lx={12}>
-                            <GlobalBlackHeader5 text='No Category Found' />
-                        </Grid2>
-                        <Grid2 item xs={12} sm={12} md={12} lg={12} lx={12}>
-                            <GlobalGreyBody2 text={`We couldn't find any Category. Admin might not have created Category yet.`} />
-                        </Grid2>
-                    </Grid2>
+                    <Box sx={headerPage}>
+                        <GlobalBlackHeader4 text='Categories' />
+                    </Box>
+                    {
+                        loading ? (
+                            <>
+                                <Grid2 container justifyContent='center'>
+                                    <Grid2 item>
+                                        <Grid2 container justifyContent='start' spacing={1}>
+                                            <MenuSkeleton />
+                                        </Grid2>
+                                    </Grid2>
+                                </Grid2>
+                            </>
+                        ) : (
+                            <Grid2 container sx={centerAlignment} spacing={1}>
+                                <Grid2 item xs={12} sm={12} md={12} lg={12} lx={12}>
+                                    <ExtensionOffIcon sx={noItemIcon} />
+                                </Grid2>
+                                <Grid2 item xs={12} sm={12} md={12} lg={12} lx={12}>
+                                    <GlobalBlackHeader5 text='No Category Found' />
+                                </Grid2>
+                                <Grid2 item xs={12} sm={12} md={12} lg={12} lx={12}>
+                                    <GlobalGreyBody2 text={`We couldn't find any Category. Admin might not have created Category yet.`} />
+                                </Grid2>
+                            </Grid2>
+                        )
+                    }
                 </Box>
             </FadeIn>
         );
@@ -105,22 +128,32 @@ function Menu() {
                 <Grid2 container justifyContent='center'>
                     <Grid2 item>
                         <Grid2 container justifyContent='start' spacing={1}>
-                            {CategoryData.map((categoryList) => (
-                                <Grid2 item xs={6} sm={6} md={4} lg={3} lx={3}>
-                                    <Card sx={cardContainer}>
-                                        <CardActionArea onClick={() => navigate(`/menu/${categoryList.category_name}`)}>
-                                            <CardMedia 
-                                                component='img' height='140' 
-                                                image={`${process.env.REACT_APP_BACKEND_URL}${categoryList.category_image}`} 
-                                                alt={categoryList.category_name} 
-                                            />
-                                            <CardContent sx={cardContent}>
-                                                <GlobalBlackHeader6 sx={itemName} text={categoryList.category_name} />
-                                            </CardContent>
-                                        </CardActionArea>
-                                    </Card>
-                                </Grid2>
-                            ))}
+                            {
+                                loading ? (
+                                    <MenuSkeleton />
+                                ) : (
+                                    <>
+                                        {
+                                            CategoryData.map((categoryList) => (
+                                                <Grid2 item xs={6} sm={6} md={4} lg={3} lx={3}>
+                                                    <Card sx={cardContainer}>
+                                                        <CardActionArea onClick={() => navigate(`/menu/${categoryList.category_name}`)}>
+                                                            <CardMedia
+                                                                component='img' height='140'
+                                                                image={`${process.env.REACT_APP_BACKEND_URL}${categoryList.category_image}`}
+                                                                alt={categoryList.category_name}
+                                                            />
+                                                            <CardContent sx={cardContent}>
+                                                                <GlobalBlackHeader6 sx={itemName} text={categoryList.category_name} />
+                                                            </CardContent>
+                                                        </CardActionArea>
+                                                    </Card>
+                                                </Grid2>
+                                            ))
+                                        }
+                                    </>
+                                )
+                            } 
                         </Grid2>
                     </Grid2>
                 </Grid2>

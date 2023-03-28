@@ -19,6 +19,8 @@ import GlobalGreyBody2 from '../../global/typographies/bodies/GreyBody2';
 import GlobalBlackHeader5 from '../../global/typographies/headers/BlackHeader5';
 import FadeIn from '../../global/animation/FadeIn';
 
+import PaymentSkeleton from '../../skeletons/PaymentSkeleton';
+
 function createData(name, price, quantity, total) {
     return { name, price, quantity, total };
 }
@@ -32,6 +34,7 @@ const rows = [
 ];
 
 function Payment() {
+    const [loading, setLoading] = React.useState(true);
     const { setOrderedItems } = store.getState();
     const order_id = store((state) => state.order_id);
     const orderedItems = store((state) => state.orderedItems);
@@ -48,7 +51,11 @@ function Payment() {
             .then((response) => response.json())
             .then((data) => {
                 if (data.success) {
+                    // setTimeout(() => {
+                    //     setLoading(false)
+                    // }, 3000);
                     setOrderedItems(data.items);
+                    setLoading(false);
                 } else {
                     console.log(data.error);
                 }
@@ -172,21 +179,32 @@ function Payment() {
                                 </TableRow>
                             </TableHead>
                             <TableBody>
-                                <TableCell align='left' colSpan={4}>
-                                    <Box>
-                                        <Grid2 container sx={centerAlignment} spacing={1}>
-                                            <Grid2 item xs={12} sm={12} md={12} lg={12} lx={12}>
-                                                <ExtensionOffIcon sx={noItemIcon} />
-                                            </Grid2>
-                                            <Grid2 item xs={12} sm={12} md={12} lg={12} lx={12}>
-                                                <GlobalBlackHeader5 text='No Records Found' />
-                                            </Grid2>
-                                            <Grid2 item xs={12} sm={12} md={12} lg={12} lx={12}>
-                                                <GlobalGreyBody2 text={`Order Some Food in the Menu Section.`} />
-                                            </Grid2>
-                                        </Grid2>
-                                    </Box>
-                                </TableCell>
+                                {
+                                    loading ? (
+                                        <>
+                                            <PaymentSkeleton />
+                                        </>
+                                    ) : (
+                                        <>
+                                            <TableCell align='left' colSpan={4}>
+                                                <Box>
+                                                    <Grid2 container sx={centerAlignment} spacing={1}>
+                                                        <Grid2 item xs={12} sm={12} md={12} lg={12} lx={12}>
+                                                            <ExtensionOffIcon sx={noItemIcon} />
+                                                        </Grid2>
+                                                        <Grid2 item xs={12} sm={12} md={12} lg={12} lx={12}>
+                                                            <GlobalBlackHeader5 text='No Records Found' />
+                                                        </Grid2>
+                                                        <Grid2 item xs={12} sm={12} md={12} lg={12} lx={12}>
+                                                            <GlobalGreyBody2 text={`Order Some Food in the Menu Section.`} />
+                                                        </Grid2>
+                                                    </Grid2>
+                                                </Box>
+                                            </TableCell>
+                                        </>
+                                    )
+                                }
+                                
                                 <TableRow >
                                     <TableCell align='left' colSpan={4}>
                                         <Box>
@@ -225,35 +243,64 @@ function Payment() {
                             </TableRow>
                         </TableHead>
                         <TableBody>
-                            {rowItem.map((row) => (
-                                <TableRow key={row.item_name} sx={tableRow} >
-                                    <TableCell align='left'>{row.item_name}</TableCell>
-                                    <TableCell align='left'>{'₱' + row.item_price.$numberDecimal}</TableCell>
-                                    <TableCell align='left'>{row.quantity}</TableCell>
-                                    <TableCell align='left'>{'₱' + 
-                                        (row.item_price.$numberDecimal * row.quantity).toFixed(2)
-                                    }</TableCell>
-                                </TableRow>
-                            ))}
-                            <TableRow >
-                                <TableCell align='left' colSpan={4}>
-                                    <Box>
-                                        <GlobalBlackHeader6 sx={totalMessage} text='Total:' />
-                                        <GlobalOrangeHeader6 sx={totalAmount} text={
-                                            '₱' +
-                                            (rowItem.reduce((acc, item) => {
-                                                return acc + (item.item_price.$numberDecimal * item.quantity)
-                                            }, 0)).toFixed(2)
-                                        } />
-                                    </Box>
-                                </TableCell>
-                            </TableRow>
+                            {
+                                loading ? (
+                                    <>
+                                        <PaymentSkeleton />
+                                        <TableRow >
+                                            <TableCell align='left' colSpan={4}>
+                                                <Box>
+                                                    <GlobalBlackHeader6 sx={totalMessage} text='Total:' />
+                                                    <GlobalOrangeHeader6 sx={totalAmount} text='₱0' />
+                                                </Box>
+                                            </TableCell>
+                                        </TableRow>
+                                    </>
+                                ) : (
+                                    <>
+                                        {rowItem.map((row) => (
+                                            <TableRow key={row.item_name} sx={tableRow} >
+                                                <TableCell align='left'>{row.item_name}</TableCell>
+                                                <TableCell align='left'>{'₱' + row.item_price.$numberDecimal}</TableCell>
+                                                <TableCell align='left'>{row.quantity}</TableCell>
+                                                <TableCell align='left'>{'₱' +
+                                                    (row.item_price.$numberDecimal * row.quantity).toFixed(2)
+                                                }</TableCell>
+                                            </TableRow>
+                                        ))}
+                                        <TableRow >
+                                            <TableCell align='left' colSpan={4}>
+                                                <Box>
+                                                    <GlobalBlackHeader6 sx={totalMessage} text='Total:' />
+                                                    <GlobalOrangeHeader6 sx={totalAmount} text={
+                                                        '₱' +
+                                                        (rowItem.reduce((acc, item) => {
+                                                            return acc + (item.item_price.$numberDecimal * item.quantity)
+                                                        }, 0)).toFixed(2)
+                                                    } />
+                                                </Box>
+                                            </TableCell>
+                                        </TableRow>
+                                    </>
+                                )
+                            }
+                        
                         </TableBody>
                     </Table>
                 </TableContainer>
                 <Grid2 container sx={confirmContainer} justifyContent='center'>
                     <Grid2 sx={confirmBtn} item xs={12} sm={12} md={12} lg={12} lx={12}>
-                        <ConfirmPaymentModal sx={confirmBtn} text='Bill Out' variant='contained' context={'Are you sure do you want to Bill Out?'} disabled={false}/>
+                        {
+                            loading ? (
+                                <>
+                                    <ConfirmPaymentModal sx={confirmBtn} text='Bill Out' variant='contained' context={'Are you sure do you want to Bill Out?'} disabled={true} />
+                                </>
+                            ) : (
+                                <>
+                                    <ConfirmPaymentModal sx={confirmBtn} text='Bill Out' variant='contained' context={'Are you sure do you want to Bill Out?'} disabled={false} />
+                                </>
+                            )
+                        }
                     </Grid2>
                 </Grid2>
             </Box>

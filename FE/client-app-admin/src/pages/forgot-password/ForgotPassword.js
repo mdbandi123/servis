@@ -112,6 +112,7 @@ function ForgotPassword() {
                                             onClick={() =>
                                                 handleResetPassword()
                                             }
+                                            disabled={!email}
                                         />
                                     </Box>
                                 </Stack>

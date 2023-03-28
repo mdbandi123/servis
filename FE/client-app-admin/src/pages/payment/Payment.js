@@ -38,11 +38,11 @@ function Payment(props) {
             .then((data) => {
                 if (data) {
                     console.log(data.orders);
-                    setTimeout(() => {
-                        setLoading(false)
-                    }, 3000);
+                    // setTimeout(() => {
+                    //     setLoading(false)
+                    // }, 3000);
                     setOrderedItems(data.orders);
-                    // setLoading(false);
+                    setLoading(false);
                 }
             })
             .catch((error) => console.error(error));
