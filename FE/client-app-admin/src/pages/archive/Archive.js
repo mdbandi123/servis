@@ -122,10 +122,11 @@ export default function EnhancedTable() {
         .then(data => {
             console.log('data here')
             console.log(data);
-            setTimeout(() => {
-                setLoading(false)
-            }, 3000);
+            // setTimeout(() => {
+            //     setLoading(false)
+            // }, 3000);
             setRows(data.items);
+            setLoading(false);
         })
         .catch(error => console.log(error))
     }, []);
@@ -259,7 +260,13 @@ export default function EnhancedTable() {
                 <GlobalIndigoHeader4 text='Archive' />
             </Box>
             <Box mb={3}>
-                <GenerateDatePickerModal />
+                {
+                    loading ? (
+                        <GenerateDatePickerModal disabled={true} />
+                    ) : (
+                        <GenerateDatePickerModal />
+                    )
+                }
             </Box>
             <Box sx={ tableContainerWidth }>
                 <Paper sx={ archiveTablePaper }>
@@ -289,12 +296,12 @@ export default function EnhancedTable() {
                                                                 <TableCell align='left'>{row.item_category}</TableCell>
                                                                 <TableCell align='left'>
                                                                     {
-                                                                        new Date(new Date(row.time_ordered).getTime() - (8 * 60 * 60 * 1000)).getMonth() + '-' +
-                                                                        new Date(new Date(row.time_ordered).getTime() - (8 * 60 * 60 * 1000)).getDate() + '-' +
-                                                                        new Date(new Date(row.time_ordered).getTime() - (8 * 60 * 60 * 1000)).getFullYear() + ' | ' +
-                                                                        new Date(new Date(row.time_ordered).getTime() - (8 * 60 * 60 * 1000)).getHours() + ':' +
-                                                                        new Date(new Date(row.time_ordered).getTime() - (8 * 60 * 60 * 1000)).getMinutes() + ':' +
-                                                                        new Date(new Date(row.time_ordered).getTime() - (8 * 60 * 60 * 1000)).getSeconds()
+                                                                        new Date(row.time_ordered).getMonth() + '-' +
+                                                                        new Date(row.time_ordered).getDate() + '-' +
+                                                                        new Date(row.time_ordered).getFullYear() + ' | ' +
+                                                                        new Date(row.time_ordered).getHours() + ':' +
+                                                                        new Date(row.time_ordered).getMinutes() + ':' +
+                                                                        new Date(row.time_ordered).getSeconds()
                                                                     }
                                                                 </TableCell>
                                                             </TableRow>

@@ -127,7 +127,7 @@ function SignIn() {
               </Box>
               {error && <div>{error.message}</div>}
               <Box>
-                <GlobalTealContainedButton text={ `Sign In` } onClick={handleSignIn} />
+                <GlobalTealContainedButton text={`Sign In`} onClick={handleSignIn} disabled={!email || !password} />
               </Box>
               <Grid2 sx={centerTypography} spacing={1} container>
                 <Grid2 item>

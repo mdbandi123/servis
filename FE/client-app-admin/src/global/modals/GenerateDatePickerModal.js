@@ -113,7 +113,7 @@ function GenerateDatePickerModal(props) {
 
     return (
         <React.Fragment>
-            <GlobalTealContainedButton text='Generate' onClick={GenerateReportHandler} />
+            <GlobalTealContainedButton text='Generate' onClick={GenerateReportHandler} disabled={props.disabled}/>
             <Dialog keepMounted maxWidth='sm' fullWidth open={openGenerateReportModal} TransitionComponent={Transition} onClose={cancelGenerateReportHandler} aria-describedby='alert-dialog-slide-description'>
                 <DialogTitle sx={dialogAlignment}>
                     <GlobalBlackHeader5 text='Set Date Range To Generate Report' />

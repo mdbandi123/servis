@@ -18,7 +18,7 @@ import CreateItemModal from '../../../global/modals/CreateItemModal';
 import UpdateItemModal from '../../../global/modals/UpdateItemModal';
 import SlideDown from '../../../animation/SlideDown';
 import GlobalBlackBody1 from '../../../global/typographies/bodies/BlackBody1';
-
+import GlobalTealContainedButton from '../../../global/buttons/contains/TealContainedButton';
 import FoodSkeleton from '../../../skeletons/FoodItemSkeleton';
 
 function FoodItems() {
@@ -32,11 +32,11 @@ function FoodItems() {
         fetch(`${process.env.REACT_APP_BACKEND_URL}/menu_items/`)
             .then((res) => res.json())
             .then((data) => {
-                setTimeout(() => {
-                    setLoading(false)
-                }, 3000);
+                // setTimeout(() => {
+                //     setLoading(false)
+                // }, 3000);
                 setMenuItems(data.items);
-                //setLoading(false);
+                setLoading(false);
             });
     }, []);
 
@@ -87,7 +87,13 @@ function FoodItems() {
                 <Box mb={3}>
                     <Stack direction='row' spacing={1}>
                         <Box>
-                            <CreateItemModal />
+                            {
+                                loading ? (
+                                    <GlobalTealContainedButton text='Create' disabled={true} />
+                                ) : (
+                                    <CreateItemModal />
+                                )
+                            } 
                         </Box>
                         <Box sx={searchBar}>
                             <TextField id="outlined-basic" color='warning' label="Search Food Name" variant="outlined" size="small" onChange={(e) => setSearch(e.target.value)} />
@@ -129,7 +135,13 @@ function FoodItems() {
             <Box mb={3}>
                 <Stack direction='row' spacing={1}>
                     <Box>
-                        <CreateItemModal />
+                        {
+                            loading ? (
+                                <GlobalTealContainedButton text='Create' disabled={true} />
+                            ) : (
+                                <CreateItemModal />
+                            )
+                        } 
                     </Box>
                     <Box sx={searchBar}>
                         <TextField id="outlined-basic" color='warning' label="Search Food Name" variant="outlined" size="small" onChange={(e) => setSearch(e.target.value)} />

@@ -233,9 +233,12 @@ function SignUp() {
                             <Box>
                                 <GlobalTealContainedButton
                                     text="Sign Up"
-                                    onClick={() =>
-                                        handleSignUp(email, password)
+                                    onClick={() =>{
+                                        handleSignUp(email, password);
+                                        navigate("/verifyemail");
+                                        }
                                     }
+                                    disabled={!email || !password || !confirmPassword}
                                 />
                             </Box>
                             <Grid2 sx={centerTypography} spacing={1} container>
