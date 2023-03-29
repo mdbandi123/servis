@@ -300,7 +300,7 @@ function CategoryList() {
                 open={openAlert}
                 autoHideDuration={2000}
                 onClose={handleClose}
-                message="Food added to your Cart!"
+                message="Food added to your cart!"
                 action={action}
             />
         </FadeIn>
