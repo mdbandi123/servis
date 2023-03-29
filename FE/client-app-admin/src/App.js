@@ -26,15 +26,15 @@ function App() {
         setTableData,
     } = useStore();
 
+
     React.useEffect(() => {
-        firebase.auth().onAuthStateChanged((user) => {
-            if (user) {
-                setUser(user);
-            } else {
-                setUser(null);
-            }
+         firebase.auth().onAuthStateChanged((user) => {
+          if (user) {
+            setUser(user);
+          }
         });
-    }, []);
+      }, []);
+    
 
     React.useEffect(() => {
         const socket = socketIOClient(process.env.REACT_APP_BACKEND_URL);
@@ -70,9 +70,9 @@ function App() {
     }, []);
 
     return (
-        <div>
+        <>
             <RouteMenu />
-        </div>
+        </>
     );
 }
 

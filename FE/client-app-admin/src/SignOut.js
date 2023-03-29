@@ -6,7 +6,7 @@ const Logout = async () => {
     await firebase.auth().signOut();
     window.location.href = "/";
   } catch (e) {
-    console.log(e);
+    console.log(e); 
   }
 };
 

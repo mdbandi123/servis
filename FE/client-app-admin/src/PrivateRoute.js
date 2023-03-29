@@ -8,6 +8,10 @@ const ProtectedRoute = ({ user, redirectPath = '/login' }) => {
     return <Navigate to={redirectPath} replace />;
   }
 
+  if (!user.emailVerified) {
+    return <Navigate to={'/verifyemail'} replace />;
+  }
+
   return <Outlet />;
 };
 

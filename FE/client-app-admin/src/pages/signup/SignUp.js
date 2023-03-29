@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { useNavigate } from "react-router-dom";
+import { redirect, useNavigate } from "react-router-dom";
 
 import Grid2 from "@mui/material/Unstable_Grid2/Grid2";
 import { Box, Stack, Tooltip } from "@mui/material/";
@@ -46,15 +46,32 @@ function SignUp() {
         }
 
         try {
-            await firebase
+            const userCredential = await firebase
                 .auth()
                 .createUserWithEmailAndPassword(email, password);
-
-            await firebase.auth().signOut();
+            
+            // Send verification email
+            await userCredential.user.sendEmailVerification();
         } catch (error) {
             // handle error
         }
     };
+
+    React.useEffect(() => {
+        const unsubscribe = firebase.auth().onAuthStateChanged(async (user) => {
+            if (user) {
+                await user.reload();
+                if (user.emailVerified) {
+                    navigate("/");
+                }
+            }
+        });
+
+        return () => {
+            unsubscribe();
+        };
+    }, [navigate]);
+
 
     const fullScreenDisplay = {
         position: "fixed",
@@ -235,7 +252,6 @@ function SignUp() {
                                     text="Sign Up"
                                     onClick={() =>{
                                         handleSignUp(email, password);
-                                        navigate("/verifyemail");
                                         }
                                     }
                                     disabled={!email || !password || !confirmPassword}

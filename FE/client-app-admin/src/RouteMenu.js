@@ -39,18 +39,18 @@ const RouteMenu = () => {
             <Route element={ <PrivateRoute user={user} /> } >
                 <Route exact element={ <Navbar /> }>
                     <Route path='/' exact element={<OrderList user={ user } />} />
-                    <Route path='/payment' exact element={ <Payment /> } />
-                    <Route path='/archive' exact element={ <Archive /> } />
-                    <Route path='/fooditems' exact element={ <FoodItems /> } />
-                    <Route path='/categoryitems' exact element={ <CategoryItems /> } />
-                    <Route path='/generate' exact element={ <Generate /> } />
-                    <Route path='/table-management' exact element={ <TableManagement /> } />
-                    <Route path='/logout' element={ <Logout/> } />
+                    <Route path='/payment' exact element={ <Payment user={ user }/> } />
+                    <Route path='/archive' exact element={ <Archive user={ user }/> } />
+                    <Route path='/fooditems' exact element={ <FoodItems user={ user }/> } />
+                    <Route path='/categoryitems' exact element={ <CategoryItems user={ user }/> } />
+                    <Route path='/generate' exact element={ <Generate user={ user }/> } />
+                    <Route path='/table-management' exact element={ <TableManagement user={ user }/> } />
+                    <Route path='/logout' element={ <Logout user={ user }/> } />
                 </Route>
             </Route>
             <Route path='/signup' exact element={ <SignUp/> } />
             <Route path='/login' exact element={ <Login/> } />
-            <Route path='/verifyemail' exact element={ <VerifyEmail/> } />
+            <Route path='/verifyemail' exact element={ <VerifyEmail/> } />  
             <Route path='/forgotpassword' exact element={ <ForgotPassword/> } />
         </Routes>
     )
