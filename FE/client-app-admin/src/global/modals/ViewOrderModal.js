@@ -311,30 +311,12 @@ function ViewOrderModal(props) {
                                                                                                             </Grid2>
                                                                                                             <Grid2 item xs={12} sm={12} md={12} lg={12} lx={12} >
                                                                                                                 <GlobalGreyBody2 text={[
-                                                                            new Date(
-                                                                                item.time_ordered
-                                                                            ).getMonth() +
-                                                                                1 +
-                                                                                "-",
-                                                                            new Date(
-                                                                                item.time_ordered
-                                                                            ).getDate() +
-                                                                                "-",
-                                                                            new Date(
-                                                                                item.time_ordered
-                                                                            ).getFullYear() +
-                                                                                " | " +
-                                                                                new Date(
-                                                                                    item.time_ordered
-                                                                                ).getHours() +
-                                                                                ":" +
-                                                                                new Date(
-                                                                                    item.time_ordered
-                                                                                ).getMinutes() +
-                                                                                ":" +
-                                                                                new Date(
-                                                                                    item.time_ordered
-                                                                                ).getSeconds(),
+                                                                                        new Date(new Date(item.time_ordered).getTime() - (8 * 60 * 60 * 1000)).getMonth() + 1 + '-' +
+                                                                                        new Date(new Date(item.time_ordered).getTime() - (8 * 60 * 60 * 1000)).getDate() + '-' +
+                                                                                        new Date(new Date(item.time_ordered).getTime() - (8 * 60 * 60 * 1000)).getFullYear() + ' | ' +
+                                                                                        new Date(new Date(item.time_ordered).getTime() - (8 * 60 * 60 * 1000)).getHours() + ':' +
+                                                                                        new Date(new Date(item.time_ordered).getTime() - (8 * 60 * 60 * 1000)).getMinutes() + ':' +
+                                                                                        new Date(new Date(item.time_ordered).getTime() - (8 * 60 * 60 * 1000)).getSeconds()
                                                                         ]} sx={ orderListDate } />
                                                                                                             </Grid2>
                                                                                                         </Grid2>

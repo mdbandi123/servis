@@ -423,7 +423,7 @@ function OrderList() {
                                                                                     <Grid2 item>
                                                                                         <GlobalGreyCaption1
                                                                                             text={[
-                                                                                                new Date(notificationItem.session_start).getMonth() + "-",
+                                                                                                new Date(notificationItem.session_start).getMonth() + 1 + "-",
                                                                                                 new Date(notificationItem.session_start).getDate() + "-",
                                                                                                 new Date(notificationItem.session_start).getFullYear() + " | " +
                                                                                                 new Date(notificationItem.session_start).getHours() + ":" +
@@ -556,12 +556,12 @@ function OrderList() {
                                                 <motion.div layout key={notificationItem.order_id} initial={{ opacity: 0, scale: 0 }} animate={{ opacity: 1, scale: 1, transition: { duration: 0.5 } }} exit={{ opacity: 0, scale: 0, transition: { duration: 0.5 } }}>
                                                     <ListItem disablePadding sx={notificationListItem} >
                                                         <ViewOrderModal orders={notificationItem} title={notificationItem.table_number} userId={notificationItem.order_id} sx={userIconNotification} date={[
-                                                            new Date(filteredItem.time_ordered).getMonth() + "-",
-                                                            new Date(filteredItem.time_ordered).getDate() + "-",
-                                                            new Date(filteredItem.time_ordered).getFullYear() + " | " +
-                                                            new Date(filteredItem.time_ordered).getHours() + ":" +
-                                                            new Date(filteredItem.time_ordered).getMinutes() + ":" +
-                                                            new Date(filteredItem.time_ordered).getSeconds(),
+                                                            new Date(new Date(filteredItem.time_ordered).getTime() - (8 * 60 * 60 * 1000)).getMonth() + 1 + '-' +
+                                                            new Date(new Date(filteredItem.time_ordered).getTime() - (8 * 60 * 60 * 1000)).getDate() + '-' +
+                                                            new Date(new Date(filteredItem.time_ordered).getTime() - (8 * 60 * 60 * 1000)).getFullYear() + ' | ' +
+                                                            new Date(new Date(filteredItem.time_ordered).getTime() - (8 * 60 * 60 * 1000)).getHours() + ':' +
+                                                            new Date(new Date(filteredItem.time_ordered).getTime() - (8 * 60 * 60 * 1000)).getMinutes() + ':' +
+                                                            new Date(new Date(filteredItem.time_ordered).getTime() - (8 * 60 * 60 * 1000)).getSeconds()
                                                         ]} >
                                                             <ListItemButton sx={notificationItemButton} >
                                                                 <ListItemIcon sx={notificationItemIcon} >
@@ -583,12 +583,12 @@ function OrderList() {
                                                                             primary={
                                                                                 <GlobalGreyCaption2
                                                                                     text={[
-                                                                                        new Date(filteredItem.time_ordered).getMonth() + "-",
-                                                                                        new Date(filteredItem.time_ordered).getDate() + "-",
-                                                                                        new Date(filteredItem.time_ordered).getFullYear() + " | " +
-                                                                                        new Date(filteredItem.time_ordered).getHours() + ":" +
-                                                                                        new Date(filteredItem.time_ordered).getMinutes() + ":" +
-                                                                                        new Date(filteredItem.time_ordered).getSeconds(),
+                                                                                        new Date(new Date(filteredItem.time_ordered).getTime() - (8 * 60 * 60 * 1000)).getMonth() + 1 + '-' +
+                                                                                        new Date(new Date(filteredItem.time_ordered).getTime() - (8 * 60 * 60 * 1000)).getDate() + '-' +
+                                                                                        new Date(new Date(filteredItem.time_ordered).getTime() - (8 * 60 * 60 * 1000)).getFullYear() + ' | ' +
+                                                                                        new Date(new Date(filteredItem.time_ordered).getTime() - (8 * 60 * 60 * 1000)).getHours() + ':' +
+                                                                                        new Date(new Date(filteredItem.time_ordered).getTime() - (8 * 60 * 60 * 1000)).getMinutes() + ':' +
+                                                                                        new Date(new Date(filteredItem.time_ordered).getTime() - (8 * 60 * 60 * 1000)).getSeconds()
                                                                                     ]}
                                                                                 />
                                                                             }
