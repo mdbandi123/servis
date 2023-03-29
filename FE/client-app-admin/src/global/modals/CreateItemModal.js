@@ -234,7 +234,7 @@ function CreateItemModal() {
             </Dialog>
             <Snackbar open={openAlert} autoHideDuration={6000} onClose={handleAlertClose} anchorOrigin={{ vertical: "bottom", horizontal: "right" }}>
                 <Alert onClose={handleAlertClose} severity="success" >
-                    Food Item Create Successfully!
+                    Food Item Created Successfully!
                 </Alert>
             </Snackbar>
         </React.Fragment>
