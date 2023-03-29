@@ -15,6 +15,7 @@ import {
 } from "@mui/material/";
 import { grey } from "@mui/material/colors";
 import AccountCircleIcon from "@mui/icons-material/AccountCircle";
+import TableChartIcon from '@mui/icons-material/TableChart';
 import QrCodeIcon from "@mui/icons-material/QrCode";
 import Snackbar from '@mui/material/Snackbar';
 import MuiAlert from '@mui/material/Alert';
@@ -245,7 +246,7 @@ function Generate() {
                                                 spacing={1}
                                             >
                                                 <Box>
-                                                    <AccountCircleIcon
+                                                    <TableChartIcon
                                                         sx={userTableIcon}
                                                     />
                                                 </Box>

@@ -13,4 +13,6 @@ export const useStore = create((set) => ({
     setTableData: (tableData) => set({tableData: tableData}),
     user: null,
     setUser: (user) => set({ user: user}),
+    paymentAlert: null,
+    setPaymentAlert: (isOpen) => set({paymentAlert: isOpen})
 }));

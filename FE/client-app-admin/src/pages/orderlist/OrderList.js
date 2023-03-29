@@ -352,7 +352,7 @@ function OrderList() {
                                                 <Box sx={{ width: 30, height: 25 }} />
                                             </ListItemIcon>
                                             <ListItemText sx={notificationTitle} disableTypography primary={
-                                                <GlobalBlackBody1 sx={notificationUserName} text={'No Notifications Found!'} />
+                                                <GlobalBlackBody1 sx={notificationUserName} text={'No Notifications Found'} />
                                             }
                                             />
                                         </ListItemButton>
@@ -505,7 +505,7 @@ function OrderList() {
                                                 sx={notificationTitleText}
                                                 variant="body1"
                                             >
-                                                Notification
+                                                Notifications
                                             </Typography>
                                         }
                                     />
@@ -565,7 +565,7 @@ function OrderList() {
                                                         ]} >
                                                             <ListItemButton sx={notificationItemButton} >
                                                                 <ListItemIcon sx={notificationItemIcon} >
-                                                                    <AccountCircleIcon sx={[notificationUserPhoto]} />
+                                                                    <FastfoodIcon sx={[notificationUserPhoto]} />
                                                                 </ListItemIcon>
                                                                 <Stack direction="column" justifyContent="flex-start" spacing={-1} >
                                                                     <Stack direction="row">

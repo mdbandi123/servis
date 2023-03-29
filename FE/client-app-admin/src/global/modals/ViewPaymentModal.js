@@ -265,7 +265,7 @@ function ViewPaymentModal(props) {
                                                     lg={12}
                                                     lx={12}
                                                 >
-                                                    <GlobalBlackHeader5 text="No Ordered List Found" />
+                                                    <GlobalBlackHeader5 text="No Orders Found" />
                                                 </Grid2>
                                                 <Grid2
                                                     item
@@ -276,7 +276,7 @@ function ViewPaymentModal(props) {
                                                     lx={12}
                                                 >
                                                     <GlobalGreyBody2
-                                                        text={`We couldn't find any Ordered List. Please Wait for Customers' Orders`}
+                                                        text={`We couldn't find any orders. Please wait for customers to order`}
                                                     />
                                                 </Grid2>
                                             </Grid2>
@@ -302,7 +302,7 @@ function ViewPaymentModal(props) {
                         />
                         <ConfirmPaymentModal
                             orderId={props.orderId}
-                            context={`Are you sure do you want to mark as Paid the ${props.title}?`}
+                            context={`Are you want to mark ${props.title} as paid?`}
                         />
                     </DialogActions>
                 </Dialog>

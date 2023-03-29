@@ -264,7 +264,7 @@ function UpdateItemModal(props) {
             </Dialog>
             <Snackbar open={openAlert} autoHideDuration={6000} onClose={handleAlertClose} anchorOrigin={{ vertical: "bottom", horizontal: "right" }}>
                 <Alert onClose={handleAlertClose} severity="success" >
-                    Food Item Update Successfully!
+                    Food Item Updated Successfully!
                 </Alert>
             </Snackbar>
         </React.Fragment>
