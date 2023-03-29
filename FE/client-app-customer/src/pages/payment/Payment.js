@@ -218,7 +218,7 @@ function Payment() {
                     </TableContainer>
                     <Grid2 container sx={confirmContainer} justifyContent='center'>
                         <Grid2 sx={confirmBtn} item xs={12} sm={12} md={12} lg={12} lx={12}>
-                            <ConfirmPaymentModal sx={confirmBtn} text='Bill Out' variant='contained' context={'Are you sure do you want to Bill Out?'} disabled={true} />
+                            <ConfirmPaymentModal sx={confirmBtn} text='Bill Out' variant='contained' context={'Are you sure do you want to bill uut?'} disabled={true} />
                         </Grid2>
                     </Grid2>
                 </Box>
@@ -293,11 +293,11 @@ function Payment() {
                         {
                             loading ? (
                                 <>
-                                    <ConfirmPaymentModal sx={confirmBtn} text='Bill Out' variant='contained' context={'Are you sure do you want to Bill Out?'} disabled={true} />
+                                    <ConfirmPaymentModal sx={confirmBtn} text='Bill Out' variant='contained' context={'Are you sure do you want to bill out?'} disabled={true} />
                                 </>
                             ) : (
                                 <>
-                                    <ConfirmPaymentModal sx={confirmBtn} text='Bill Out' variant='contained' context={'Are you sure do you want to Bill Out?'} disabled={false} />
+                                    <ConfirmPaymentModal sx={confirmBtn} text='Bill Out' variant='contained' context={'Are you sure do you want to bill out?'} disabled={false} />
                                 </>
                             )
                         }

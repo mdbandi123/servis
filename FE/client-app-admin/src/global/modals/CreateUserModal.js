@@ -29,6 +29,7 @@ function CreateUserModal(props) {
     const [tableName, setTableName] = React.useState(null);
     const [openCreateModal, setOpenCreateModal] = React.useState(false);
     const [openAlert, setOpenAlert] = React.useState(false);
+    const [openAlertError, setOpenAlertError] = React.useState(false);
 
     const CreateHandler = () => {
         setOpenCreateModal(true);
@@ -48,6 +49,7 @@ function CreateUserModal(props) {
         }
 
         setOpenAlert(false);
+        setOpenAlertError(false);
     };
 
     const confirmCreateHandler = () => {
@@ -65,11 +67,13 @@ function CreateUserModal(props) {
             .then(data => {
                 console.log(data);
                 setOpenCreateModal(false);
-                setOpenAlert(true);
+                data.success ? setOpenAlert(true) : setOpenAlertError(true);
+                // setOpenAlert(true);
                 formStateResetHandler();
             }
             ).catch((error) => {
                 console.log(error);
+                // setOpenAlertError(true);
             });
     };
 
@@ -113,6 +117,11 @@ function CreateUserModal(props) {
             <Snackbar open={openAlert} autoHideDuration={6000} onClose={handleAlertClose} anchorOrigin={{ vertical: "bottom", horizontal: "right" }}>
                 <Alert onClose={handleAlertClose} severity="success">
                     Table Created Successfully!
+                </Alert>
+            </Snackbar>
+            <Snackbar open={openAlertError} autoHideDuration={6000} onClose={handleAlertClose} anchorOrigin={{ vertical: "bottom", horizontal: "right" }}>
+                <Alert onClose={handleAlertClose} severity="error">
+                    Table Created Unsuccessful!
                 </Alert>
             </Snackbar>
         </React.Fragment>

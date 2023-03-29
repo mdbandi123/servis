@@ -34,7 +34,7 @@ function ConfirmPaymentModal(props) {
 
     const [openConfirmPaymentModal, setOpenConfirmPaymentModal] =
         React.useState(false);
-    const { user } = useStore();
+    const { user, paymentAlert, setPaymentAlert } = useStore();
     const confirmPaymentHandler = () => {
         setOpenConfirmPaymentModal(true);
     };
@@ -73,6 +73,7 @@ function ConfirmPaymentModal(props) {
             console.log("Error ending session");
         }
         setOpenAlert(true);
+        setPaymentAlert(true);
     };
 
     const closeIconButton = {
@@ -120,11 +121,11 @@ function ConfirmPaymentModal(props) {
                     />
                 </DialogActions>
             </Dialog>
-            <Snackbar open={openAlert} autoHideDuration={6000} onClose={handleAlertClose} anchorOrigin={{ vertical: "bottom", horizontal: "right" }}>
+            {/* <Snackbar open={openAlert} autoHideDuration={6000} onClose={handleAlertClose} anchorOrigin={{ vertical: "bottom", horizontal: "right" }}>
                 <Alert onClose={handleAlertClose} severity="success">
                     Payment Confirm Successfully!
                 </Alert>
-            </Snackbar>
+            </Snackbar> */}
         </React.Fragment>
     );
 }

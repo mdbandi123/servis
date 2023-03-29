@@ -206,7 +206,7 @@ function Cart() {
                     </Card >
                     <Grid2 container sx={confirmContainer} justifyContent='center'>
                         <Grid2 sx={confirmBtn} item xs={12} sm={12} md={12} lg={12} lx={12}>
-                            <ConfirmOrderModal sx={confirmBtn} text='Confirm' variant='contained' context={'Are you sure do you want to proceed your orders?'} disabled={true} />
+                            <ConfirmOrderModal sx={confirmBtn} text='Confirm' variant='contained' context={'Are you sure you want to proceed with your order?'} disabled={true} />
                         </Grid2>
                     </Grid2>
                 </Box >
@@ -280,7 +280,7 @@ function Cart() {
                             </Card >
                             <Grid2 container sx={confirmContainer} justifyContent='center'>
                                 <Grid2 sx={confirmBtn} item xs={12} sm={12} md={12} lg={12} lx={12}>
-                                    <ConfirmOrderModal sx={confirmBtn} text='Confirm' variant='contained' context={'Are you sure do you want to proceed your orders?'} disabled={true} />
+                                    <ConfirmOrderModal sx={confirmBtn} text='Confirm' variant='contained' context={'Are you sure you want to proceed with your orders?'} disabled={true} />
                                 </Grid2>
                             </Grid2>
                         </>
@@ -296,7 +296,7 @@ function Cart() {
                             </Card>
                             <Grid2 container sx={confirmContainer} justifyContent='center'>
                                 <Grid2 sx={confirmBtn} item xs={12} sm={12} md={12} lg={12} lx={12}>
-                                    <ConfirmOrderModal order_id={order_id} sx={confirmBtn} text='Confirm' variant='contained' context={'Are you sure do you want to proceed your orders?'} disabled={false} />
+                                    <ConfirmOrderModal order_id={order_id} sx={confirmBtn} text='Confirm' variant='contained' context={'Are you sure you want to proceed with your orders?'} disabled={false} />
                                 </Grid2>
                             </Grid2>
                         </>

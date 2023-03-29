@@ -3,7 +3,7 @@ import { useStore } from "../../store/store";
 
 import { motion, AnimatePresence } from 'framer-motion';
 import { grey, teal, orange } from "@mui/material/colors";
-import { Box, Card, CardContent, Badge } from "@mui/material/";
+import { Box, Card, CardContent, Badge, Snackbar, Alert } from "@mui/material/";
 import Grid2 from "@mui/material/Unstable_Grid2/Grid2";
 import AccountCircleIcon from "@mui/icons-material/AccountCircle";
 import CreditCardIcon from '@mui/icons-material/CreditCard';
@@ -23,7 +23,7 @@ import PaymentSkeleton from "../../skeletons/PaymentSkeleton";
 
 function Payment(props) {
     const [loading, setLoading] = React.useState(true);
-    const { setOrderedItems, user } = useStore();
+    const { setOrderedItems, user, paymentAlert, setPaymentAlert } = useStore();
     const PaymentData = useStore.getState().orderedItems || [];
 
     React.useEffect(() => {
@@ -43,10 +43,19 @@ function Payment(props) {
                     // }, 3000);
                     setOrderedItems(data.orders);
                     setLoading(false);
+                    setPaymentAlert(false);
                 }
             })
             .catch((error) => console.error(error));
     }, []);
+
+    const handleAlertClose = (event, reason) => {
+        if (reason === 'clickaway') {
+            return;
+        }
+
+        setPaymentAlert(false);
+    };
 
     const pageTitleContainer = {
         mb: 3,
@@ -130,7 +139,7 @@ function Payment(props) {
                                         <CreditCardOffIcon sx={noItemIcon} />
                                     </Grid2>
                                     <Grid2 item xs={12} sm={12} md={12} lg={12} lx={12}>
-                                        <GlobalBlackHeader3 text={ `No Payments list Found` } />
+                                        <GlobalBlackHeader3 text={ `No Orders Found` } />
                                     </Grid2>
                                     <Grid2 item xs={12} sm={12} md={12} lg={12} lx={12}>
                                         <GlobalGreyBody2
@@ -318,7 +327,13 @@ function Payment(props) {
                                             </Card>
                                         </motion.div>
                                         </AnimatePresence>
+                                        <Snackbar open={paymentAlert} autoHideDuration={6000} onClose={handleAlertClose} anchorOrigin={{ vertical: "bottom", horizontal: "right" }}>
+                                            <Alert onClose={handleAlertClose} severity="success" variant="filled">
+                                              Payment Confirmed Successfully!
+                                            </Alert>
+                                        </Snackbar>
                                     </Grid2>
+                                    
                                     );
                                 }
                             )}
