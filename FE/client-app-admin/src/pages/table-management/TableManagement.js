@@ -7,6 +7,7 @@ import { Card, CardContent, Box, IconButton, Tooltip } from '@mui/material';
 import { teal, grey } from '@mui/material/colors';
 import FolderOffTwoToneIcon from '@mui/icons-material/FolderOffTwoTone';
 import AccountCircleIcon from '@mui/icons-material/AccountCircle';
+import TableChartIcon from '@mui/icons-material/TableChart';
 
 import GlobalIndigoHeader4 from '../../global/typographies/headers/IndigoHeader4';
 import CreateUserModal from '../../global/modals/CreateUserModal';
@@ -167,7 +168,7 @@ function TableManagement() {
                                                         <Grid2 item xs={8} sm={8} md={8} lg={8} lx={8}>
                                                             <Grid2 container alignItems='center' spacing={2}>
                                                                 <Grid2 item>
-                                                                    <AccountCircleIcon sx={tableUserIcon} />
+                                                                    <TableChartIcon sx={tableUserIcon} />
                                                                 </Grid2>
                                                                 <Grid2 item>
                                                                     <GlobalBlackBody1 sx={tableName} text={userList.table_name} />
