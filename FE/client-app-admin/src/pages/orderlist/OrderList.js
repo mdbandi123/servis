@@ -565,7 +565,12 @@ function OrderList() {
                                                         ]} >
                                                             <ListItemButton sx={notificationItemButton} >
                                                                 <ListItemIcon sx={notificationItemIcon} >
-                                                                    <FastfoodIcon sx={[notificationUserPhoto]} />
+                                                                    <GlobalTealBadge
+                                                                        badgeContent={filteredItem.quantity}
+                                                                        max={9}
+                                                                    >
+                                                                        <FastfoodIcon sx={notificationUserPhoto} />
+                                                                    </GlobalTealBadge>
                                                                 </ListItemIcon>
                                                                 <Stack direction="column" justifyContent="flex-start" spacing={-1} >
                                                                     <Stack direction="row">
@@ -575,7 +580,7 @@ function OrderList() {
                                                                     </Stack>
                                                                     <Stack direction="row">
                                                                         <Box>
-                                                                            <ListItemText sx={notificationOrderContent} primary={<GlobalBlackBody2 text={`x${filteredItem.quantity} ${filteredItem.item_name}`} />} />
+                                                                            <ListItemText sx={notificationOrderContent} primary={<GlobalBlackBody2 text={`${filteredItem.item_name}`} />} />
                                                                         </Box>
                                                                     </Stack>
                                                                     <Box alignItems="flex-end">
