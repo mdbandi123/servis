@@ -217,12 +217,12 @@ function OrderList() {
 
     const orderListUsername = {
         marginTop:'.25em',
-        fontSize: "1.4em",
+        fontSize: "1.4em"
     };
 
     const userIconNotification = {
         fontSize: "2em",
-        color: grey[800],
+        color: grey[800]
     };
 
     const orderListCardContainer = {
@@ -505,7 +505,23 @@ function OrderList() {
                                                 sx={notificationTitleText}
                                                 variant="body1"
                                             >
-                                                Notifications
+                                                {
+                                                    orderListNotification
+                                                        .map((item) =>
+                                                            item.ordered_items.filter(
+                                                                (item) =>
+                                                                    item.status !== "served"
+                                                            )
+                                                        ).flat().length > 1 ? (
+                                                        <>
+                                                            Notifications
+                                                        </>
+                                                    ) : (
+                                                        <>
+                                                            Notification
+                                                        </>
+                                                    )
+                                                }
                                             </Typography>
                                         }
                                     />
@@ -565,7 +581,12 @@ function OrderList() {
                                                         ]} >
                                                             <ListItemButton sx={notificationItemButton} >
                                                                 <ListItemIcon sx={notificationItemIcon} >
-                                                                    <FastfoodIcon sx={[notificationUserPhoto]} />
+                                                                    <GlobalTealBadge
+                                                                        badgeContent={filteredItem.quantity}
+                                                                        max={9}
+                                                                    >
+                                                                        <FastfoodIcon sx={notificationUserPhoto} />
+                                                                    </GlobalTealBadge>
                                                                 </ListItemIcon>
                                                                 <Stack direction="column" justifyContent="flex-start" spacing={-1} >
                                                                     <Stack direction="row">
@@ -575,7 +596,7 @@ function OrderList() {
                                                                     </Stack>
                                                                     <Stack direction="row">
                                                                         <Box>
-                                                                            <ListItemText sx={notificationOrderContent} primary={<GlobalBlackBody2 text={`x${filteredItem.quantity} ${filteredItem.item_name}`} />} />
+                                                                            <ListItemText sx={notificationOrderContent} primary={<GlobalBlackBody2 text={`${filteredItem.item_name}`} />} />
                                                                         </Box>
                                                                     </Stack>
                                                                     <Box alignItems="flex-end">
