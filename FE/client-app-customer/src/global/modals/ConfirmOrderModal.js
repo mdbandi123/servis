@@ -4,6 +4,7 @@ import store from '../../store/store'
 import { Dialog, DialogActions, DialogContent, DialogContentText, DialogTitle, Slide } from '@mui/material/';
 
 import GlobalGreyBody1 from '../typographies/bodies/GreyBody1';
+import GlobalBlackBody1 from '../typographies/bodies/BlackBody1';
 import GlobalBlackHeader5 from '../typographies/headers/BlackHeader5';
 import GlobalIndigoTextButton from '../buttons/text/IndigoTextButton';
 import GlobalOrangeTextButton from '../buttons/text/OrangeTextButton';
@@ -74,6 +75,10 @@ function ConfirmOrderModal(props) {
         display: 'flex'
     };
 
+    const ordersList = {
+        fontWeight: 'bold'
+    };
+
     return (
         <React.Fragment>
             <GlobalTealContainedButton text={props.text} variant={props.variant} sx={props.sx} onClick={confirmHandler} disabled={props.disabled} />
@@ -84,6 +89,7 @@ function ConfirmOrderModal(props) {
                 <DialogContent>
                     <DialogContentText id='alert-dialog-slide-description'>
                         <GlobalGreyBody1 text={ props.context } />
+                        <GlobalBlackBody1 text={ props.orders } sx={ ordersList } />
                     </DialogContentText>
                 </DialogContent>
                 <DialogActions>

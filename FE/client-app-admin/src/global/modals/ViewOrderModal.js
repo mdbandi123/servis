@@ -40,8 +40,7 @@ import GlobalTealBadge from "../badges/TealBadge";
 
 import Checkbox from '@mui/material/Checkbox';
 import FormControlLabel from '@mui/material/FormControlLabel';
-import DeleteIcon from '@mui/icons-material/Delete';
-import ArrowRightIcon from '@mui/icons-material/ArrowRight';
+import DeleteOrderModal from "./DeleteOrderModal";
 
 const Transition = React.forwardRef(function Transition(props, ref) {
     return <Slide direction="up" ref={ref} {...props} />;
@@ -223,7 +222,7 @@ function ViewOrderModal(props) {
         marginBottom: 0.5,
         minHeight: "50px",
         color: grey[900],
-        borderLeft: `3px solid ` + teal[800],
+        
         "&:hover": {
             backgroundColor: grey[100],
             Transition: "0.5s",
@@ -236,6 +235,7 @@ function ViewOrderModal(props) {
 
     const orderListDate = {
         fontSize: "0.7em",
+        ml: 4
     };
 
     const orderStatusSection = {
@@ -251,8 +251,42 @@ function ViewOrderModal(props) {
         }
     };
 
-    const deleteIcon = {
-        color: teal[500]
+    const servedStatusName = {
+        mt: 0.5,
+        mb: 0.5
+    };
+
+    const pendingDeleteBtn = {
+        color: red[500], 
+        backgroundColor: grey[50], 
+        border: '1px solid ' + red[500], 
+        '&:hover': { 
+            color: red[600], 
+            backgroundColor: grey[100], 
+            transition: '0.5s'
+        }
+    };
+
+    const pendingChangeBtn = {
+        color: grey[50],
+        backgroundColor: red[500],
+        '&:hover': {
+            backgroundColor: red[600],
+            transition: '0.5s'
+        }
+    };
+
+    const preparingChangeBtn = {
+        color: grey[50], 
+        backgroundColor: orange[500], 
+        '&:hover': { 
+            backgroundColor: orange[600], 
+            transition: '0.5s' 
+        }
+    };
+
+    const itemId = {
+        ml: 4
     };
 
     return (
@@ -292,7 +326,7 @@ function ViewOrderModal(props) {
                                                                                     <GlobalBlackHeader5 sx={[orderStatusName]} text={column.name} />
                                                                                 </Grid2>
                                                                                 <Grid2 item>
-                                                                                    <GlobalBlackHeader5 sx={[orderStatusName, { color: column.theme, },]} text={column.items.length} />
+                                                                                    <GlobalBlackHeader5 sx={[orderStatusName, { color: column.theme }]} text={column.items.length} />
                                                                                 </Grid2>
                                                                             </Grid2>
                                                                         </>}
@@ -307,7 +341,7 @@ function ViewOrderModal(props) {
                                                                                     <GlobalBlackHeader5 sx={[orderStatusName]} text={column.name} />
                                                                                 </Grid2>
                                                                                 <Grid2 item>
-                                                                                    <GlobalBlackHeader5 sx={[orderStatusName, { color: column.theme, },]} text={column.items.length} />
+                                                                                    <GlobalBlackHeader5 sx={[orderStatusName, { color: column.theme }]} text={column.items.length} />
                                                                                 </Grid2>
                                                                             </Grid2>
                                                                         </>}
@@ -316,12 +350,12 @@ function ViewOrderModal(props) {
                                                                 )}
                                                                 {index === 2 && (
                                                                     <>
-                                                                        <Grid2 sx={{ mt: 0.5, mb: 0.5 }} item container direction="row" spacing={1}>
+                                                                        <Grid2 sx={servedStatusName} item container direction="row" spacing={1}>
                                                                             <Grid2 item>
                                                                                 <GlobalBlackHeader5 sx={[orderStatusName]} text={column.name} />
                                                                             </Grid2>
                                                                             <Grid2 item>
-                                                                                <GlobalBlackHeader5 sx={[orderStatusName, { color: column.theme, },]} text={column.items.length} />
+                                                                                <GlobalBlackHeader5 sx={[orderStatusName, { color: column.theme }]} text={column.items.length} />
                                                                             </Grid2>
                                                                         </Grid2>
                                                                     </>
@@ -333,19 +367,14 @@ function ViewOrderModal(props) {
                                                                     <>
                                                                         <Stack direction='row' spacing={1}>
                                                                             <Box>
-                                                                                <Chip sx={{ color: red[500], backgroundColor: grey[50], border: '1px solid ' + red[500], '&:hover': { color: red[600], backgroundColor: grey[100], transition: '0.5s' } }}
-                                                                                    variant="outlined"
-                                                                                    label="Delete"
-                                                                                    onClick
-                                                                                    disabled={false}
+                                                                                <DeleteOrderModal 
+                                                                                    sx={ pendingDeleteBtn } variant="outlined" label="Delete" disabled={ !checked }
+                                                                                    header={`Delete Orders in ${column.name} Status`}
+                                                                                    context='Are you sure you want to Delete?'
                                                                                 />
                                                                             </Box>
                                                                             <Box>
-                                                                                <Chip sx={{ color: grey[50], backgroundColor: red[500], '&:hover': { backgroundColor: red[600], transition: '0.5s' } }}
-                                                                                    label="Prepare"
-                                                                                    onClick
-                                                                                    disabled={false}
-                                                                                />
+                                                                                <Chip sx={ pendingChangeBtn } label="Prepare" onClick disabled={!checked} />
                                                                             </Box>
                                                                         </Stack>
                                                                     </>
@@ -354,19 +383,7 @@ function ViewOrderModal(props) {
                                                                     <>
                                                                         <Stack direction='row' spacing={1}>
                                                                             <Box>
-                                                                                <Chip sx={{ color: orange[500], backgroundColor: grey[50], border: '1px solid ' + orange[500], '&:hover': { color: orange[600], backgroundColor: grey[100], transition: '0.5s' } }}
-                                                                                    variant="outlined"
-                                                                                    label="Delete"
-                                                                                    onClick
-                                                                                    disabled={false}
-                                                                                />
-                                                                            </Box>
-                                                                            <Box>
-                                                                                <Chip sx={{ color: grey[50], backgroundColor: orange[500], '&:hover': { backgroundColor: orange[600], transition: '0.5s' }}} 
-                                                                                label="Serve"
-                                                                                onClick
-                                                                                disabled={false}
-                                                                            />
+                                                                                <Chip sx={ preparingChangeBtn } label="Serve" onClick disabled={!checked} />
                                                                             </Box>
                                                                         </Stack>
                                                                     </>
@@ -387,7 +404,7 @@ function ViewOrderModal(props) {
                                                                                 {( provided, snapshot ) => {
                                                                                     return (
                                                                                         <Paper ref={ provided.innerRef } {...provided.draggableProps} {...provided.dragHandleProps}
-                                                                                            sx={[ orderListCard, { backgroundColor: snapshot.isDragging ? grey[200] : grey[50], ...provided .draggableProps .style,}, ]} >
+                                                                                            sx={[orderListCard, { borderLeft: `3px solid ` + column.theme, backgroundColor: snapshot.isDragging ? grey[200] : grey[50], ...provided .draggableProps .style,}, ]} >
                                                                                             
                                                                                             <ListItem>
                                                                                                 <Grid2 container alignContent="center" alignItems="center" >
@@ -395,21 +412,39 @@ function ViewOrderModal(props) {
                                                                                                         <Grid2 container spacing={2} >
                                                                                                             <Grid2 item xs={12} sm={12} md={12} lg={12} lx={12} >
                                                                                                                 <Stack direction='row' alignItems='center' spacing={2}>
-                                                                                                                    <FormControlLabel
-                                                                                                                        label={<>
-                                                                                                                            <Grid2 item container direction="row" spacing={2}>
-                                                                                                                                <Grid2 item>
-                                                                                                                                    <GlobalBlackBody1 text={`${item.item_name}`} sx={item_name} />
-                                                                                                                                </Grid2>
-                                                                                                                                <Grid2 item>
-                                                                                                                                    <GlobalTealBadge badgeContent={item.quantity} />
-                                                                                                                                </Grid2>
-                                                                                                                            </Grid2> 
-                                                                                                                        </>}
-                                                                                                                        control={<Checkbox sx={selectCheckbox} checked={checked} onChange={checkboxHandler} />}
-                                                                                                                    /> 
+                                                                                                                    {
+                                                                                                                        column.name == "Served" ? (
+                                                                                                                            <FormControlLabel
+                                                                                                                                label={<>
+                                                                                                                                    <Grid2 item container direction="row" spacing={2}>
+                                                                                                                                        <Grid2 item>
+                                                                                                                                            <GlobalBlackBody1 text={`${item.item_name}`} sx={item_name} />
+                                                                                                                                        </Grid2>
+                                                                                                                                        <Grid2 item>
+                                                                                                                                            <GlobalTealBadge badgeContent={item.quantity} />
+                                                                                                                                        </Grid2>
+                                                                                                                                    </Grid2>
+                                                                                                                                </>}
+                                                                                                                                control={<Checkbox sx={selectCheckbox} checked={false} disabled={true} />}
+                                                                                                                            />
+                                                                                                                        ) : (
+                                                                                                                            <FormControlLabel
+                                                                                                                                label={<>
+                                                                                                                                    <Grid2 item container direction="row" spacing={2}>
+                                                                                                                                        <Grid2 item>
+                                                                                                                                            <GlobalBlackBody1 text={`${item.item_name}`} sx={item_name} />
+                                                                                                                                        </Grid2>
+                                                                                                                                        <Grid2 item>
+                                                                                                                                            <GlobalTealBadge badgeContent={item.quantity} />
+                                                                                                                                        </Grid2>
+                                                                                                                                    </Grid2>
+                                                                                                                                </>}
+                                                                                                                                control={<Checkbox sx={selectCheckbox} checked={checked} onChange={checkboxHandler} />}
+                                                                                                                            /> 
+                                                                                                                        )
+                                                                                                                    }
                                                                                                                 </Stack> 
-                                                                                                                <GlobalGreyBody2 sx={{ml:4}} text={`#${item._id.substr( 0, 9 )}`} />
+                                                                                                                <GlobalGreyBody2 sx={ itemId } text={`#${item._id.substr( 0, 9 )}`} />
                                                                                                             </Grid2>
                                                                                                             <Grid2 item xs={12} sm={12} md={12} lg={12} lx={12} >
                                                                                                                 <GlobalGreyBody2 text={[
@@ -420,7 +455,7 @@ function ViewOrderModal(props) {
                                                                                                                         new Date(new Date(item.time_ordered).getTime() - (8 * 60 * 60 * 1000)).getMinutes() + ':' +
                                                                                                                         new Date(new Date(item.time_ordered).getTime() - (8 * 60 * 60 * 1000)).getSeconds()
                                                                                                                     ]} 
-                                                                                                                    sx={ [orderListDate, {ml:4} ]}
+                                                                                                                    sx={ orderListDate }
                                                                                                                 />
                                                                                                             </Grid2>
                                                                                                         </Grid2>

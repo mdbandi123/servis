@@ -7,7 +7,7 @@ import { grey, teal } from '@mui/material/colors';
 import AddRoundedIcon from '@mui/icons-material/AddRounded';
 import RemoveRoundedIcon from '@mui/icons-material/RemoveRounded';
 import ExtensionOffIcon from '@mui/icons-material/ExtensionOff';
-import InsertPhotoIcon from '@mui/icons-material/InsertPhoto';
+import GlobalOrderList from '../../global/lists/ListOrderName';
 
 import GlobalBlackBody1 from '../../global/typographies/bodies/BlackBody1';
 import GlobalBlackHeader6 from '../../global/typographies/headers/BlackHeader6';
@@ -296,7 +296,20 @@ function Cart() {
                             </Card>
                             <Grid2 container sx={confirmContainer} justifyContent='center'>
                                 <Grid2 sx={confirmBtn} item xs={12} sm={12} md={12} lg={12} lx={12}>
-                                    <ConfirmOrderModal order_id={order_id} sx={confirmBtn} text='Confirm' variant='contained' context={'Are you sure you want to proceed with your orders?'} disabled={false} />
+                                    <ConfirmOrderModal 
+                                        order_id={order_id} sx={confirmBtn} text='Confirm' variant='contained' disabled={false}
+                                        context={'Are you sure you want to proceed with your orders? Please review your Orders:'}
+                                        orders={<>
+                                            <Box sx={{ overflow: "auto", maxHeight: 300 }}>
+                                                {CartList.map((cartList) => (
+                                                    <GlobalOrderList
+                                                        orderList={`${cartList.item_name} (${cartList.quantity}) - ₱ ${cartList.item_price.$numberDecimal}`}
+                                                    />
+                                                ))}
+                                            </Box>
+                                            <GlobalBlackBody1 sx={{ mt: 2, fontWeight: 'bold' }} text={'Total: ₱' + CartList.reduce((acc, item) => acc + (item.item_price.$numberDecimal * item.quantity), 0).toFixed(2)} />
+                                        </>}
+                                        />
                                 </Grid2>
                             </Grid2>
                         </>

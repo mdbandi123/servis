@@ -217,12 +217,12 @@ function OrderList() {
 
     const orderListUsername = {
         marginTop:'.25em',
-        fontSize: "1.4em",
+        fontSize: "1.4em"
     };
 
     const userIconNotification = {
         fontSize: "2em",
-        color: grey[800],
+        color: grey[800]
     };
 
     const orderListCardContainer = {
@@ -505,7 +505,23 @@ function OrderList() {
                                                 sx={notificationTitleText}
                                                 variant="body1"
                                             >
-                                                Notifications
+                                                {
+                                                    orderListNotification
+                                                        .map((item) =>
+                                                            item.ordered_items.filter(
+                                                                (item) =>
+                                                                    item.status !== "served"
+                                                            )
+                                                        ).flat().length > 1 ? (
+                                                        <>
+                                                            Notifications
+                                                        </>
+                                                    ) : (
+                                                        <>
+                                                            Notification
+                                                        </>
+                                                    )
+                                                }
                                             </Typography>
                                         }
                                     />
