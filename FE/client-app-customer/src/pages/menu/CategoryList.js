@@ -329,7 +329,7 @@ function CategoryList() {
                 open={openNotAlert}
                 autoHideDuration={2000}
                 onClose={handleNotClose}
-                message="Food not available!"
+                message="Food is not available!"
                 action={notAction}
             />
         </FadeIn>
