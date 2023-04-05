@@ -200,7 +200,7 @@ function ViewOrderModal(props) {
         marginLeft: 3,
         marginRight: 1,
         paddingTop: 1,
-        backgroundColor: grey[200],
+        backgroundColor: grey[300],
     };
 
     const orderStatusName = {

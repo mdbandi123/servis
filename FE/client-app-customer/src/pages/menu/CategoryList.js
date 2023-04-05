@@ -11,12 +11,13 @@ import {
     CardMedia,
     IconButton,
 } from "@mui/material";
-import { grey } from "@mui/material/colors";
+import { grey, orange } from "@mui/material/colors";
 import ArrowBackRoundedIcon from "@mui/icons-material/ArrowBackRounded";
 import AddRoundedIcon from "@mui/icons-material/AddRounded";
 import ExtensionOffIcon from "@mui/icons-material/ExtensionOff";
 import InsertPhotoIcon from '@mui/icons-material/InsertPhoto';
 
+import GlobalGreyContainedButton from "../../global/buttons/contains/GreyContainedButton";
 import GlobalBlackHeader6 from "../../global/typographies/headers/BlackHeader6";
 import GlobalBlackHeader4 from "../../global/typographies/headers/BlackHeader4";
 import GlobalOrangeHeader6 from "../../global/typographies/headers/OrangeHeader6";
@@ -36,6 +37,7 @@ function CategoryList() {
     const { category_name } = useParams();
     const [StartersData, setStartersData] = React.useState([]);
     const [openAlert, setOpenAlert] = React.useState(false);
+    const [openNotAlert, setOpenNotAlert] = React.useState(false);
 
     const { order_id } = useStore();
 
@@ -88,6 +90,10 @@ function CategoryList() {
         setOpenAlert(true);
     };
 
+    const notAvailable = () => {
+        setOpenNotAlert(true);
+    };
+
     const handleClose = (event, reason) => {
         if (reason === 'clickaway') {
             return;
@@ -96,9 +102,25 @@ function CategoryList() {
         setOpenAlert(false);
     };
 
+    const handleNotClose = (event, reason) => {
+        if (reason === 'clickaway') {
+            return;
+        }
+
+        setOpenNotAlert(false);
+    };
+
     const action = (
         <React.Fragment>
             <IconButton size="small" aria-label="close" color="inherit" onClick={handleClose} >
+                <CloseIcon fontSize="small" />
+            </IconButton>
+        </React.Fragment>
+    );
+
+    const notAction = (
+        <React.Fragment>
+            <IconButton size="small" aria-label="close" color="inherit" onClick={handleNotClose} >
                 <CloseIcon fontSize="small" />
             </IconButton>
         </React.Fragment>
@@ -234,53 +256,51 @@ function CategoryList() {
                                     </>
                                 ) : (
                                     <>
-                                        {StartersData.filter(
-                                            (startersList) => startersList.is_available
-                                        ).map((startersList) => (
+                                        {StartersData.map((startersList) => (
                                             <Grid2 item xs={6} sm={6} md={4} lg={3} lx={3}>
+                                                
                                                 <Card sx={cardContainer}>
                                                     <CardMedia
+                                                        sx={{ filter: startersList.is_available ? 'grayscale(0)' : 'grayscale(1)' }}
                                                         component="img"
                                                         height="140"
                                                         image={`${process.env.REACT_APP_BACKEND_URL}${startersList.image}`}
                                                         alt={startersList.name}
                                                     />
                                                     <CardContent sx={cardContent}>
-                                                        <Stack
-                                                            direction="column"
-                                                            spacing={2}
-                                                        >
-                                                            <Box
-                                                                sx={
-                                                                    categoryNamePriceContainer
-                                                                }
-                                                            >
+                                                        <Stack direction="column" spacing={2} >
+                                                            <Box sx={ categoryNamePriceContainer } >
                                                                 <GlobalBlackHeader6
-                                                                    sx={itemNamePrice}
+                                                                    sx={[itemNamePrice, { color: startersList.is_available ? grey[900] : grey[500] }]}
                                                                     text={startersList.name}
                                                                 />
                                                                 <GlobalOrangeHeader6
-                                                                    sx={itemNamePrice}
-                                                                    text={
-                                                                        "₱" +
-                                                                        startersList.price
-                                                                            .$numberDecimal
-                                                                    }
+                                                                    sx={[itemNamePrice, { color: startersList.is_available ? orange[700] : grey[500] }]}
+                                                                    text={ "₱" + startersList.price .$numberDecimal }
                                                                 />
                                                             </Box>
                                                             <Box>
-                                                                <GlobalTealContainedButton
-                                                                    text="Add"
-                                                                    sx={addBtn}
-                                                                    startIcon={
-                                                                        <AddRoundedIcon />
-                                                                    }
-                                                                    onClick={() =>
-                                                                        addToCart(
-                                                                            startersList._id
-                                                                        )
-                                                                    }
-                                                                />
+                                                                {
+                                                                    startersList.is_available ? (
+                                                                        <>
+                                                                            <GlobalTealContainedButton
+                                                                                text="Add"
+                                                                                sx={addBtn}
+                                                                                startIcon={<AddRoundedIcon />}
+                                                                                onClick={() => addToCart(startersList._id)}
+                                                                            />
+                                                                        </>
+                                                                    ) : (
+                                                                        <>
+                                                                            <GlobalGreyContainedButton
+                                                                                text="Add"
+                                                                                sx={addBtn}
+                                                                                startIcon={<AddRoundedIcon />}
+                                                                                onClick={() => notAvailable()}
+                                                                            />
+                                                                        </>
+                                                                    )
+                                                                }
                                                             </Box>
                                                         </Stack>
                                                     </CardContent>
@@ -302,6 +322,15 @@ function CategoryList() {
                 onClose={handleClose}
                 message="Food added to your cart!"
                 action={action}
+            />
+            <Snackbar
+                anchorOrigin={{ vertical: "bottom", horizontal: "right" }}
+                sx={{ mb: 4 }}
+                open={openNotAlert}
+                autoHideDuration={2000}
+                onClose={handleNotClose}
+                message="Food not available!"
+                action={notAction}
             />
         </FadeIn>
     );
