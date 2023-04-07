@@ -122,14 +122,107 @@ const onDragEnd = (result, columns, setColumns, user) => {
 };
 
 function ViewOrderModal(props) {
-    const [checked, setChecked] = React.useState(false);
-
-    const checkboxHandler = (event) => {
-        setChecked(event.target.checked);
-    };
-
     const { user } = useStore();
 
+    const [checkedItems, setCheckedItems] = useState({});
+    console.log(checkedItems);
+
+    const checkboxHandler = (event, item) => {
+        setCheckedItems({
+        ...checkedItems,
+        [event.target.name]: {
+            checked: event.target.checked,
+            status: item.status
+        }
+        });
+    };
+
+    const [checkedColumns, setCheckedColumns] = useState({});
+
+    const columnCheckboxHandler = (columnIndex, event, column) => {
+        const isChecked = event.target.checked;
+        setCheckedColumns({
+            ...checkedColumns,
+            [columnIndex]: isChecked
+        });
+    
+        const updatedCheckedItems = { ...checkedItems };
+        column.items.forEach((item) => {
+            updatedCheckedItems[item._id] = {
+                checked: isChecked,
+                status: item.status
+            };
+        });
+        setCheckedItems(updatedCheckedItems);
+    };
+
+    const hasCheckedItemsWithStatus = (status) => {
+        for (const key in checkedItems) {
+          if (checkedItems[key].checked && props.orders.ordered_items.find((item) => item._id === key && item.status === status)) {
+            return true;
+          }
+        }
+        return false;
+      };
+
+      console.log(props);
+      
+    const changeOrderStatusHandler = (oldStatus,newStatus) => {
+        fetch(`${process.env.REACT_APP_BACKEND_URL}/order_items/status_bulk`, {
+            method: "PUT",
+            headers: {
+                "Content-Type": "application/json",
+                Authorization: user.Aa,
+            },
+            body: JSON.stringify({
+                order_id: props.orders.order_id,
+                items: Object.keys(checkedItems).filter((key) => checkedItems[key].checked && checkedItems[key].status === oldStatus),
+                status: newStatus,
+            }),
+        })
+            .then((response) => {
+                if (!response.ok) {
+                    throw new Error("Failed to update item status");
+                }
+                return response.json();
+            })
+            .then((data) => {
+                console.log(data);
+                setCheckedItems({})
+            })
+            .catch((error) => {
+                console.error(error);
+            });
+    };
+
+    const deleteItemFromOrder = () => {
+        fetch(`${process.env.REACT_APP_BACKEND_URL}/order_items/items`, {
+            method: "DELETE",
+            headers: {
+                "Content-Type": "application/json",
+                Authorization: user.Aa,
+            },
+            body: JSON.stringify({
+                order_id: props.orders.order_id,
+                items: Object.keys(checkedItems).filter((key) => checkedItems[key].checked && checkedItems[key].status === "pending"),
+            }),
+        })
+            .then((response) => {
+                console.log(response);
+                if (!response.ok) {
+                    throw new Error("Failed to delete items");
+                }
+                return response.json();
+            })
+            .then((data) => {
+                console.log(data);
+                setCheckedItems({})
+            })
+            .catch((error) => {
+                console.error(error);
+            });
+    };
+      
     const initialUserOrderStatus = {
         pending: {
             name: "Pending",
@@ -152,7 +245,7 @@ function ViewOrderModal(props) {
     const [columns, setColumns] = useState(initialUserOrderStatus);
 
     React.useEffect(() => {
-        console.log("props order", props.orders);
+        
         const userOrderStatus = {
             pending: {
                 name: "Pending",
@@ -311,7 +404,8 @@ function ViewOrderModal(props) {
                     <DialogContentText id="alert-dialog-slide-description">
                         <Grid2 container justifyContent="center">
                             <DragDropContext onDragEnd={(result) => onDragEnd(result, columns, setColumns, user) } >
-                                {Object.entries(columns).map( ([columnId, column], index) => { console.log(column);
+                                {Object.entries(columns).map( ([columnId, column], index) => {
+                                      
                                         return (
                                             <Card sx={[ userOrderStatusContainer, { borderTop: "5px solid " + column.theme, }, ]} key={columnId} >
                                                 <Grid2 container sx={orderStatusSection} >
@@ -320,33 +414,57 @@ function ViewOrderModal(props) {
                                                             <Grid2 item>
                                                                 {index === 0 && (
                                                                     <FormControlLabel
-                                                                        label={<>
-                                                                            <Grid2 item container direction="row" spacing={1}>
-                                                                                <Grid2 item>
-                                                                                    <GlobalBlackHeader5 sx={[orderStatusName]} text={column.name} />
-                                                                                </Grid2>
-                                                                                <Grid2 item>
-                                                                                    <GlobalBlackHeader5 sx={[orderStatusName, { color: column.theme }]} text={column.items.length} />
-                                                                                </Grid2>
-                                                                            </Grid2>
-                                                                        </>}
-                                                                        control={<Checkbox sx={selectCheckbox} checked={checked} onChange={checkboxHandler} indeterminate={checked} />}
-                                                                    />
+                                                                    label={
+                                                                      <>
+                                                                        <Grid2 item container direction="row" spacing={1}>
+                                                                          <Grid2 item>
+                                                                            <GlobalBlackHeader5 sx={[orderStatusName]} text={column.name} />
+                                                                          </Grid2>
+                                                                          <Grid2 item>
+                                                                            <GlobalBlackHeader5 sx={[orderStatusName, { color: column.theme }]} text={column.items.length} />
+                                                                          </Grid2>
+                                                                        </Grid2>
+                                                                      </>
+                                                                    }
+                                                                    control={
+                                                                      <Checkbox
+                                                                        sx={selectCheckbox}
+                                                                        checked={checkedColumns[index] || false}
+                                                                        onChange={(event) => columnCheckboxHandler(index, event, column)}
+                                                                        // indeterminate={
+                                                                        //   checkedColumns[index] === undefined &&
+                                                                        //   column.items.some((item) => checkedItems[item._id])
+                                                                        // }
+                                                                      />
+                                                                    }
+                                                                  />
                                                                 )}
                                                                 {index === 1 && (
                                                                     <FormControlLabel
-                                                                        label={<>
-                                                                            <Grid2 item container direction="row" spacing={1}>
-                                                                                <Grid2 item>
-                                                                                    <GlobalBlackHeader5 sx={[orderStatusName]} text={column.name} />
-                                                                                </Grid2>
-                                                                                <Grid2 item>
-                                                                                    <GlobalBlackHeader5 sx={[orderStatusName, { color: column.theme }]} text={column.items.length} />
-                                                                                </Grid2>
-                                                                            </Grid2>
-                                                                        </>}
-                                                                        control={<Checkbox sx={selectCheckbox} checked={checked} onChange={checkboxHandler} indeterminate={checked} />}
-                                                                    />
+                                                                    label={
+                                                                      <>
+                                                                        <Grid2 item container direction="row" spacing={1}>
+                                                                          <Grid2 item>
+                                                                            <GlobalBlackHeader5 sx={[orderStatusName]} text={column.name} />
+                                                                          </Grid2>
+                                                                          <Grid2 item>
+                                                                            <GlobalBlackHeader5 sx={[orderStatusName, { color: column.theme }]} text={column.items.length} />
+                                                                          </Grid2>
+                                                                        </Grid2>
+                                                                      </>
+                                                                    }
+                                                                    control={
+                                                                      <Checkbox
+                                                                        sx={selectCheckbox}
+                                                                        checked={checkedColumns[index] || false}
+                                                                        onChange={(event) => columnCheckboxHandler(index, event, column)}
+                                                                        // indeterminate={
+                                                                        //   checkedColumns[index] === undefined &&
+                                                                        //   column.items.some((item) => checkedItems[item._id])
+                                                                        // }
+                                                                      />
+                                                                    }
+                                                                  />
                                                                 )}
                                                                 {index === 2 && (
                                                                     <>
@@ -360,7 +478,6 @@ function ViewOrderModal(props) {
                                                                         </Grid2>
                                                                     </>
                                                                 )}
-                                                                
                                                             </Grid2>
                                                             <Grid2 item>
                                                                 {index === 0 && (
@@ -368,13 +485,19 @@ function ViewOrderModal(props) {
                                                                         <Stack direction='row' spacing={1}>
                                                                             <Box>
                                                                                 <DeleteOrderModal 
-                                                                                    sx={ pendingDeleteBtn } variant="outlined" label="Delete" disabled={ !checked }
+                                                                                    sx={ pendingDeleteBtn } variant="outlined" label="Delete" disabled={!hasCheckedItemsWithStatus("pending")}
                                                                                     header={`Delete Orders in ${column.name} Status`}
                                                                                     context='Are you sure you want to Delete?'
+                                                                                    deleteHandler={deleteItemFromOrder}
                                                                                 />
                                                                             </Box>
                                                                             <Box>
-                                                                                <Chip sx={ pendingChangeBtn } label="Prepare" onClick disabled={!checked} />
+                                                                            <Chip
+                                                                                sx={pendingChangeBtn}
+                                                                                label="Prepare"
+                                                                                onClick={() => changeOrderStatusHandler("pending","preparing")}
+                                                                                disabled={!hasCheckedItemsWithStatus("pending")}
+                                                                            />
                                                                             </Box>
                                                                         </Stack>
                                                                     </>
@@ -383,7 +506,12 @@ function ViewOrderModal(props) {
                                                                     <>
                                                                         <Stack direction='row' spacing={1}>
                                                                             <Box>
-                                                                                <Chip sx={ preparingChangeBtn } label="Serve" onClick disabled={!checked} />
+                                                                                <Chip 
+                                                                                sx={ preparingChangeBtn } 
+                                                                                label="Serve"
+                                                                                onClick={() => changeOrderStatusHandler("preparing","served")}
+                                                                                disabled={!hasCheckedItemsWithStatus("preparing")}
+                                                                                />
                                                                             </Box>
                                                                         </Stack>
                                                                     </>
@@ -395,6 +523,7 @@ function ViewOrderModal(props) {
                                                 </Grid2>
                                                 <Droppable droppableId={columnId} key={columnId} >
                                                     {(provided, snapshot) => {
+                                                       
                                                         return (
                                                             <Box {...provided.droppableProps} ref={ provided.innerRef } sx={ orderStatusContent } >
                                                                 {column.items.map(
@@ -429,18 +558,27 @@ function ViewOrderModal(props) {
                                                                                                                             />
                                                                                                                         ) : (
                                                                                                                             <FormControlLabel
-                                                                                                                                label={<>
+                                                                                                                                label={
+                                                                                                                                    <>
                                                                                                                                     <Grid2 item container direction="row" spacing={2}>
                                                                                                                                         <Grid2 item>
-                                                                                                                                            <GlobalBlackBody1 text={`${item.item_name}`} sx={item_name} />
+                                                                                                                                        <GlobalBlackBody1 text={`${item.item_name}`} sx={item_name} />
                                                                                                                                         </Grid2>
                                                                                                                                         <Grid2 item>
-                                                                                                                                            <GlobalTealBadge badgeContent={item.quantity} />
+                                                                                                                                        <GlobalTealBadge badgeContent={item.quantity} />
                                                                                                                                         </Grid2>
                                                                                                                                     </Grid2>
-                                                                                                                                </>}
-                                                                                                                                control={<Checkbox sx={selectCheckbox} checked={checked} onChange={checkboxHandler} />}
-                                                                                                                            /> 
+                                                                                                                                    </>
+                                                                                                                                }
+                                                                                                                                control={
+                                                                                                                                    <Checkbox
+                                                                                                                                    sx={selectCheckbox}
+                                                                                                                                    checked={checkedItems[item._id]?.checked || false}
+                                                                                                                                    onChange={(event) => checkboxHandler(event, item)}
+                                                                                                                                    name={item._id}
+                                                                                                                                    />
+                                                                                                                                }
+                                                                                                                                />
                                                                                                                         )
                                                                                                                     }
                                                                                                                 </Stack> 

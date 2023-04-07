@@ -50,6 +50,8 @@ function DeleteOrderModal(props) {
     };
 
     const confirmItemDeleteHandler = () => {
+        props.deleteHandler()
+
         setOpenItemModal(false);
         setOpenAlert(true);
     };
