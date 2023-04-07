@@ -335,7 +335,7 @@ route.post("/item", async (req, res) => {
     }
 });
 
-// update the status of an item in the order of the CURRENT session (body payload: order_id, item_id, status)
+// update the STATUS of an item in the order of the CURRENT session (body payload: order_id, item_id, status)
 route.put("/status", auth, async (req, res) => {
     const order_id = req.body.order_id;
     const item_id = req.body.item_id;
@@ -343,22 +343,51 @@ route.put("/status", auth, async (req, res) => {
 
     try {
         // update the status of the item in the order collection
-        await order_model.findOneAndUpdate(
+         await order_model.findOneAndUpdate(
             { order_id: order_id, "ordered_items._id": item_id },
             { $set: { "ordered_items.$.status": status } },
             { new: true }
         );
 
-        const modOrderCollection = await order_model.find();
-
         // return the modified order collection
         res.status(200).json({
             message: `Item status has been updated.`,
-            order: modOrderCollection,
         });
     } catch (error) {
         res.status(500).json({
             message: "Error updating item status",
+            error: error,
+        });
+    }
+});
+
+// update the STATUS of an ARRAY of items in the order of the CURRENT session (body payload: order_id, items, status)
+route.put("/status_bulk", auth, async (req, res) => {
+    const order_id = req.body.order_id;
+    const items = req.body.items;
+    const status = req.body.status;
+
+    try {
+        // update the status of each item in the order collection
+        const updatePromises = items.map(async (item_id) =>{
+            return order_model.findOneAndUpdate(
+                { order_id: order_id, "ordered_items._id": item_id },
+                { $set: { "ordered_items.$.status": status } },
+                { new: true }
+            );
+        });
+        
+        const resp = await Promise.all(updatePromises);
+
+        console.log(resp);
+
+        // return the modified order collection
+        res.status(200).json({
+            message: `Item statuses have been updated.`,
+        });
+    } catch (error) {
+        res.status(500).json({
+            message: "Error updating item statuses",
             error: error,
         });
     }
@@ -432,7 +461,7 @@ route.put("/checkout", async (req, res) => {
     }
 });
 
-//remove the item from the cart of the CURRENT session (body payload: order_id, item_id)
+//remove the item from the CART of the CURRENT session (body payload: order_id, item_id)
 route.delete("/item", async (req, res) => {
     const order_id = req.body.order_id;
     const item_id = req.body.item_id;
@@ -448,6 +477,34 @@ route.delete("/item", async (req, res) => {
         // return the modified order collection
         res.status(200).json({
             message: `Item has been removed from the order.`,
+        });
+    } catch (error) {
+        res.status(500).json({
+            message: "Error removing item from order",
+            error: error,
+        });
+    }
+});
+
+//remove the item from the ORDERED_ITEMS of an order
+route.delete("/items", async (req, res) => {
+    const order_id = req.body.order_id;
+    const items = req.body.items;
+
+    try {
+        const updatePromises = items.map(async (item_id) =>{
+            return order_model.findOneAndUpdate(
+                { order_id: order_id },
+                { $pull: { ordered_items: { _id: item_id } } },
+                { new: true }
+            );
+        });
+        
+       await Promise.all(updatePromises);
+
+        // return the modified order collection
+        res.status(200).json({
+            message: `Items has been removed from the order.`,
         });
     } catch (error) {
         res.status(500).json({
