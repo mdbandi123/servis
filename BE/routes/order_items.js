@@ -160,40 +160,33 @@ route.get("/archive-csv", async (req, res) => {
             });
         });
 
-        let mostOrderedItem = "";
-        let highestQuantity = 0;
-        Object.keys(itemTotals).forEach((itemName) => {
-            if (itemTotals[itemName] > highestQuantity) {
-                highestQuantity = itemTotals[itemName];
-                mostOrderedItem = itemName;
-            }
-        });
-
         items.push({
             table_number: "",
             order_id: "",
             item_name: "",
             quantity: "",
             item_price: "",
-            session_start: "",
+            time_ordered: "",
         });
 
-        items.push({
-            table_number: "",
-            order_id: "",
-            item_name: "Most Ordered Item",
-            quantity: mostOrderedItem,
-            item_price: "",
-            session_start: "",
+        // Sort itemTotals object by the item quantities in descending order
+        const sortedItemTotals = Object.entries(itemTotals).sort(
+            (a, b) => b[1] - a[1]
+        );
+
+        const summaryRows = [];
+
+        // Push the sorted items with their respective quantities to the summaryRows array
+        sortedItemTotals.forEach(([itemName, quantity]) => {
+            summaryRows.push({
+                most_ordered: `${itemName}`,
+                quantity: `${quantity}`,
+            });
         });
 
-        items.push({
-            table_number: "",
-            order_id: "",
-            item_name: "Total Earnings",
+        summaryRows.push({
+            most_ordered: "Total Earnings",
             quantity: totalEarnings,
-            item_price: "",
-            session_start: "",
         });
 
         const fields = [
@@ -204,13 +197,24 @@ route.get("/archive-csv", async (req, res) => {
             "item_price",
             "time_ordered",
         ];
+
+        const summaryFields = ["", "", "most_ordered", "quantity"];
+
         const opts = { fields };
+        const summaryOpts = { fields: summaryFields };
+
         try {
             const csv = json2csv(items, opts);
-            await fs.promises.writeFile("archive.csv", csv, function (err) {
-                if (err) return console.error(err);
-                console.log("Data written to file");
-            });
+            const summaryCsv = json2csv(summaryRows, summaryOpts);
+            const finalCsv = `${csv}\n${summaryCsv}`;
+            await fs.promises.writeFile(
+                "archive.csv",
+                finalCsv,
+                function (err) {
+                    if (err) return console.error(err);
+                    console.log("Data written to file");
+                }
+            );
         } catch (err) {
             console.error(err);
         }
@@ -343,7 +347,7 @@ route.put("/status", auth, async (req, res) => {
 
     try {
         // update the status of the item in the order collection
-         await order_model.findOneAndUpdate(
+        await order_model.findOneAndUpdate(
             { order_id: order_id, "ordered_items._id": item_id },
             { $set: { "ordered_items.$.status": status } },
             { new: true }
@@ -369,14 +373,14 @@ route.put("/status_bulk", auth, async (req, res) => {
 
     try {
         // update the status of each item in the order collection
-        const updatePromises = items.map(async (item_id) =>{
+        const updatePromises = items.map(async (item_id) => {
             return order_model.findOneAndUpdate(
                 { order_id: order_id, "ordered_items._id": item_id },
                 { $set: { "ordered_items.$.status": status } },
                 { new: true }
             );
         });
-        
+
         const resp = await Promise.all(updatePromises);
 
         console.log(resp);
@@ -492,15 +496,15 @@ route.delete("/items", async (req, res) => {
     const items = req.body.items;
 
     try {
-        const updatePromises = items.map(async (item_id) =>{
+        const updatePromises = items.map(async (item_id) => {
             return order_model.findOneAndUpdate(
                 { order_id: order_id },
                 { $pull: { ordered_items: { _id: item_id } } },
                 { new: true }
             );
         });
-        
-       await Promise.all(updatePromises);
+
+        await Promise.all(updatePromises);
 
         // return the modified order collection
         res.status(200).json({
